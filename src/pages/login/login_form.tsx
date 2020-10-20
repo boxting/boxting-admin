@@ -44,10 +44,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
   };
 
   return (
-    <Box width={[`90%`, 2 / 3, 1 / 3, 1 / 4]} as="form" mt={[5, 5, 5]}>
+    <Box width={["90%", 2/3, 1/3, 1/4]} as="form" mt={[5, 5, 5]}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box>
-          <Flex height={70} width="100%" alignItems="center" mt={5} mb={10}>
+          <Flex height={70} width="100%" alignItems="center" justifyContent="center" mt={5} mb={10}>
             <img
               src="images/logo/boxting_logo.png"
               alt="Logo"
@@ -82,7 +82,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
             }}
           />
           {errors.username && (
-            <Text fontSize="1" color="red">
+            <Text fontSize="1" color="red!important">
               Necesitamos tu usuario
             </Text>
           )}
@@ -127,7 +127,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
             </InputRightElement>
           </InputGroup>
           {errors.password && (
-            <Text fontSize="1" color="red">
+            <Text fontSize="1" textColor="red!important">
               Necesitamos tu Contraseña para que ingreses
             </Text>
           )}

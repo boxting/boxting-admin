@@ -14,9 +14,7 @@ const onUserLogin = (): void => {
 };
 const LoginPage: NextPage = () => (
   <Flex align="center" justify="center" minH="100vh">
-    <Box>
       <LoginForm onSignIn={onUserLogin} />
-    </Box>
   </Flex>
 );
 
