@@ -33,39 +33,42 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
   const router = useRouter();
 
   const handleClick = () => setShow(!show);
-  const loginService = new LoginService()
+  const loginService = new LoginService();
 
   const onSubmit = async (data: LoginInfo) => {
-
     try {
-      let res = await loginService.login(data.username, data.password)
-      console.log(res)
-
+      const res = await loginService.login(data.username, data.password);
       setLoading(true);
-      setTimeout(() => {
-        // run login mutation
-        onSignIn(`MOCK-TOKEN`);
+      if (res.data.token) {
+        onSignIn(res.data.token);
         setLoading(false);
-        router.push(`/home`); // TODO: Refactor this
-      }, 3000);
-      
+        router.push(`/home`);
+      } else {
+        console.log('daw');
+      }
     } catch (error) {
-      console.log("ERROR")
-      console.log(error)
+      setLoading(false);
+      console.log(error);
     }
-    
   };
 
   return (
-    <Box width={["90%", 2/3, 1/3, 1/4]} as="form" mt={[5, 5, 5]}>
+    <Box width={[`90%`, 2 / 3, 1 / 3, 1 / 4]} as="form" mt={[5, 5, 5]}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box>
-          <Flex height={70} width="100%" alignItems="center" justifyContent="center" mt={5} mb={10}>
+          <Flex
+            height={70}
+            width="100%"
+            alignItems="center"
+            justifyContent="center"
+            mt={5}
+            mb={10}
+          >
             <img
               src="images/logo/boxting_logo.png"
               alt="Logo"
               height="300px"
-              width="300px"
+              width="500px"
             />
           </Flex>
         </Box>
