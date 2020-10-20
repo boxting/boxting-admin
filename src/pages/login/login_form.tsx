@@ -43,14 +43,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
   const router = useRouter();
 
   const handleClick = () => setShow(!show);
-  const loginService = new LoginService()
+  const loginService = new LoginService();
 
   const closeError = () => setError('')
   const toast = useToast();
 
 
   const onSubmit = async (data: LoginInfo) => {
-
     try {
       setLoading(true);
 
@@ -59,12 +58,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
       
       showToast("Se ha iniciado sesión correctamente", "Redireccionando a panel de control", true, toast)
 
-      setTimeout(() => {
-        // run login mutation
-        onSignIn(`MOCK-TOKEN`);
+      if (res.data.token) {
+        onSignIn(res.data.token);
         setLoading(false);
-        router.push(`/home`); // TODO: Refactor this
-      }, 1000);
+        router.push(`/home`);
+      } else {
+        console.log('daw');
+      }
       
     } catch (error) {
       setLoading(false);
@@ -79,12 +79,19 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box>
-          <Flex height={70} width="100%" alignItems="center" justifyContent="center" mt={5} mb={10}>
+          <Flex
+            height={70}
+            width="100%"
+            alignItems="center"
+            justifyContent="center"
+            mt={5}
+            mb={10}
+          >
             <img
               src="images/logo/boxting_logo.png"
               alt="Logo"
               height="300px"
-              width="300px"
+              width="500px"
             />
           </Flex>
         </Box>
