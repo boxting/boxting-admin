@@ -12,7 +12,8 @@ import {
   AlertTitle,
   AlertIcon,
   AlertDescription,
-  CloseButton
+  CloseButton,
+  useToast
 } from '@chakra-ui/core';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/dist/client/router';
@@ -21,6 +22,7 @@ import { ButtonType } from '@/components/buttons/utils';
 import Label from '@/components/label';
 import { LoginService } from '@/data/services/login.service';
 import ErrorMessage from '@/components/alerts/error';
+import { showToast } from '@/components/toast/custom.toast';
 
 interface LoginInfo {
   username: string;
@@ -35,6 +37,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
   const { register, handleSubmit, errors } = useForm(); // watch,
   const [loading, setLoading] = useState<boolean>(false);
   const [show, setShow] = React.useState(false);
+  const [incomplete, setIncomplete] = React.useState(false);
   const [error, setError] = React.useState('');
 
   const router = useRouter();
@@ -43,22 +46,28 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
   const loginService = new LoginService()
 
   const closeError = () => setError('')
+  const toast = useToast();
+
 
   const onSubmit = async (data: LoginInfo) => {
 
     try {
+      setLoading(true);
+
       let res = await loginService.login(data.username, data.password)
       console.log(res)
+      
+      showToast("Se ha iniciado sesión correctamente", "Redireccionando a panel de control", true, toast)
 
-      setLoading(true);
       setTimeout(() => {
         // run login mutation
         onSignIn(`MOCK-TOKEN`);
         setLoading(false);
         router.push(`/home`); // TODO: Refactor this
-      }, 3000);
+      }, 1000);
       
     } catch (error) {
+      setLoading(false);
       setError(error)
     }
   };
@@ -106,7 +115,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
           />
           {errors.username && (
             <Text fontSize="1" color="red!important">
-              Necesitamos tu usuario
+              Debes completar tu usuario para iniciar sesión
             </Text>
           )}
         </Box>
@@ -151,7 +160,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
           </InputGroup>
           {errors.password && (
             <Text fontSize="1" textColor="red!important">
-              Necesitamos tu Contraseña para que ingreses
+              Debes completar la contraseña para iniciar sesión
             </Text>
           )}
         </Box>
