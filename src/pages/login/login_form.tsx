@@ -14,6 +14,7 @@ import { useRouter } from 'next/dist/client/router';
 import BoxtingButton from '@/components/buttons/boxting_button';
 import { ButtonType } from '@/components/buttons/utils';
 import Label from '@/components/label';
+import { LoginService } from '@/data/services/login.service';
 
 interface LoginInfo {
   username: string;
@@ -32,15 +33,27 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
   const router = useRouter();
 
   const handleClick = () => setShow(!show);
+  const loginService = new LoginService()
 
-  const onSubmit = (data: LoginInfo) => {
-    setLoading(true);
-    setTimeout(() => {
-      // run login mutation
-      onSignIn(`MOCK-TOKEN`);
-      setLoading(false);
-      router.push(`/home`); // TODO: Refactor this
-    }, 3000);
+  const onSubmit = async (data: LoginInfo) => {
+
+    try {
+      let res = await loginService.login(data.username, data.password)
+      console.log(res)
+
+      setLoading(true);
+      setTimeout(() => {
+        // run login mutation
+        onSignIn(`MOCK-TOKEN`);
+        setLoading(false);
+        router.push(`/home`); // TODO: Refactor this
+      }, 3000);
+      
+    } catch (error) {
+      console.log("ERROR")
+      console.log(error)
+    }
+    
   };
 
   return (
