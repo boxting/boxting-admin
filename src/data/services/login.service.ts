@@ -15,7 +15,14 @@ export class LoginService{
             return Promise.resolve(res.data)
           } catch (error) {
 
-            return Promise.reject(error)
+            let msg = ""
+
+            if (error.error.statusCode == 400){
+                msg = "Usuario o contraseña inválidos"
+              }else{
+                msg = "Ocurrió un problema al iniciar sesión"
+              }
+            return Promise.reject(msg)
           }
     }
 

@@ -8,6 +8,11 @@ import {
   InputRightElement,
   Flex,
   Spinner,
+  Alert,
+  AlertTitle,
+  AlertIcon,
+  AlertDescription,
+  CloseButton
 } from '@chakra-ui/core';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/dist/client/router';
@@ -15,6 +20,7 @@ import BoxtingButton from '@/components/buttons/boxting_button';
 import { ButtonType } from '@/components/buttons/utils';
 import Label from '@/components/label';
 import { LoginService } from '@/data/services/login.service';
+import ErrorMessage from '@/components/alerts/error';
 
 interface LoginInfo {
   username: string;
@@ -29,11 +35,14 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
   const { register, handleSubmit, errors } = useForm(); // watch,
   const [loading, setLoading] = useState<boolean>(false);
   const [show, setShow] = React.useState(false);
+  const [error, setError] = React.useState('');
 
   const router = useRouter();
 
   const handleClick = () => setShow(!show);
   const loginService = new LoginService()
+
+  const closeError = () => setError('')
 
   const onSubmit = async (data: LoginInfo) => {
 
@@ -50,14 +59,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
       }, 3000);
       
     } catch (error) {
-      console.log("ERROR")
-      console.log(error)
+      setError(error)
     }
-    
   };
 
   return (
     <Box width={["90%", 2/3, 1/3, 1/4]} as="form" mt={[5, 5, 5]}>
+
+      {error && <Box mb={10}><ErrorMessage message={error} onClose={closeError}/></Box>}
+
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box>
           <Flex height={70} width="100%" alignItems="center" justifyContent="center" mt={5} mb={10}>
