@@ -8,11 +8,6 @@ import {
   InputRightElement,
   Flex,
   Spinner,
-  Alert,
-  AlertTitle,
-  AlertIcon,
-  AlertDescription,
-  CloseButton,
   useToast
 } from '@chakra-ui/core';
 import { useForm } from 'react-hook-form';
@@ -37,7 +32,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
   const { register, handleSubmit, errors } = useForm(); // watch,
   const [loading, setLoading] = useState<boolean>(false);
   const [show, setShow] = React.useState(false);
-  const [incomplete, setIncomplete] = React.useState(false);
   const [error, setError] = React.useState('');
 
   const router = useRouter();
@@ -73,9 +67,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
   };
 
   return (
-    <Box width={["90%", 2/3, 1/3, 1/4]} as="form" mt={[5, 5, 5]}>
+    <Box width={["90%", 2/3, 1/3, 1/4]} as="form" mt={5}>
 
-      {error && <Box mb={10}><ErrorMessage message={error} onClose={closeError}/></Box>}
+      {error && <Box mb={80}><ErrorMessage message={error} onClose={closeError}/></Box>}
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box>

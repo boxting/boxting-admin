@@ -21,5 +21,4 @@ export default class AxiosService{
     public static getAxiosService() {
         return this._instance || (this._instance = new this())
     }
-
 }

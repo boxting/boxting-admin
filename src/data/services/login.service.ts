@@ -17,8 +17,8 @@ export class LoginService{
 
             let msg = ""
 
-            if (error.error.statusCode == 400){
-                msg = "Usuario o contraseña inválidos"
+            if (error.error.statusCode == 400 || error.error.statusCode == 403){
+                msg = "Usuario o contraseña incorrectos"
               }else{
                 msg = "Ocurrió un problema al iniciar sesión"
               }
