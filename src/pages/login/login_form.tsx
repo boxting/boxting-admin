@@ -8,7 +8,7 @@ import {
   InputRightElement,
   Flex,
   Spinner,
-  useToast
+  useToast,
 } from '@chakra-ui/core';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/dist/client/router';
@@ -32,44 +32,48 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
   const { register, handleSubmit, errors } = useForm(); // watch,
   const [loading, setLoading] = useState<boolean>(false);
   const [show, setShow] = React.useState(false);
-  const [error, setError] = React.useState('');
+  const [error, setError] = React.useState(``);
 
   const router = useRouter();
 
   const handleClick = () => setShow(!show);
-  const loginService = new LoginService();
 
-  const closeError = () => setError('')
+  const closeError = () => setError(``);
   const toast = useToast();
-
 
   const onSubmit = async (data: LoginInfo) => {
     try {
       setLoading(true);
 
-      let res = await loginService.login(data.username, data.password)
-      console.log(res)
-      
-      showToast("Se ha iniciado sesión correctamente", "Redireccionando a panel de control", true, toast)
+      const res = await LoginService.login(data.username, data.password);
+
+      showToast(
+        `Se ha iniciado sesión correctamente`,
+        `Redireccionando a panel de control`,
+        true,
+        toast,
+      );
 
       if (res.data.token) {
         onSignIn(res.data.token);
         setLoading(false);
-        router.push(`/home`);
+        router.push(`/events`);
       } else {
-        console.log('daw');
+        console.log(`daw`);
       }
-      
     } catch (error) {
       setLoading(false);
-      setError(error)
+      setError(error);
     }
   };
 
   return (
-    <Box width={["90%", 2/3, 1/3, 1/4]} as="form" mt={5}>
-
-      {error && <Box mb={80}><ErrorMessage message={error} onClose={closeError}/></Box>}
+    <Box width={[`90%`, 2 / 3, 1 / 3, 1 / 4]} as="form" mt={5}>
+      {error && (
+        <Box mb={80}>
+          <ErrorMessage message={error} onClose={closeError} />
+        </Box>
+      )}
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box>

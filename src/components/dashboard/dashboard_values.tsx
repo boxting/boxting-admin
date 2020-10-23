@@ -15,45 +15,51 @@ export const DEFAULT_SIDEBAR: SidebarData = {
   },
   content: [
     {
-      label: `Organización`,
+      label: `Votaciones`,
       modules: [
         {
           icon: <ParticipantIcon />,
-          name: `Organización`,
-          route: `/organization`,
+          name: `Participantes`,
+          route: `/participants`,
+          // active: router.pathname === "/organization",
+        },
+        {
+          icon: <ParticipantIcon />,
+          name: `Votaciones`,
+          route: `/events`,
           // active: router.pathname === "/organization",
         },
       ] as Module[],
     },
 
-    {
-      label: `Estructura salarial`,
-      modules: [
-        {
-          icon: <GanttChartIcon />,
-          name: `Broadbanding`,
-          route: `/broadbanding`,
-          // active: router.pathname === "/broadbanding",
-        },
-        {
-          icon: <TableIcon />,
-          name: `Matricial`,
-          route: `/matricial`,
-          // active: router.pathname === "/matricial",
-        },
-      ] as Module[],
-    },
-    {
-      label: `Políticas salariales`,
-      modules: [
-        {
-          icon: <BookIcon />,
-          name: `Políticas`,
-          route: `/salarypolicies`,
-          // active: router.pathname === "/salarypolicies",
-        },
-      ] as Module[],
-    },
+    // {
+    //   label: `Estructura salarial`,
+    //   modules: [
+    //     {
+    //       icon: <GanttChartIcon />,
+    //       name: `Broadbanding`,
+    //       route: `/broadbanding`,
+    //       // active: router.pathname === "/broadbanding",
+    //     },
+    //     {
+    //       icon: <TableIcon />,
+    //       name: `Matricial`,
+    //       route: `/matricial`,
+    //       // active: router.pathname === "/matricial",
+    //     },
+    //   ] as Module[],
+    // },
+    // {
+    //   label: `Políticas salariales`,
+    //   modules: [
+    //     {
+    //       icon: <BookIcon />,
+    //       name: `Políticas`,
+    //       route: `/salarypolicies`,
+    //       // active: router.pathname === "/salarypolicies",
+    //     },
+    //   ] as Module[],
+    // },
   ],
 };
 
