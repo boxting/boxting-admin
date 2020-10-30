@@ -11,12 +11,64 @@ import { ButtonType } from '@/components/buttons/utils';
 import { AddSmallIcon } from '@/components/icons';
 
 import { EventService } from '../../data/services/events.service';
+import ListEventsComponent from './list/index';
 
-const EventPage: NextPage = async () => {
+const EventPage: NextPage = () => {
   const router = useRouter();
 
-  EventService.read();
-  const response = await EventService.read();
+  // EventService.read();
+  const response = [
+    {
+      id: 1,
+      name: `New voting event`,
+      information: `Information about this new event`,
+      startDate: `2020-10-23T23:00:00.000Z`,
+      endDate: `2020-10-24T02:00:00.000Z`,
+      code: `snuz45ckft`,
+      createdAt: `2020-10-23T21:51:39.000Z`,
+      updatedAt: `2020-10-23T21:51:39.000Z`,
+    },
+    {
+      id: 2,
+      name: `Elección de comite - Ingeniería`,
+      information: `Information about this new event`,
+      startDate: `2020-10-23T23:00:00.000Z`,
+      endDate: `2020-10-24T02:00:00.000Z`,
+      code: `snuz45ckft`,
+      createdAt: `2020-10-23T21:51:39.000Z`,
+      updatedAt: `2020-10-23T21:51:39.000Z`,
+    },
+    {
+      id: 3,
+      name: `Elección de comite - Arquitectura`,
+      information: `Information about this new event`,
+      startDate: `2020-10-23T23:00:00.000Z`,
+      endDate: `2020-10-24T02:00:00.000Z`,
+      code: `snuz45ckft`,
+      createdAt: `2020-10-23T21:51:39.000Z`,
+      updatedAt: `2020-10-23T21:51:39.000Z`,
+    },
+    {
+      id: 4,
+      name: `Elección de comite - Derecho`,
+      information: `Information about this new event`,
+      startDate: `2020-10-23T23:00:00.000Z`,
+      endDate: `2020-10-24T02:00:00.000Z`,
+      code: `snuz45ckft`,
+      createdAt: `2020-10-23T21:51:39.000Z`,
+      updatedAt: `2020-10-23T21:51:39.000Z`,
+    },
+    {
+      id: 5,
+      name: `Elección de comite - Medicina`,
+      information: `Information about this new event`,
+      startDate: `2020-10-23T23:00:00.000Z`,
+      endDate: `2020-10-24T02:00:00.000Z`,
+      code: `snuz45ckft`,
+      createdAt: `2020-10-23T21:51:39.000Z`,
+      updatedAt: `2020-10-23T21:51:39.000Z`,
+    },
+  ];
 
   return (
     <Box>
@@ -34,20 +86,7 @@ const EventPage: NextPage = async () => {
         />
       </Flex>
 
-      <Grid
-        py={2}
-        templateColumns="repeat(auto-fill, minmax(250px, 1fr))"
-        gap={4}
-      >
-        {response.map((item, index) => (
-          <Card
-            key={index}
-            textHead={item.name}
-            textBody={item.information}
-            onEnter={() => router.push(item.route)}
-          />
-        ))}
-      </Grid>
+      <ListEventsComponent />
     </Box>
   );
 };
