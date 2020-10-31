@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 import WithListLoading from '../../../components/list/withListLoading';
-import EventList from '../../../components/list/index';
-import nextCookie from 'next-cookies';
+import EventList from './eventList';
+
 import Cookies from 'js-cookie';
 
 function ListEventsComponent() {
@@ -16,7 +16,7 @@ function ListEventsComponent() {
   useEffect(() => {
     setAppState({ loading: true, events: null });
     const token = Cookies.get('token');
-    console.log(token);
+
     const apiUrl =
       'https://blockchain-voting.herokuapp.com/user/token/events/get';
 
