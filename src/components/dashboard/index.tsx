@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Box } from '@chakra-ui/core';
+import { Box, Breadcrumb, BreadcrumbItem } from '@chakra-ui/core';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
-import { Breadcrumb } from 'antd';
-import BreadcrumbItem from 'antd/lib/breadcrumb/BreadcrumbItem';
+
 import HamburguerButton from '@/components/buttons/hamburguer';
 import { Sidebar } from '../sidebar';
 
