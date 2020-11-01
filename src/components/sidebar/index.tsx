@@ -49,7 +49,6 @@ interface SidebarProps {
   color?: string;
   width?: number | string;
   isOpen: boolean;
-  // setOpen: (value: boolean) => void;
   data: SidebarData;
 }
 
@@ -59,22 +58,6 @@ const Sidebar: React.FC<SidebarProps> = ({
   isOpen = false,
 }: SidebarProps) => {
   const router = useRouter();
-
-  // TODO: This isn't the best solution to persist the sidebar layout
-  // const [open, setOpen] = useState(
-  //     process.browser
-  //         ? localStorage.getItem("fairpay.sidebar.open") === "true"
-  //         : false
-  // );
-
-  // useEffect(() => {
-  //     if (process.browser)
-  //         localStorage.setItem("fairpay.sidebar.open", isOpen.toString());
-  // }, [isOpen]);
-
-  // useEffect(() => {
-  //     setOpen(localStorage.getItem("fairpay.sidebar.open") === "true");
-  // }, [isOpen]);
 
   const open = isOpen;
 
@@ -94,7 +77,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     >
       <Box>
         <Flex
-          height={70}
+          height={75}
           width="100%"
           alignItems="center"
           mt={5}
@@ -105,8 +88,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             <img
               src={open ? data.logo.expanded : data.logo.collapsed}
               alt="Boxting Logo"
-              height="10px"
-              width="100%"
+              width="65%"
             />
           </Center>
         </Flex>

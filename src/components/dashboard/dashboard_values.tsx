@@ -10,7 +10,7 @@ import {
 
 export const DEFAULT_SIDEBAR: SidebarData = {
   logo: {
-    expanded: `/images/logo/boxting_logo.png`,
+    expanded: `/images/logo/rsz_boxting_logo.png`,
     collapsed: `/images/logo/boxting_icon_white.png`,
   },
   content: [
