@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 /* eslint-disable no-nested-ternary */
-import { Box, Text, Flex } from '@chakra-ui/core';
+import { Box, Text, Flex, Center } from '@chakra-ui/core';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 
@@ -78,8 +78,6 @@ const Sidebar: React.FC<SidebarProps> = ({
   //     setOpen(localStorage.getItem("fairpay.sidebar.open") === "true");
   // }, [isOpen]);
 
-  // console.log("open: ", open);
-
   const open = isOpen;
 
   return (
@@ -105,12 +103,14 @@ const Sidebar: React.FC<SidebarProps> = ({
           mb={open ? 10 : 16}
           position="sticky"
         >
-          <img
-            src={open ? data.logo.expanded : data.logo.collapsed}
-            alt="Logo"
-            height="10px"
-            width="90px"
-          />
+          <Center>
+            <img
+              src={open ? data.logo.expanded : data.logo.collapsed}
+              alt="Boxting Logo"
+              height="10px"
+              width="100%"
+            />
+          </Center>
         </Flex>
         {data.content.map((group, i) => (
           <>
