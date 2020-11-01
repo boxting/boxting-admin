@@ -13,7 +13,7 @@ export default class AxiosService{
             })
             this.connection.interceptors.response.use(null, ErrorInterceptor)
         } catch (error) {
-            console.log(error)
+            
             throw error
         }
     }
