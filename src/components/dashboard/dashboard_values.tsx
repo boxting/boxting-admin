@@ -7,6 +7,7 @@ import {
   ParticipantIcon,
   BookIcon,
 } from '@/components/icons';
+import { CheckIcon } from '@chakra-ui/icons';
 
 export const DEFAULT_SIDEBAR: SidebarData = {
   logo: {
@@ -18,13 +19,7 @@ export const DEFAULT_SIDEBAR: SidebarData = {
       label: `Votaciones`,
       modules: [
         {
-          icon: <ParticipantIcon />,
-          name: `Participantes`,
-          route: `/participants`,
-          // active: router.pathname === "/organization",
-        },
-        {
-          icon: <ParticipantIcon />,
+          icon: <CheckIcon />,
           name: `Votaciones`,
           route: `/events`,
           // active: router.pathname === "/organization",
