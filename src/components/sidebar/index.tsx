@@ -1,5 +1,3 @@
-/* eslint-disable indent */
-/* eslint-disable no-nested-ternary */
 import { Box, Text, Flex, Center } from '@chakra-ui/core';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
