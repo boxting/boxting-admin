@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-import WithListLoading from '../../../components/list/withListLoading';
+import WithLoadingComponent from '../../../components/loading/withComponentLoading';
 import EventList from './eventList';
 
 import Cookies from 'js-cookie';
 
 function ListEventsComponent() {
-  const EventListLoading = WithListLoading(EventList);
+  const EventListLoading = WithLoadingComponent(EventList);
   const [appState, setAppState] = useState({
     loading: false,
     events: null,

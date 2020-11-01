@@ -1,10 +1,12 @@
 import { Grid } from '@chakra-ui/core';
 import React from 'react';
 import Card from '@/components/card';
+import { useRouter } from 'next/router';
 
 const EventList = (props) => {
   const { events } = props;
-  console.log(events);
+  const router = useRouter();
+
   if (events == null || events.data.length == 0)
     return <p>No hay eventos aún</p>;
 
@@ -19,7 +21,7 @@ const EventList = (props) => {
           key={item.id}
           textHead={item.name}
           textBody={item.information}
-          // onEnter={() => router.push(item.route)}
+          onEnter={() => router.push(`/events/[id]`, `/events/${item.id}`)}
         />
       ))}
     </Grid>
