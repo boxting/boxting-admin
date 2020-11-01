@@ -58,8 +58,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
         onSignIn(res.data.token);
         setLoading(false);
         router.push(`/events`);
-      } else {
-        console.log(`daw`);
       }
     } catch (error) {
       setLoading(false);

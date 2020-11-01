@@ -7,7 +7,6 @@ import { Flex } from '@chakra-ui/core';
 import LoginForm from './login_form';
 
 const onUserLogin = (authToken): void => {
-  console.log('dawd' + authToken);
   Cookies.set(`token`, authToken);
 };
 const LoginPage: NextPage = () => (
