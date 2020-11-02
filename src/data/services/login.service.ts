@@ -13,7 +13,6 @@ export class LoginService {
       return Promise.resolve(res.data);
     } catch (error) {
       let msg = ``;
-
       if (error.error.statusCode == 400 || error.error.statusCode == 403) {
         msg = `Usuario o contraseña incorrectos`;
       } else {

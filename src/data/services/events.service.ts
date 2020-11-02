@@ -58,7 +58,26 @@ export class EventService {
   }
 
   static async delete(id: string): Promise<any> {
-    return id;
+    const token = Cookies.get(`token`);
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    try {
+      const res = await service.connection.delete(
+        `event/token/delete/${id}`,
+        config,
+      );
+      return Promise.resolve(res.data);
+    } catch (error) {
+      let msg = ``;
+      console.log(error);
+      if (error.error.statusCode == 400 || error.error.statusCode == 403) {
+        msg = `No se pudo eliminar el evento de votación`;
+      } else {
+        msg = `Ocurrió un error en el sistema`;
+      }
+      return Promise.reject(msg);
+    }
   }
 
   static async update(
