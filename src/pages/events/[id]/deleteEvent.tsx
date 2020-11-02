@@ -7,19 +7,36 @@ import {
   AlertDialogHeader,
   AlertDialogOverlay,
   Button,
+  useToast,
 } from '@chakra-ui/core';
+import { EventService } from '@/data/services/events.service';
+import { showToast } from '../../../components/toast/custom.toast';
 
-function DeleteEventAlertDialog() {
-  const [isOpen, setIsOpen] = useState();
+function DeleteEventAlertDialog(props) {
+  const [isOpen, setIsOpen] = useState<boolean>();
   const onClose = () => setIsOpen(false);
+  const { event } = props;
   const cancelRef = useRef();
+  const toast = useToast();
+  async function onConfirm() {
+    try {
+      const response = await EventService.delete(event.id);
+      showToast(
+        'Evento eliminado exitosamente',
+        'La información fue eliminada de manera exitosa',
+        true,
+        toast,
+      );
+    } catch (error) {
+      showToast('Ocurrió un error', error, false, toast);
+    }
+  }
 
   return (
     <>
       <Button colorScheme="red" onClick={() => setIsOpen(true)}>
         Eliminar evento
       </Button>
-
       <AlertDialog
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}
@@ -42,8 +59,8 @@ function DeleteEventAlertDialog() {
             <Button ref={cancelRef} onClick={onClose}>
               Cancelar
             </Button>
-            <Button colorScheme="red" onClick={onClose} ml={3}>
-              Sí
+            <Button colorScheme="red" onClick={onConfirm} ml={3}>
+              Confirmar
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>

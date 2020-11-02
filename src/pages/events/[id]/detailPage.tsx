@@ -1,4 +1,4 @@
-import { Box, Center, Grid } from '@chakra-ui/core';
+import { Box, Center, Grid, Text } from '@chakra-ui/core';
 import React from 'react';
 import Card from '@/components/card';
 import { useRouter } from 'next/router';
@@ -21,7 +21,11 @@ const EventDetail = (props) => {
         onBackClick={() => router.back()}
         enableBackIcon
       />
-      <DeleteEventAlertDialog />
+      <DeleteEventAlertDialog event={event.data} />
+
+      <Text mt="16px">
+        El código de votación para el evento es : {event.data.code}
+      </Text>
     </Box>
   );
 };
