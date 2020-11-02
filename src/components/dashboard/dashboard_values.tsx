@@ -1,12 +1,6 @@
 import { Module, SidebarData } from '@/components/sidebar';
 import React from 'react';
 
-import {
-  GanttChartIcon,
-  TableIcon,
-  ParticipantIcon,
-  BookIcon,
-} from '@/components/icons';
 import { CheckIcon } from '@chakra-ui/icons';
 
 export const DEFAULT_SIDEBAR: SidebarData = {
@@ -22,39 +16,9 @@ export const DEFAULT_SIDEBAR: SidebarData = {
           icon: <CheckIcon />,
           name: `Votaciones`,
           route: `/events`,
-          // active: router.pathname === "/organization",
         },
       ] as Module[],
     },
-
-    // {
-    //   label: `Estructura salarial`,
-    //   modules: [
-    //     {
-    //       icon: <GanttChartIcon />,
-    //       name: `Broadbanding`,
-    //       route: `/broadbanding`,
-    //       // active: router.pathname === "/broadbanding",
-    //     },
-    //     {
-    //       icon: <TableIcon />,
-    //       name: `Matricial`,
-    //       route: `/matricial`,
-    //       // active: router.pathname === "/matricial",
-    //     },
-    //   ] as Module[],
-    // },
-    // {
-    //   label: `Políticas salariales`,
-    //   modules: [
-    //     {
-    //       icon: <BookIcon />,
-    //       name: `Políticas`,
-    //       route: `/salarypolicies`,
-    //       // active: router.pathname === "/salarypolicies",
-    //     },
-    //   ] as Module[],
-    // },
   ],
 };
 

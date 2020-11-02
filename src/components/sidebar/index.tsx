@@ -109,13 +109,14 @@ const Sidebar: React.FC<SidebarProps> = ({
                 const iconReactObject = React.cloneElement(
                   module.icon as React.ReactElement,
                   {
+                    key: i,
                     boxSize: 4,
                     color: module.active ? `primary` : `lightText.200`,
                   },
                 );
                 return (
                   <SidebarItem
-                    key={i}
+                    key={`${module}-${i}`}
                     onClick={() =>
                       router.push(
                         module.route || `/${module.name.toLowerCase()}`,

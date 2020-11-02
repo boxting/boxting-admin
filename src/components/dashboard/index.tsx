@@ -34,7 +34,7 @@ const CustomBreadcumb: React.FC<CustomBreadcumbProps> = ({
   return (
     <Breadcrumb>
       {elements.map((value) => (
-        <BreadcrumbItem>{routes[value]}</BreadcrumbItem>
+        <BreadcrumbItem key={value}>{routes[value]}</BreadcrumbItem>
       ))}
     </Breadcrumb>
   );
