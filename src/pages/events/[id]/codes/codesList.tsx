@@ -2,6 +2,7 @@ import { Box, Button, Grid } from '@chakra-ui/core';
 import { Component } from 'react';
 import DeleteCodeAlertDialog from './deleteCode';
 import UpdateCodeModal from './updateCode';
+import CreateCodeModal from './createCode';
 
 class CodesList extends Component<{codes: object}, { codeList: Object[] }>{
         
@@ -10,6 +11,7 @@ class CodesList extends Component<{codes: object}, { codeList: Object[] }>{
 
         this.deleteCode = this.deleteCode.bind(this)
         this.updateCode = this.updateCode.bind(this)
+        this.addCodes = this.addCodes.bind(this)
 
         this.state = {
             codeList : []
@@ -24,7 +26,7 @@ class CodesList extends Component<{codes: object}, { codeList: Object[] }>{
         } 
     }
 
-    async deleteCode(index) {
+    deleteCode(index) {
         let list = this.state.codeList
         delete list[index]
 
@@ -33,11 +35,20 @@ class CodesList extends Component<{codes: object}, { codeList: Object[] }>{
         })
     }
 
-    async updateCode(item, index) {
+    updateCode(item, index) {
         let list = this.state.codeList
 
         list[index] = item
 
+        this.setState({
+            codeList: list
+        })
+    }
+
+    addCodes(codes: Object[]){
+        let list = this.state.codeList
+        list = list.concat(codes)
+        
         this.setState({
             codeList: list
         })
@@ -50,6 +61,7 @@ class CodesList extends Component<{codes: object}, { codeList: Object[] }>{
         
         return (
             <Box>
+                <CreateCodeModal eventId={this.state.codeList[0].eventId} onAddCodes={this.addCodes}/>
                 <Grid
                     py={2}
                     templateColumns="repeat(3, 100px)"

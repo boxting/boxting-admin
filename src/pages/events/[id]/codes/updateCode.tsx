@@ -14,7 +14,6 @@ import {
 } from '@chakra-ui/core';
 import { showToast } from '../../../../components/toast/custom.toast';
 import { CodeService } from '@/data/services/codes.service';
-import { isRestTypeNode } from 'typescript';
 
 function UpdateCodeModal(props) {
 

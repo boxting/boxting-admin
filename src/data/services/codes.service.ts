@@ -6,7 +6,7 @@ const service = new AxiosService();
 export class CodeService {
 
     static async createCodes(
-        codes: [],
+        codes: string[],
         eventId: string
     ): Promise<any> {
         const token = Cookies.get(`token`);
