@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/core';
 import { EventService } from '@/data/services/events.service';
 import { showToast } from '../../../components/toast/custom.toast';
+import { useRouter } from 'next/router';
 
 function DeleteEventAlertDialog(props) {
   const [isOpen, setIsOpen] = useState<boolean>();
@@ -18,9 +19,12 @@ function DeleteEventAlertDialog(props) {
   const { event } = props;
   const cancelRef = useRef();
   const toast = useToast();
+  const router = useRouter();
   async function onConfirm() {
     try {
-      const response = await EventService.delete(event.id);
+      await EventService.delete(event.id);
+      onClose();
+      router.push('/events');
       showToast(
         'Evento eliminado exitosamente!',
         'El evento de votación fue eliminado correctamente',
