@@ -8,7 +8,7 @@ const EventList = (props) => {
   const router = useRouter();
 
   if (events == null || events.data.length == 0)
-    return <p>No hay eventos aún</p>;
+    return <p>No se han registrado eventos de votación.</p>;
 
   return (
     <Grid

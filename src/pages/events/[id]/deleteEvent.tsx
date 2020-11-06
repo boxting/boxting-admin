@@ -22,8 +22,8 @@ function DeleteEventAlertDialog(props) {
     try {
       const response = await EventService.delete(event.id);
       showToast(
-        'Evento eliminado exitosamente',
-        'La información fue eliminada de manera exitosa',
+        'Evento eliminado exitosamente!',
+        'El evento de votación fue eliminado correctamente',
         true,
         toast,
       );

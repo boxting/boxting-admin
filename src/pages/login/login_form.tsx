@@ -44,9 +44,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
   const onSubmit = async (data: LoginInfo) => {
     try {
       setLoading(true);
-
       const res = await LoginService.login(data.username, data.password);
-
       showToast(
         `Se ha iniciado sesión correctamente`,
         `Redireccionando a panel de control`,

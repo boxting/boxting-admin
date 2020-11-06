@@ -19,22 +19,24 @@ import Datetime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
 import moment from 'moment';
 
-const EventCreateForm = () => {
+const EventUpdateForm = (props) => {
   const [appState, setAppState] = useState({
     loading: false,
     success: null,
   });
 
+  const { event } = props;
+
   const router = useRouter();
   const toast = useToast();
 
-  const [name, setName] = useState('');
+  const [name, setName] = useState(event.name);
   const handleNameChange = (event) => setName(event.target.value);
 
-  let startDate = null;
-  let endDate = null;
+  let startDate = event.startDate;
+  let endDate = event.endDate;
 
-  const [information, setInformation] = useState('');
+  const [information, setInformation] = useState(event.information);
   const handleInformationChange = (event) => setInformation(event.target.value);
 
   function onChangeStartDate(date) {
@@ -46,12 +48,12 @@ const EventCreateForm = () => {
     endDate = `${d} GMT-05:00`;
   }
 
-  function createNewEvent() {
-    const apiUrl = 'https://blockchain-voting.herokuapp.com/event/token/create';
+  function updateNewEvent() {
+    const apiUrl = `https://blockchain-voting.herokuapp.com/event/token/update/${event.id}`;
     setAppState({ loading: true, success: null });
     const token = Cookies.get('token');
     axios
-      .post(
+      .put(
         apiUrl,
         {
           name: name,
@@ -71,7 +73,7 @@ const EventCreateForm = () => {
         if (!responseSuccess) throw Error('Create new event fails');
         setAppState({ loading: false, success: responseSuccess });
         showToast(
-          `Se ha creado el nuevo evento de votación correctamente.`,
+          `Se ha actualizado el nuevo evento de votación correctamente.`,
           `Ahora puedes acceder a el desde el panel de votación`,
           true,
           toast,
@@ -81,7 +83,7 @@ const EventCreateForm = () => {
       .catch((e) => {
         showToast(
           `Ocurrió un error!`,
-          `El evento de votación no pudo ser creado de manera satisfactoria.`,
+          `El evento de votación no pudo ser actualizado de manera satisfactoria.`,
           false,
           toast,
         );
@@ -110,7 +112,7 @@ const EventCreateForm = () => {
       <FormControl mt={4}>
         <FormLabel>Fecha inicio</FormLabel>
         <Datetime
-          value={startDate}
+          initialValue={moment(event.startDate).format('dd/MM/yyyy hh:MM:ss')}
           dateFormat={moment().format('dd/MM/yyyy hh:MM:ss')}
           utc={true}
           onChange={onChangeStartDate}
@@ -119,7 +121,7 @@ const EventCreateForm = () => {
       <FormControl mt={4}>
         <FormLabel>Fecha de fin</FormLabel>
         <Datetime
-          value={endDate}
+          initialValue={moment(event.startDate).format('dd/MM/yyyy hh:MM:ss')}
           dateFormat={moment().format('dd/MM/yyyy hh:MM:ss')}
           utc={true}
           onChange={onChangeEndDate}
@@ -129,9 +131,9 @@ const EventCreateForm = () => {
         <BoxtingButton
           isLoading={appState.loading}
           typeBtn={ButtonType.primary}
-          text="Guardar"
+          text="Modificar"
           onEnter={() => {
-            createNewEvent();
+            updateNewEvent();
           }}
         />
       </FormControl>
@@ -139,4 +141,4 @@ const EventCreateForm = () => {
   );
 };
 
-export default EventCreateForm;
+export default EventUpdateForm;

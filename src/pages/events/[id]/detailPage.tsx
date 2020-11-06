@@ -4,6 +4,9 @@ import Card from '@/components/card';
 import { useRouter } from 'next/router';
 import PageTitle from '@/components/pageTitle';
 import DeleteEventAlertDialog from './deleteEvent';
+import BoxtingButton from '@/components/buttons/boxting_button';
+import { ButtonType } from '@/components/buttons/utils';
+import { EditIcon } from '../../../components/icons/index';
 
 const EventDetail = (props) => {
   const { event } = props;
@@ -12,6 +15,8 @@ const EventDetail = (props) => {
 
   if (event == null || event.data == null)
     return <Center>No hay información del evento de votación</Center>;
+
+  console.log('daw', event.data);
 
   return (
     <Box>
@@ -22,6 +27,20 @@ const EventDetail = (props) => {
         enableBackIcon
       />
       <DeleteEventAlertDialog event={event.data} />
+      <BoxtingButton
+        text="Editar"
+        typeBtn={ButtonType.primary}
+        leftIcon={<EditIcon boxSize={4} />}
+        onEnter={() =>
+          router.push(
+            {
+              pathname: `/events/[id]/update`,
+              query: event.data,
+            },
+            `/events/${event.data.id}/update`,
+          )
+        }
+      />
 
       <Text mt="16px">
         El código de votación para el evento es : {event.data.code}
