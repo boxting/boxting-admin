@@ -14,7 +14,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { showToast } from '@/components/toast/custom.toast';
-
+import 'moment/locale/es-mx';
 import Datetime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
 import moment from 'moment';
@@ -27,6 +27,11 @@ const EventCreateForm = () => {
 
   const router = useRouter();
   const toast = useToast();
+
+  var yesterday = moment().subtract(1, 'day');
+  var valid = function (current) {
+    return current.isAfter(yesterday);
+  };
 
   const [name, setName] = useState('');
   const handleNameChange = (event) => setName(event.target.value);
@@ -47,6 +52,7 @@ const EventCreateForm = () => {
   }
 
   function createNewEvent() {
+    console.log(startDate, endDate, name, information);
     const apiUrl = 'https://blockchain-voting.herokuapp.com/event/token/create';
     setAppState({ loading: true, success: null });
     const token = Cookies.get('token');
@@ -79,6 +85,7 @@ const EventCreateForm = () => {
         router.back();
       })
       .catch((e) => {
+        console.log(e.message);
         showToast(
           `Ocurrió un error!`,
           `El evento de votación no pudo ser creado de manera satisfactoria.`,
@@ -110,18 +117,16 @@ const EventCreateForm = () => {
       <FormControl mt={4}>
         <FormLabel>Fecha inicio</FormLabel>
         <Datetime
-          value={startDate}
-          dateFormat={moment().format('dd/MM/yyyy hh:MM:ss')}
-          utc={true}
+          locale="es-mx"
+          isValidDate={valid}
           onChange={onChangeStartDate}
         />
       </FormControl>
       <FormControl mt={4}>
         <FormLabel>Fecha de fin</FormLabel>
         <Datetime
-          value={endDate}
-          dateFormat={moment().format('dd/MM/yyyy hh:MM:ss')}
-          utc={true}
+          locale="es-mx"
+          isValidDate={valid}
           onChange={onChangeEndDate}
         />
       </FormControl>

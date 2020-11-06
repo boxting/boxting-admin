@@ -36,6 +36,11 @@ const EventUpdateForm = (props) => {
   let startDate = event.startDate;
   let endDate = event.endDate;
 
+  var yesterday = moment().subtract(1, 'day');
+  var valid = function (current) {
+    return current.isAfter(yesterday);
+  };
+
   const [information, setInformation] = useState(event.information);
   const handleInformationChange = (event) => setInformation(event.target.value);
 
@@ -112,18 +117,18 @@ const EventUpdateForm = (props) => {
       <FormControl mt={4}>
         <FormLabel>Fecha inicio</FormLabel>
         <Datetime
-          initialValue={moment(event.startDate).format('dd/MM/yyyy hh:MM:ss')}
-          dateFormat={moment().format('dd/MM/yyyy hh:MM:ss')}
-          utc={true}
+          locale="es-mx"
+          isValidDate={valid}
+          initialValue={moment(event.startDate).format('DD-MM-YYYY HH:MM:SS')}
           onChange={onChangeStartDate}
         />
       </FormControl>
       <FormControl mt={4}>
         <FormLabel>Fecha de fin</FormLabel>
         <Datetime
-          initialValue={moment(event.startDate).format('dd/MM/yyyy hh:MM:ss')}
-          dateFormat={moment().format('dd/MM/yyyy hh:MM:ss')}
-          utc={true}
+          initialValue={moment(event.endDate).format('DD-MM-YYYY HH:MM:SS')}
+          locale="es-mx"
+          isValidDate={valid}
           onChange={onChangeEndDate}
         />
       </FormControl>
