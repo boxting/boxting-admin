@@ -4,7 +4,7 @@ import DeleteCodeAlertDialog from './deleteCode';
 import UpdateCodeModal from './updateCode';
 import CreateCodeModal from './createCode';
 
-class CodesList extends Component<{codes: object}, { codeList: Object[] }>{
+class CodesList extends Component<{codes: object, eventId: string}, { codeList: Object[] }>{
         
     constructor(props){
         super(props)
@@ -56,12 +56,18 @@ class CodesList extends Component<{codes: object}, { codeList: Object[] }>{
 
     render(){
 
-        if (this.state.codeList == null || this.state.codeList.length == 0)
-            return <p>No se han registrado códigos de acceso.</p>;
+        if (this.state.codeList == null || this.state.codeList.length == 0){
+            return (
+                <Box>
+                    <CreateCodeModal eventId={this.props.eventId} onAddCodes={this.addCodes}/>
+                    <p>No se han registrado códigos de acceso.</p>
+                </Box>
+            )
+        }
         
         return (
             <Box>
-                <CreateCodeModal eventId={this.state.codeList[0].eventId} onAddCodes={this.addCodes}/>
+                <CreateCodeModal eventId={this.props.eventId} onAddCodes={this.addCodes}/>
                 <Grid
                     py={2}
                     templateColumns="repeat(3, 100px)"

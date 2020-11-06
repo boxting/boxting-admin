@@ -7,6 +7,7 @@ import DeleteEventAlertDialog from './deleteEvent';
 import BoxtingButton from '@/components/buttons/boxting_button';
 import { ButtonType } from '@/components/buttons/utils';
 import { EditIcon } from '../../../components/icons/index';
+import { LockIcon } from '@chakra-ui/icons';
 
 const EventDetail = (props) => {
   const { event } = props;
@@ -45,7 +46,7 @@ const EventDetail = (props) => {
       <BoxtingButton
         text="Configurar códigos de acceso"
         typeBtn={ButtonType.primary}
-        leftIcon={<Icon name="lock" boxSize={4} />}
+        leftIcon={<LockIcon  boxSize={4} />}
         onEnter={() =>
           router.push(
             {

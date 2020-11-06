@@ -54,7 +54,7 @@ const CodesEventPage: NextPage = (props) => {
         enableBackIcon
       />
 
-      <CodesListLoading isLoading={appState.loading} codes={appState.codes} />
+      <CodesListLoading isLoading={appState.loading} codes={appState.codes} eventId={event.id}/>
     </Box>
     
   );
