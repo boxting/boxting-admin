@@ -53,6 +53,35 @@ const EventCreateForm = () => {
 
   function createNewEvent() {
     console.log(startDate, endDate, name, information);
+    if (
+      startDate == null ||
+      endDate == null ||
+      name.length == 0 ||
+      information.length == 0
+    ) {
+      showToast(
+        `Ocurrió un error!`,
+        `Debes completar todos los campos para crear el evento de votación.`,
+        false,
+        toast,
+      );
+      return;
+    }
+
+    if (
+      name.length < 3 ||
+      name.length > 150 ||
+      information.length < 3 ||
+      information.length > 150
+    ) {
+      showToast(
+        `Ocurrió un error!`,
+        `La longitud del campo nombre/información debe ser mayor/menor a la mínima/máxima establecida.`,
+        false,
+        toast,
+      );
+      return;
+    }
     const apiUrl = 'https://blockchain-voting.herokuapp.com/event/token/create';
     setAppState({ loading: true, success: null });
     const token = Cookies.get('token');
@@ -77,7 +106,7 @@ const EventCreateForm = () => {
         if (!responseSuccess) throw Error('Create new event fails');
         setAppState({ loading: false, success: responseSuccess });
         showToast(
-          `Se ha creado el nuevo evento de votación correctamente.`,
+          `El evento de votación fue creado correctamente`,
           `Ahora puedes acceder a el desde el panel de votación`,
           true,
           toast,

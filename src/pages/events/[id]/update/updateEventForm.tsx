@@ -78,7 +78,7 @@ const EventUpdateForm = (props) => {
         if (!responseSuccess) throw Error('Create new event fails');
         setAppState({ loading: false, success: responseSuccess });
         showToast(
-          `Se ha actualizado el nuevo evento de votación correctamente.`,
+          `El evento de votación fue modificado con correctamente`,
           `Ahora puedes acceder a el desde el panel de votación`,
           true,
           toast,
