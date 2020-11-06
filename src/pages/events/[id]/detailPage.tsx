@@ -1,4 +1,4 @@
-import { Box, Center, Grid, Text } from '@chakra-ui/core';
+import { Box, Center, Grid, Icon, Text } from '@chakra-ui/core';
 import React from 'react';
 import Card from '@/components/card';
 import { useRouter } from 'next/router';
@@ -38,6 +38,21 @@ const EventDetail = (props) => {
               query: event.data,
             },
             `/events/${event.data.id}/update`,
+          )
+        }
+      />
+
+      <BoxtingButton
+        text="Configurar códigos de acceso"
+        typeBtn={ButtonType.primary}
+        leftIcon={<Icon name="lock" boxSize={4} />}
+        onEnter={() =>
+          router.push(
+            {
+              pathname: `/events/[id]/codes`,
+              query: event.data,
+            },
+            `/events/${event.data.id}/codes`,
           )
         }
       />
