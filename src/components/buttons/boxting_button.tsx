@@ -9,6 +9,7 @@ interface ButtonProps {
   leftIcon?: React.ReactElement;
   rightIcon?: React.ReactElement;
   submit?: boolean;
+  isLoading?: boolean;
   onEnter?: () => void;
 }
 
@@ -18,6 +19,7 @@ const BoxtingButton: FC<ButtonProps> = ({
   rightIcon,
   text,
   submit,
+  isLoading,
   onEnter,
 }: ButtonProps) => {
   const typeButton = buttonStyles.get(typeBtn);
@@ -43,6 +45,7 @@ const BoxtingButton: FC<ButtonProps> = ({
       color={typeButton.fontColor}
       leftIcon={lIcon}
       rightIcon={rIcon}
+      isLoading={isLoading}
       type={submit ? `submit` : `button`}
       onClick={onEnter}
       _focus={{ boxShadow: `0px 0px 1px 1px ${typeButton.fontColor}` }}

@@ -66,7 +66,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
   };
 
   return (
-    <Box width={[`90%`, 2 / 3, 1 / 3, 1 / 4]} as="form" mt={5}>
+    <Box width={[`40%`, 2 / 3, 1 / 3, 1 / 4]} as="form" mt={5}>
       {error && (
         <Box mb={80}>
           <ErrorMessage message={error} onClose={closeError} />
@@ -87,7 +87,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
               src="images/logo/boxting_logo.png"
               alt="Logo"
               height="300px"
-              width="500px"
+              width="300px"
             />
           </Flex>
         </Box>
@@ -173,11 +173,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
               ¿Olvidaste tu contraseña?
             </Text>
             <BoxtingButton
+              isLoading={loading}
               text="Iniciar sesión"
               typeBtn={ButtonType.primary}
               submit
             />
-            {loading && <Spinner />}
           </Flex>
         </Box>
       </form>

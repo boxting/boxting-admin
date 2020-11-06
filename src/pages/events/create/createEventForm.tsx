@@ -15,6 +15,9 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { showToast } from '@/components/toast/custom.toast';
 
+import Datetime from 'react-datetime';
+import 'react-datetime/css/react-datetime.css';
+
 const EventCreateForm = () => {
   const [appState, setAppState] = useState({
     loading: false,
@@ -92,14 +95,22 @@ const EventCreateForm = () => {
         />
       </FormControl>
       <FormControl mt={4}>
+        <FormLabel>Fecha inicio</FormLabel>
+        <Datetime />
+      </FormControl>
+      <FormControl mt={4}>
+        <FormLabel>Fecha de fin</FormLabel>
+        <Datetime />
+      </FormControl>
+      <FormControl mt={4}>
         <BoxtingButton
+          isLoading={appState.loading}
           typeBtn={ButtonType.primary}
           text="Guardar"
           onEnter={() => {
             createNewEvent();
           }}
         />
-        {appState.loading && <Spinner />}
       </FormControl>
     </Box>
   );
