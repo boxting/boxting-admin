@@ -10,7 +10,7 @@ export const DEFAULT_SIDEBAR: SidebarData = {
   },
   content: [
     {
-      label: `Votaciones`,
+      label: `Eventos de votación`,
       modules: [
         {
           icon: <CheckIcon />,
