@@ -1,17 +1,15 @@
 import { Box, Button, Grid } from '@chakra-ui/core';
-import React, { Component } from 'react';
-import Card from '@/components/card';
-import { useRouter } from 'next/router';
-import BoxtingButton from '@/components/buttons/boxting_button';
-import { ButtonType } from '@/components/buttons/utils';
+import { Component } from 'react';
 import DeleteCodeAlertDialog from './deleteCode';
+import UpdateCodeModal from './updateCode';
 
-class CodesList extends React.Component<{codes: object}, { codeList: [] }>{
+class CodesList extends Component<{codes: object}, { codeList: Object[] }>{
         
     constructor(props){
         super(props)
 
         this.deleteCode = this.deleteCode.bind(this)
+        this.updateCode = this.updateCode.bind(this)
 
         this.state = {
             codeList : []
@@ -26,8 +24,19 @@ class CodesList extends React.Component<{codes: object}, { codeList: [] }>{
         } 
     }
 
-    async deleteCode(item) {
-        let list = this.state.codeList.filter((val) => val != item) as []
+    async deleteCode(index) {
+        let list = this.state.codeList
+        delete list[index]
+
+        this.setState({
+            codeList: list
+        })
+    }
+
+    async updateCode(item, index) {
+        let list = this.state.codeList
+
+        list[index] = item
 
         this.setState({
             codeList: list
@@ -57,7 +66,7 @@ class CodesList extends React.Component<{codes: object}, { codeList: [] }>{
                     </Box>
                 </Grid>
     
-                {this.state.codeList.map((item) => (
+                {this.state.codeList.map((item, index) => (
                     <Grid
                         py={2}
                         templateColumns="repeat(3, 100px)"
@@ -71,10 +80,8 @@ class CodesList extends React.Component<{codes: object}, { codeList: [] }>{
                             {(item.used) ? "Si" : "No"}
                         </Box>
                         <Box>
-                            <Button colorScheme="blue" onClick={() => {}}>
-                                Modificar
-                            </Button>
-                            <DeleteCodeAlertDialog code={item} onDelete={this.deleteCode}/>
+                            <UpdateCodeModal code={item} index={index} onUpdate={this.updateCode}/>
+                            <DeleteCodeAlertDialog code={item} index={index} onDelete={this.deleteCode}/>
                         </Box>
                     </Grid>
                 ))

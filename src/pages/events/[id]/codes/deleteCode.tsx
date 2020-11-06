@@ -16,7 +16,7 @@ import { isRestTypeNode } from 'typescript';
 function DeleteCodeAlertDialog(props) {
   const [isOpen, setIsOpen] = useState<boolean>();
   const onClose = () => setIsOpen(false);
-  let { code, onDelete } = props;
+  let { code, onDelete, index } = props;
   const cancelRef = useRef();
   const toast = useToast();
 
@@ -29,7 +29,7 @@ function DeleteCodeAlertDialog(props) {
         true,
         toast,
       );
-      onDelete(code)
+      onDelete(index)
     } catch (error) {
       showToast('Ocurrió un error', error, false, toast);
     }
