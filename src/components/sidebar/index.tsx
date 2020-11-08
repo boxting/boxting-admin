@@ -1,6 +1,7 @@
 import { Box, Text, Flex, Center } from '@chakra-ui/core';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
+import React from 'react';
 
 const SidebarItem = motion.custom(Box);
 

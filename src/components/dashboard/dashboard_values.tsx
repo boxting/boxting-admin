@@ -10,11 +10,11 @@ export const DEFAULT_SIDEBAR: SidebarData = {
   },
   content: [
     {
-      label: `Eventos de votación`,
+      label: `Gestión de eventos`,
       modules: [
         {
           icon: <CheckIcon />,
-          name: `Votaciones`,
+          name: `Eventos de votación`,
           route: `/events`,
         },
       ] as Module[],
