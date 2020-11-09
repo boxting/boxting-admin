@@ -21,7 +21,7 @@ function UpdateCodeModal(props) {
   const onClose = () => setIsOpen(false);
   let { code, onUpdate, index } = props;
 
-  const [newCode, setNewCode] = useState<string>(code.code);
+  const [newCode, setNewCode] = useState<string>((code == undefined) ? '' : code.code);
   const handleChange = event => setNewCode(event.target.value);
 
   const initialRef = useRef();

@@ -30,18 +30,18 @@ const EventUpdateForm = (props) => {
   const router = useRouter();
   const toast = useToast();
 
-  const [name, setName] = useState(event.name);
+  const [name, setName] = useState((event == undefined) ? '' : event.name);
   const handleNameChange = (event) => setName(event.target.value);
 
-  let startDate = event.startDate;
-  let endDate = event.endDate;
+  let startDate = (event == undefined) ? '' : event.startDate;
+  let endDate = (event == undefined) ? '' : event.endDate;
 
   var yesterday = moment().subtract(1, 'day');
   var valid = function (current) {
     return current.isAfter(yesterday);
   };
 
-  const [information, setInformation] = useState(event.information);
+  const [information, setInformation] = useState((event == undefined) ? '' : event.information);
   const handleInformationChange = (event) => setInformation(event.target.value);
 
   function onChangeStartDate(date) {
@@ -119,14 +119,14 @@ const EventUpdateForm = (props) => {
         <Datetime
           locale="es-mx"
           isValidDate={valid}
-          initialValue={moment(event.startDate).format('DD-MM-YYYY HH:MM:SS')}
+          initialValue={moment(startDate).format('DD-MM-YYYY HH:MM:SS')}
           onChange={onChangeStartDate}
         />
       </FormControl>
       <FormControl mt={4}>
         <FormLabel>Fecha de fin</FormLabel>
         <Datetime
-          initialValue={moment(event.endDate).format('DD-MM-YYYY HH:MM:SS')}
+          initialValue={moment(endDate).format('DD-MM-YYYY HH:MM:SS')}
           locale="es-mx"
           isValidDate={valid}
           onChange={onChangeEndDate}
