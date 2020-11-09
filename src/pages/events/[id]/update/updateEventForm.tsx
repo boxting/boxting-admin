@@ -133,7 +133,7 @@ const EventUpdateForm = (props) => {
           initialValue={moment
             .utc(startDate)
             .local()
-            .format('DD/MM/YYYY HH:MM:SS')}
+            .format('DD/MM/YYYY HH:mm:SS')}
           onChange={onChangeStartDate}
         />
       </FormControl>
@@ -143,7 +143,7 @@ const EventUpdateForm = (props) => {
           initialValue={moment
             .utc(endDate)
             .local()
-            .format('DD/MM/YYYY HH:MM:SS')}
+            .format('DD/MM/YYYY HH:mm:SS')}
           isValidDate={valid}
           onChange={onChangeEndDate}
         />

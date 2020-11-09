@@ -65,16 +65,16 @@ const EventDetail = (props) => {
         </Text>
 
         <Text mt="16px">
-          Fecha de inicio de la votación es :{' '}
+          Fecha de inicio de la votación es :
           {moment
             .utc(event.data.startDate)
             .local()
-            .format('DD/MM/YYYY HH:MM:SS')}
+            .format('DD/MM/YYYY HH:mm:SS')}
         </Text>
 
         <Text mt="16px">
           Fecha de fin de la votación es :
-          {moment.utc(event.data.endDate).local().format('DD/MM/YYYY HH:MM:SS')}
+          {moment.utc(event.data.endDate).local().format('DD/MM/YYYY HH:mm:SS')}
         </Text>
       </Box>
     </Box>
