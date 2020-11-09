@@ -8,6 +8,7 @@ import BoxtingButton from '@/components/buttons/boxting_button';
 import { ButtonType } from '@/components/buttons/utils';
 import { EditIcon } from '../../../components/icons/index';
 import { LockIcon } from '@chakra-ui/icons';
+import moment from 'moment';
 
 const EventDetail = (props) => {
   const { event } = props;
@@ -46,7 +47,7 @@ const EventDetail = (props) => {
       <BoxtingButton
         text="Configurar códigos de acceso"
         typeBtn={ButtonType.primary}
-        leftIcon={<LockIcon  boxSize={4} />}
+        leftIcon={<LockIcon boxSize={4} />}
         onEnter={() =>
           router.push(
             {
@@ -58,9 +59,24 @@ const EventDetail = (props) => {
         }
       />
 
-      <Text mt="16px">
-        El código de votación para el evento es : {event.data.code}
-      </Text>
+      <Box>
+        <Text mt="16px">
+          El código de votación para el evento es : {event.data.code}
+        </Text>
+
+        <Text mt="16px">
+          Fecha de inicio de la votación es :{' '}
+          {moment
+            .utc(event.data.startDate)
+            .local()
+            .format('DD/MM/YYYY HH:MM:SS')}
+        </Text>
+
+        <Text mt="16px">
+          Fecha de fin de la votación es :
+          {moment.utc(event.data.endDate).local().format('DD/MM/YYYY HH:MM:SS')}
+        </Text>
+      </Box>
     </Box>
   );
 };
