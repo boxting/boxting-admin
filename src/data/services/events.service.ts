@@ -71,7 +71,10 @@ export class EventService {
     } catch (error) {
       let msg = ``;
       console.log(error);
-      if (error.error.statusCode == 400 || error.error.statusCode == 403) {
+      if(error.error.errorCode == 4002){
+        msg = `No puede eliminar el evento de votación porque ya ha iniciado`;
+      }
+      else if (error.error.statusCode == 400 || error.error.statusCode == 403) {
         msg = `No se pudo eliminar el evento de votación`;
       } else {
         msg = `Ocurrió un error en el sistema`;
@@ -80,11 +83,41 @@ export class EventService {
     }
   }
 
-  static async update(
+  static async updateEvent(
     id: string,
     name: string,
     information: string,
+    startDate: string,
+    endDate: string,
   ): Promise<any> {
-    return id;
+    const token = Cookies.get(`token`);
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    try {
+      const res = await service.connection.put(
+        `event/token/update/${id}`,
+        {
+          name,
+          information,
+          startDate,
+          endDate,
+        },
+        config,
+      );
+      return Promise.resolve(res.data);
+    } catch (error) {
+      console.log(error);
+      let msg = ``;
+      if(error.error.errorCode ==4002){
+        msg = `No se puede modificar el evento de votación porque ya ha iniciado`;
+      }
+      else if (error.error.statusCode == 400 || error.error.statusCode == 403) {
+        msg = `No se pudo crear un nuevo evento de votación`;
+      } else {
+        msg = `Ocurrió un error en el sistema`;
+      }
+      return Promise.reject(msg);
+    }
   }
 }

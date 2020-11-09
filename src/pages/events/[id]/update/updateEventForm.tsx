@@ -9,15 +9,14 @@ import {
 } from '@chakra-ui/core';
 import { ButtonType } from '@/components/buttons/utils';
 import React, { useState } from 'react';
-import axios from 'axios';
 
-import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { showToast } from '@/components/toast/custom.toast';
 
 import Datetime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
 import moment from 'moment';
+import { EventService } from '../../../../data/services/events.service';
 
 const EventUpdateForm = (props) => {
   const [appState, setAppState] = useState({
@@ -30,70 +29,83 @@ const EventUpdateForm = (props) => {
   const router = useRouter();
   const toast = useToast();
 
-  const [name, setName] = useState((event == undefined) ? '' : event.name);
+  const [name, setName] = useState(event == undefined ? '' : event.name);
   const handleNameChange = (event) => setName(event.target.value);
 
-  let startDate = (event == undefined) ? '' : event.startDate;
-  let endDate = (event == undefined) ? '' : event.endDate;
+  let startDate = event == undefined ? '' : event.startDate;
+  let endDate = event == undefined ? '' : event.endDate;
 
   var yesterday = moment().subtract(1, 'day');
   var valid = function (current) {
     return current.isAfter(yesterday);
   };
 
-  const [information, setInformation] = useState((event == undefined) ? '' : event.information);
+  const [information, setInformation] = useState(
+    event == undefined ? '' : event.information,
+  );
   const handleInformationChange = (event) => setInformation(event.target.value);
 
   function onChangeStartDate(date) {
-    const d = moment(date).utc().format('YYYY-MM-DD hh:mm:ss');
+    const d = moment(date).format('YYYY-MM-DD hh:mm:ss');
     startDate = `${d} GMT-05:00`;
   }
   function onChangeEndDate(date) {
-    const d = moment(date).utc().format('YYYY-MM-DD hh:mm:ss');
+    const d = moment(date).format('YYYY-MM-DD hh:mm:ss');
     endDate = `${d} GMT-05:00`;
   }
 
-  function updateNewEvent() {
-    const apiUrl = `https://blockchain-voting.herokuapp.com/event/token/update/${event.id}`;
-    setAppState({ loading: true, success: null });
-    const token = Cookies.get('token');
-    axios
-      .put(
-        apiUrl,
-        {
-          name: name,
-          information: information,
-          startDate: startDate,
-          endDate: endDate,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      )
-      .then((response) => {
-        const responseSuccess =
-          response != null ? response.data.success : false;
-        if (!responseSuccess) throw Error('Create new event fails');
-        setAppState({ loading: false, success: responseSuccess });
-        showToast(
-          `El evento de votación fue modificado con correctamente`,
-          `Ahora puedes acceder a el desde el panel de votación`,
-          true,
-          toast,
-        );
-        router.back();
-      })
-      .catch((e) => {
-        showToast(
-          `Ocurrió un error!`,
-          `El evento de votación no pudo ser actualizado de manera satisfactoria.`,
-          false,
-          toast,
-        );
-        setAppState({ loading: false, success: false });
-      });
+  async function updateNewEvent() {
+    if (
+      startDate == null ||
+      endDate == null ||
+      name.length == 0 ||
+      information.length == 0
+    ) {
+      showToast(
+        `Ocurrió un error!`,
+        `Debes completar todos los campos para actualizar el evento de votación.`,
+        false,
+        toast,
+      );
+      return;
+    }
+
+    const startDateMoment = moment(event.startDate, 'DD/MM/YYYY HH:MM:SS');
+    const endDateMoment = moment(event.endDate, 'DD/MM/YYYY HH:MM:SS');
+
+    console.log(startDateMoment, endDateMoment);
+    if (moment().isBetween(startDateMoment, endDateMoment)) {
+      showToast(
+        'Ocurrió un error',
+        'No se puede modificar un evento que ya ha iniciado',
+        false,
+        toast,
+      );
+      return;
+    }
+
+    try {
+      setAppState({ loading: true, success: null });
+
+      await EventService.updateEvent(
+        event.id,
+        name,
+        information,
+        startDate,
+        endDate,
+      );
+      showToast(
+        `Éxito`,
+        `El evento de votación fue modificado con correctamente.`,
+        true,
+        toast,
+      );
+      setAppState({ loading: false, success: true });
+      router.back();
+    } catch (error) {
+      showToast(`Ocurrió un error!`, error, false, toast);
+      setAppState({ loading: false, success: false });
+    }
   }
 
   return (
@@ -117,17 +129,21 @@ const EventUpdateForm = (props) => {
       <FormControl mt={4}>
         <FormLabel>Fecha inicio</FormLabel>
         <Datetime
-          locale="es-mx"
           isValidDate={valid}
-          initialValue={moment(startDate).format('DD-MM-YYYY HH:MM:SS')}
+          initialValue={moment
+            .utc(startDate)
+            .local()
+            .format('DD/MM/YYYY HH:MM:SS')}
           onChange={onChangeStartDate}
         />
       </FormControl>
       <FormControl mt={4}>
         <FormLabel>Fecha de fin</FormLabel>
         <Datetime
-          initialValue={moment(endDate).format('DD-MM-YYYY HH:MM:SS')}
-          locale="es-mx"
+          initialValue={moment
+            .utc(endDate)
+            .local()
+            .format('DD/MM/YYYY HH:MM:SS')}
           isValidDate={valid}
           onChange={onChangeEndDate}
         />

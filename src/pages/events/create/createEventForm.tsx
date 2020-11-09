@@ -14,7 +14,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { showToast } from '@/components/toast/custom.toast';
-import 'moment/locale/es-mx';
+
 import Datetime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
 import moment from 'moment';
@@ -43,11 +43,11 @@ const EventCreateForm = () => {
   const handleInformationChange = (event) => setInformation(event.target.value);
 
   function onChangeStartDate(date) {
-    const d = moment(date).utc().format('YYYY-MM-DD hh:mm:ss');
+    const d = moment(date).format('YYYY-MM-DD hh:mm:ss');
     startDate = `${d} GMT-05:00`;
   }
   function onChangeEndDate(date) {
-    const d = moment(date).utc().format('YYYY-MM-DD hh:mm:ss');
+    const d = moment(date).format('YYYY-MM-DD hh:mm:ss');
     endDate = `${d} GMT-05:00`;
   }
 
@@ -106,8 +106,8 @@ const EventCreateForm = () => {
         if (!responseSuccess) throw Error('Create new event fails');
         setAppState({ loading: false, success: responseSuccess });
         showToast(
+          `Éxito`,
           `El evento de votación fue creado correctamente`,
-          `Ahora puedes acceder a el desde el panel de votación`,
           true,
           toast,
         );
@@ -145,19 +145,11 @@ const EventCreateForm = () => {
       </FormControl>
       <FormControl mt={4}>
         <FormLabel>Fecha inicio</FormLabel>
-        <Datetime
-          locale="es-mx"
-          isValidDate={valid}
-          onChange={onChangeStartDate}
-        />
+        <Datetime isValidDate={valid} onChange={onChangeStartDate} />
       </FormControl>
       <FormControl mt={4}>
         <FormLabel>Fecha de fin</FormLabel>
-        <Datetime
-          locale="es-mx"
-          isValidDate={valid}
-          onChange={onChangeEndDate}
-        />
+        <Datetime isValidDate={valid} onChange={onChangeEndDate} />
       </FormControl>
       <FormControl mt={4}>
         <BoxtingButton

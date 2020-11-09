@@ -12,6 +12,7 @@ import {
 import { EventService } from '@/data/services/events.service';
 import { showToast } from '../../../components/toast/custom.toast';
 import { useRouter } from 'next/router';
+import moment from 'moment';
 
 function DeleteEventAlertDialog(props) {
   const [isOpen, setIsOpen] = useState<boolean>();
@@ -21,13 +22,28 @@ function DeleteEventAlertDialog(props) {
   const toast = useToast();
   const router = useRouter();
   async function onConfirm() {
+    // TODO: Validate not delete started events
+    // No puede eliminar el evento de votación porque ya ha iniciado
+    const startDateMoment = moment(event.startDate, 'DD/MM/YYYY HH:MM:SS');
+    const endDateMoment = moment(event.endDate, 'DD/MM/YYYY HH:MM:SS');
+
+    console.log(startDateMoment, endDateMoment, moment.utc());
+    if (moment.utc().isBetween(startDateMoment, endDateMoment)) {
+      showToast(
+        'Ocurrió un error',
+        'No se puede eliminar un evento que ya ha iniciado',
+        false,
+        toast,
+      );
+      return;
+    }
     try {
       await EventService.delete(event.id);
       onClose();
       router.push('/events');
       showToast(
-        'Evento eliminado exitosamente!',
-        'El evento de votación fue eliminado correctamente',
+        'Éxito',
+        'El evento de votación fue eliminado correctamente.',
         true,
         toast,
       );
