@@ -29,18 +29,26 @@ function UpdateCodeModal(props) {
 
   async function onConfirm() {
     if (newCode.trim().length == 0) {
-      showToast('Ocurrió un error', "El código no se puede ser vacío", false, toast);
+      showToast('Ocurrió un error', "El código no puede ser vacío", false, toast);
+      return
+    }
+
+    if(code.code == newCode){
+      showToast('Ocurrió un error', "El código nuevo no puede ser igual al anterior", false, toast);
       return
     }
 
     try {
-      const response = await CodeService.updateCode(newCode, code.id, code.eventId)
+      
+      await CodeService.updateCode(newCode, code.id, code.eventId)
+      
       showToast(
         'Código modificado!',
         'El código se ha modificado correctamente',
         true,
         toast,
       );
+
       code.code = newCode
       onUpdate(code, index)
       setIsOpen(false)

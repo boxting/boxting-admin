@@ -1,5 +1,6 @@
 import AxiosService from '@/data/services/service';
 import Cookies from 'js-cookie';
+import {ErrorMapper} from '../error/error.mapper'
 
 const service = new AxiosService();
 
@@ -23,12 +24,10 @@ export class CodeService {
             );
             return Promise.resolve(res.data);
         } catch (error) {
-            let msg = ``;
-            if (error.error.statusCode == 400 || error.error.statusCode == 403) {
-                msg = `No se pudo crear un nuevo código de votación`;
-            } else {
-                msg = `Ocurrió un error en el sistema`;
-            }
+            console.log(error)
+
+            let msg = ErrorMapper[error.error.errorCode] || ErrorMapper[500];
+            
             return Promise.reject(msg);
         }
     }
@@ -52,12 +51,10 @@ export class CodeService {
             );
             return Promise.resolve(res.data);
         } catch (error) {
-            let msg = ``;
-            if (error.error.statusCode == 400 || error.error.statusCode == 403) {
-                msg = `No se pudo actualizar el código de votación`;
-            } else {
-                msg = `Ocurrió un error en el sistema`;
-            }
+            console.log(error)
+
+            let msg = ErrorMapper[error.error.errorCode] || ErrorMapper[500];
+            
             return Promise.reject(msg);
         }
     }
@@ -77,12 +74,10 @@ export class CodeService {
             );
             return Promise.resolve(res.data);
         } catch (error) {
-            let msg = ``;
-            if (error.error.statusCode == 400 || error.error.statusCode == 403) {
-                msg = `No se pudo eliminar el código de acceso de votación.`;
-            } else {
-                msg = `Ocurrió un error en el sistema`;
-            }
+            console.log(error)
+
+            let msg = ErrorMapper[error.error.errorCode] || ErrorMapper[500];
+            
             return Promise.reject(msg);
         }
     }

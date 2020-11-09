@@ -21,12 +21,16 @@ import { AddSmallIcon, MinusSmallIcon } from '@/components/icons';
 function CreateCodeModal(props) {
 
   const [isOpen, setIsOpen] = useState<boolean>();
-  const onClose = () => setIsOpen(false);
   const { eventId, onAddCodes } = props
   const initialRef = useRef();
   const toast = useToast();
 
   const [insertedCodes, setinsertedCodes] = useState(['']);
+
+  const onClose = () => {
+    setIsOpen(false)
+    setinsertedCodes([''])
+  }
 
   const handleChangeInput = (index, event) => {
     const values = [...insertedCodes];
@@ -48,15 +52,15 @@ function CreateCodeModal(props) {
     let count = insertedCodes.findIndex((value) => { return value.trim().length == 0})
     
     if(count != -1){
-      console.log(count)
       showToast('Ocurrió un error', "No pueden haber códigos vacíos", false, toast);
+      return
     }
 
     try {
       const response = await CodeService.createCodes(insertedCodes, eventId)
       showToast(
         'Códigos creados!',
-        'Los códigos ingresados se han registrado correctamente',
+        'Código de acceso creado correctamente',
         true,
         toast,
       );
