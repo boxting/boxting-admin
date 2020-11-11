@@ -33,7 +33,7 @@ const EventUpdateForm = (props) => {
   const handleNameChange = (event) => setName(event.target.value);
 
   const [startDate, setStartDate] = useState(event == undefined ? '' : event.startDate);
-  const [endDate, setEndDate] = useState(event == undefined ? '' : event.endDate;);
+  const [endDate, setEndDate] = useState(event == undefined ? '' : event.endDate);
 
   var yesterday = moment().subtract(1, 'day');
   var valid = function (current) {
