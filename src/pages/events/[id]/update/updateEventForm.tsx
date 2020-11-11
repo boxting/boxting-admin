@@ -4,8 +4,9 @@ import {
   FormLabel,
   Box,
   Input,
-  Spinner,
+  Text,
   useToast,
+  Textarea,
 } from '@chakra-ui/core';
 import { ButtonType } from '@/components/buttons/utils';
 import React, { useState } from 'react';
@@ -54,6 +55,30 @@ const EventUpdateForm = (props) => {
     setEndDate(`${d} GMT-05:00`);
   }
 
+  function showError(msg){
+    showToast(
+      `Error!`,
+      msg,
+      false,
+      toast,
+    );
+  }
+
+  function validateLength(value:string, minLen:number, maxLen:number, fieldName:string){
+    
+    let errors = false
+    
+    if(value.length > maxLen){
+      showError(`La longitud del campo ${fieldName} debe ser menor a la máxima establecida: ${maxLen}.`)
+      errors = true;
+    }if(value.length < minLen){
+      showError(`La longitud del campo ${fieldName} debe ser mayor a la mínima establecida: ${minLen}.`)
+      errors = true;
+    }
+
+    return errors
+  }
+
   async function updateNewEvent() {
     if (
       startDate == null ||
@@ -61,12 +86,11 @@ const EventUpdateForm = (props) => {
       name.length == 0 ||
       information.length == 0
     ) {
-      showToast(
-        `Ocurrió un error!`,
-        `Debes completar todos los campos para actualizar el evento de votación.`,
-        false,
-        toast,
-      );
+      showError('Debes completar todos los campos para crear el evento de votación')
+      return;
+    }
+    
+    if (validateLength(name, 5, 100, "nombre") || validateLength(information, 10, 500, "información")){
       return;
     }
 
@@ -120,7 +144,7 @@ const EventUpdateForm = (props) => {
       </FormControl>
       <FormControl mt={4}>
         <FormLabel>Descripción</FormLabel>
-        <Input
+        <Textarea
           value={information}
           onChange={handleInformationChange}
           placeholder="Información"

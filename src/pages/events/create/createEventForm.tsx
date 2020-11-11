@@ -6,6 +6,7 @@ import {
   Input,
   Spinner,
   useToast,
+  Textarea,
 } from '@chakra-ui/core';
 import { ButtonType } from '@/components/buttons/utils';
 import React, { useState } from 'react';
@@ -52,6 +53,30 @@ const EventCreateForm = () => {
     setEndDate(`${d} GMT-05:00`);
   }
 
+  function showError(msg){
+    showToast(
+      `Error!`,
+      msg,
+      false,
+      toast,
+    );
+  }
+
+  function validateLength(value:string, minLen:number, maxLen:number, fieldName:string){
+    
+    let errors = false
+    
+    if(value.length > maxLen){
+      showError(`La longitud del campo ${fieldName} debe ser menor a la máxima establecida: ${maxLen}.`)
+      errors = true;
+    }if(value.length < minLen){
+      showError(`La longitud del campo ${fieldName} debe ser mayor a la mínima establecida: ${minLen}.`)
+      errors = true;
+    }
+
+    return errors
+  }
+
   function createNewEvent() {
     console.log(startDate, endDate, name, information);
     if (
@@ -60,29 +85,14 @@ const EventCreateForm = () => {
       name.length == 0 ||
       information.length == 0
     ) {
-      showToast(
-        `Ocurrió un error!`,
-        `Debes completar todos los campos para crear el evento de votación.`,
-        false,
-        toast,
-      );
+      showError('Debes completar todos los campos para crear el evento de votación')
+      return;
+    }
+    
+    if (validateLength(name, 5, 100, "nombre") || validateLength(information, 10, 500, "información")){
       return;
     }
 
-    if (
-      name.length < 3 ||
-      name.length > 150 ||
-      information.length < 3 ||
-      information.length > 150
-    ) {
-      showToast(
-        `Ocurrió un error!`,
-        `La longitud del campo nombre/información debe ser mayor/menor a la mínima/máxima establecida.`,
-        false,
-        toast,
-      );
-      return;
-    }
     const apiUrl = 'https://blockchain-voting.herokuapp.com/event/token/create';
     setAppState({ loading: true, success: null });
     const token = Cookies.get('token');
@@ -140,7 +150,7 @@ const EventCreateForm = () => {
       </FormControl>
       <FormControl mt={4}>
         <FormLabel>Descripción</FormLabel>
-        <Input
+        <Textarea
           value={information}
           onChange={handleInformationChange}
           placeholder="Información"
