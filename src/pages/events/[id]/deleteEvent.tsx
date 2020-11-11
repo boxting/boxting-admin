@@ -35,6 +35,7 @@ function DeleteEventAlertDialog(props) {
         false,
         toast,
       );
+      onClose();
       return;
     }
     try {
@@ -49,6 +50,7 @@ function DeleteEventAlertDialog(props) {
       );
     } catch (error) {
       showToast('Ocurrió un error', error, false, toast);
+      onClose();
     }
   }
 
