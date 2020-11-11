@@ -18,6 +18,7 @@ import { showToast } from '@/components/toast/custom.toast';
 import Datetime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
 import moment from 'moment';
+import { ErrorMapper } from '@/data/error/error.mapper';
 
 const EventCreateForm = () => {
   const [appState, setAppState] = useState({
@@ -36,19 +37,19 @@ const EventCreateForm = () => {
   const [name, setName] = useState('');
   const handleNameChange = (event) => setName(event.target.value);
 
-  let startDate = null;
-  let endDate = null;
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
   const [information, setInformation] = useState('');
   const handleInformationChange = (event) => setInformation(event.target.value);
 
   function onChangeStartDate(date) {
-    const d = moment(date).format('YYYY-MM-DD hh:mm:ss');
-    startDate = `${d} GMT-05:00`;
+    const d = moment(date).format('YYYY-MM-DD HH:mm:ss');
+    setStartDate(`${d} GMT-05:00`);
   }
   function onChangeEndDate(date) {
-    const d = moment(date).format('YYYY-MM-DD hh:mm:ss');
-    endDate = `${d} GMT-05:00`;
+    const d = moment(date).format('YYYY-MM-DD HH:mm:ss');
+    setEndDate(`${d} GMT-05:00`);
   }
 
   function createNewEvent() {
@@ -101,6 +102,7 @@ const EventCreateForm = () => {
         },
       )
       .then((response) => {
+        console.log(response)
         const responseSuccess =
           response != null ? response.data.success : false;
         if (!responseSuccess) throw Error('Create new event fails');
@@ -113,11 +115,12 @@ const EventCreateForm = () => {
         );
         router.back();
       })
-      .catch((e) => {
-        console.log(e.message);
+      .catch((error) => {
+        console.log(error.response.data.error);
+        let msg = ErrorMapper[error.response.data.error.errorCode] || ErrorMapper[500];
         showToast(
           `Ocurrió un error!`,
-          `El evento de votación no pudo ser creado de manera satisfactoria.`,
+          msg,
           false,
           toast,
         );
@@ -149,7 +152,7 @@ const EventCreateForm = () => {
       </FormControl>
       <FormControl mt={4}>
         <FormLabel>Fecha de fin</FormLabel>
-        <Datetime isValidDate={valid} onChange={onChangeEndDate} />
+        <Datetime initialValue={endDate} isValidDate={valid} onChange={onChangeEndDate}/>
       </FormControl>
       <FormControl mt={4}>
         <BoxtingButton

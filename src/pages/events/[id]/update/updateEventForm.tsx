@@ -32,8 +32,8 @@ const EventUpdateForm = (props) => {
   const [name, setName] = useState(event == undefined ? '' : event.name);
   const handleNameChange = (event) => setName(event.target.value);
 
-  let startDate = event == undefined ? '' : event.startDate;
-  let endDate = event == undefined ? '' : event.endDate;
+  const [startDate, setStartDate] = useState(event == undefined ? '' : event.startDate);
+  const [endDate, setEndDate] = useState(event == undefined ? '' : event.endDate;);
 
   var yesterday = moment().subtract(1, 'day');
   var valid = function (current) {
@@ -46,12 +46,12 @@ const EventUpdateForm = (props) => {
   const handleInformationChange = (event) => setInformation(event.target.value);
 
   function onChangeStartDate(date) {
-    const d = moment(date).format('YYYY-MM-DD hh:mm:ss');
-    startDate = `${d} GMT-05:00`;
+    const d = moment(date).format('YYYY-MM-DD HH:mm:ss');
+    setStartDate(`${d} GMT-05:00`);
   }
   function onChangeEndDate(date) {
-    const d = moment(date).format('YYYY-MM-DD hh:mm:ss');
-    endDate = `${d} GMT-05:00`;
+    const d = moment(date).format('YYYY-MM-DD HH:mm:ss');
+    setEndDate(`${d} GMT-05:00`);
   }
 
   async function updateNewEvent() {
@@ -70,8 +70,8 @@ const EventUpdateForm = (props) => {
       return;
     }
 
-    const startDateMoment = moment(event.startDate, 'DD/MM/YYYY HH:MM:SS');
-    const endDateMoment = moment(event.endDate, 'DD/MM/YYYY HH:MM:SS');
+    const startDateMoment = moment(event.startDate, 'DD/MM/YYYY HH:mm:SS');
+    const endDateMoment = moment(event.endDate, 'DD/MM/YYYY HH:mm:SS');
 
     console.log(startDateMoment, endDateMoment);
     if (moment().isBetween(startDateMoment, endDateMoment)) {

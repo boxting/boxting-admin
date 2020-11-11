@@ -27,6 +27,7 @@ export class EventService {
       );
       return Promise.resolve(res.data);
     } catch (error) {
+      console.log(error)
       let msg = ``;
       if (error.error.statusCode == 400 || error.error.statusCode == 403) {
         msg = `No se pudo crear un nuevo evento de votación`;

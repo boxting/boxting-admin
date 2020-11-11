@@ -24,8 +24,8 @@ function DeleteEventAlertDialog(props) {
   async function onConfirm() {
     // TODO: Validate not delete started events
     // No puede eliminar el evento de votación porque ya ha iniciado
-    const startDateMoment = moment(event.startDate, 'DD/MM/YYYY HH:MM:SS');
-    const endDateMoment = moment(event.endDate, 'DD/MM/YYYY HH:MM:SS');
+    const startDateMoment = moment(event.startDate, 'DD/MM/YYYY HH:mm:SS');
+    const endDateMoment = moment(event.endDate, 'DD/MM/YYYY HH:mm:SS');
 
     console.log(startDateMoment, endDateMoment, moment.utc());
     if (moment.utc().isBetween(startDateMoment, endDateMoment)) {
