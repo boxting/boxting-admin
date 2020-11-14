@@ -84,18 +84,20 @@ const PlatformLayout: React.FC<LayoutProps> = ({ children }: LayoutProps) => {
             />
           </Box>
         </Box>
+
         <Box
           position="relative"
           zIndex={0}
-          overflowX="hidden"
+          // overflowX="hidden"
           py={10}
           pl={[4, 4, 6, 12]}
           pr={[4, 4, 6, 10]}
-          // mt={"3.7rem"}
+        // mt={"3.7rem"}
         >
           {children}
         </Box>
       </Content>
+
       <Box
         position="relative"
         borderLeft="1px solid #d9dbe1"
