@@ -9,17 +9,18 @@ import {
   Textarea,
 } from '@chakra-ui/core';
 import { ButtonType } from '@/components/buttons/utils';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { showToast } from '@/components/toast/custom.toast';
 
-import Datetime from 'react-datetime';
-import 'react-datetime/css/react-datetime.css';
 import moment from 'moment';
 import { ErrorMapper } from '@/data/error/error.mapper';
+import DatePicker from '@/components/datepicker/DatePicker';
+
+const today = new Date()
 
 const EventCreateForm = () => {
   const [appState, setAppState] = useState({
@@ -38,22 +39,29 @@ const EventCreateForm = () => {
   const [name, setName] = useState('');
   const handleNameChange = (event) => setName(event.target.value);
 
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  // const [startDateOld, setStartDateOld] = useState('');
+  // const [endDateOld, setEndDateOld] = useState('');
+
+  const [startDate, setStartDate] = useState(today)
+  const [endDate, setEndDate] = useState(today)
 
   const [information, setInformation] = useState('');
   const handleInformationChange = (event) => setInformation(event.target.value);
 
+  useEffect(() => {
+    if (endDate < startDate) {
+      setEndDate(startDate)
+    }
+  }, [startDate])
+
   function onChangeStartDate(date) {
-    const d = moment(date).format('YYYY-MM-DD HH:mm:ss');
-    setStartDate(`${d} GMT-05:00`);
+    setStartDate(date)
   }
   function onChangeEndDate(date) {
-    const d = moment(date).format('YYYY-MM-DD HH:mm:ss');
-    setEndDate(`${d} GMT-05:00`);
+    setEndDate(date)
   }
 
-  function showError(msg){
+  function showError(msg) {
     showToast(
       `Error!`,
       msg,
@@ -62,14 +70,14 @@ const EventCreateForm = () => {
     );
   }
 
-  function validateLength(value:string, minLen:number, maxLen:number, fieldName:string){
-    
+  function validateLength(value: string, minLen: number, maxLen: number, fieldName: string) {
+
     let errors = false
-    
-    if(value.length > maxLen){
+
+    if (value.length > maxLen) {
       showError(`La longitud del campo ${fieldName} debe ser menor a la máxima establecida: ${maxLen}.`)
       errors = true;
-    }if(value.length < minLen){
+    } if (value.length < minLen) {
       showError(`La longitud del campo ${fieldName} debe ser mayor a la mínima establecida: ${minLen}.`)
       errors = true;
     }
@@ -88,8 +96,8 @@ const EventCreateForm = () => {
       showError('Debes completar todos los campos para crear el evento de votación')
       return;
     }
-    
-    if (validateLength(name, 5, 100, "nombre") || validateLength(information, 10, 500, "información")){
+
+    if (validateLength(name, 5, 100, "nombre") || validateLength(information, 10, 500, "información")) {
       return;
     }
 
@@ -102,8 +110,8 @@ const EventCreateForm = () => {
         {
           name: name,
           information: information,
-          startDate: startDate,
-          endDate: endDate,
+          startDate: startDate.toISOString(),
+          endDate: endDate.toISOString(),
         },
         {
           headers: {
@@ -158,11 +166,21 @@ const EventCreateForm = () => {
       </FormControl>
       <FormControl mt={4}>
         <FormLabel>Fecha inicio</FormLabel>
-        <Datetime isValidDate={valid} onChange={onChangeStartDate} />
+        <DatePicker
+          selectedDate={startDate}
+          onChange={onChangeStartDate}
+          minDate={today}
+        />
+        {/* <Datetime isValidDate={valid} onChange={onChangeStartDate} /> */}
       </FormControl>
       <FormControl mt={4}>
         <FormLabel>Fecha de fin</FormLabel>
-        <Datetime initialValue={endDate} isValidDate={valid} onChange={onChangeEndDate}/>
+        <DatePicker
+          selectedDate={endDate}
+          onChange={onChangeEndDate}
+          minDate={startDate}
+        />
+        {/* <Datetime initialValue={endDate} isValidDate={valid} onChange={onChangeEndDate} /> */}
       </FormControl>
       <FormControl mt={4}>
         <BoxtingButton
