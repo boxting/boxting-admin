@@ -12,6 +12,7 @@ import {
   FormLabel,
   Input,
   Box,
+  HStack,
 } from '@chakra-ui/core';
 import { showToast } from '../../../../components/toast/custom.toast';
 import { CodeService } from '@/data/services/codes.service';
@@ -49,9 +50,9 @@ function CreateCodeModal(props) {
   }
 
   async function onConfirm() {
-    let count = insertedCodes.findIndex((value) => { return value.trim().length == 0})
-    
-    if(count != -1){
+    let count = insertedCodes.findIndex((value) => { return value.trim().length == 0 })
+
+    if (count != -1) {
       showToast('Ocurrió un error', "No pueden haber códigos vacíos", false, toast);
       return
     }
@@ -97,22 +98,24 @@ function CreateCodeModal(props) {
           <ModalBody>
             <form>
               {insertedCodes.map((code, index) => (
-                <Box key={index} mb={2}>
+                <HStack key={index} style={{marginBottom:'20px'}}>
                   <FormControl>
                     <FormLabel>Nuevo código</FormLabel>
                     <Input ref={initialRef} placeholder="Código" value={code}
-                    onChange={event => handleChangeInput(index, event)}/>
+                      onChange={event => handleChangeInput(index, event)} />
                   </FormControl>
 
-                  {(insertedCodes.length == 1) ? '' : <Button onClick={() => handleRemoveFields(index)} colorScheme="red" mr={1.5} mt={1.5}>
-                    <MinusSmallIcon/>
-                  </Button>}
-
-                  <Button onClick={() => handleAddFields()} ml={1.5} mt={1.5}>
-                    <AddSmallIcon/>
-                  </Button>
-                </Box>
+                  {(insertedCodes.length == 1) ?
+                    '' :
+                    <Button alignSelf='flex-end' onClick={() => handleRemoveFields(index)} colorScheme="red" mr={1.5} mt={1.5}>
+                      <MinusSmallIcon />
+                    </Button>
+                  }
+                </HStack>
               ))}
+              <Button onClick={() => handleAddFields()} ml={1.5} mt={1.5}>
+                <AddSmallIcon />
+              </Button>
             </form>
           </ModalBody>
 

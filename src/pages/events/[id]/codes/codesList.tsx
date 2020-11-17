@@ -1,12 +1,12 @@
-import { Box, Button, Grid } from '@chakra-ui/core';
-import { Component } from 'react';
+import { Box, Button, Grid, Heading, SimpleGrid, Text } from '@chakra-ui/core';
+import React, { Component } from 'react';
 import DeleteCodeAlertDialog from './deleteCode';
 import UpdateCodeModal from './updateCode';
 import CreateCodeModal from './createCode';
 
-class CodesList extends Component<{codes: object, eventId: string}, { codeList: Object[] }>{
-        
-    constructor(props){
+class CodesList extends Component<{ codes: object, eventId: string }, { codeList: Object[] }>{
+
+    constructor(props) {
         super(props)
 
         this.deleteCode = this.deleteCode.bind(this)
@@ -14,16 +14,16 @@ class CodesList extends Component<{codes: object, eventId: string}, { codeList: 
         this.addCodes = this.addCodes.bind(this)
 
         this.state = {
-            codeList : []
+            codeList: []
         }
     }
 
-    componentDidMount(){
-        if(this.props.codes != null){
+    componentDidMount() {
+        if (this.props.codes != null) {
             this.setState({
                 codeList: this.props.codes.data
             })
-        } 
+        }
     }
 
     deleteCode(index) {
@@ -45,65 +45,54 @@ class CodesList extends Component<{codes: object, eventId: string}, { codeList: 
         })
     }
 
-    addCodes(codes: Object[]){
+    addCodes(codes: Object[]) {
         let list = this.state.codeList
         list = list.concat(codes)
-        
+
         this.setState({
             codeList: list
         })
     }
 
-    render(){
+    render() {
 
-        if (this.state.codeList == null || this.state.codeList.length == 0){
+        if (this.state.codeList == null || this.state.codeList.length == 0) {
             return (
                 <Box>
-                    <CreateCodeModal eventId={this.props.eventId} onAddCodes={this.addCodes}/>
+                    <CreateCodeModal eventId={this.props.eventId} onAddCodes={this.addCodes} />
                     <p>No se han registrado códigos de acceso.</p>
                 </Box>
             )
         }
-        
+
         return (
             <Box>
-                <CreateCodeModal eventId={this.props.eventId} onAddCodes={this.addCodes}/>
-                <Grid
-                    py={2}
-                    templateColumns="repeat(3, 100px)"
-                    gap={4}
-                >
+                <CreateCodeModal eventId={this.props.eventId} onAddCodes={this.addCodes} />
+                <SimpleGrid columns={3} spacingY={4}>
                     <Box>
-                        {"Código"}
+                        <Heading as="h5" size="sm">Código</Heading>
                     </Box>
                     <Box>
-                        {"Usado"}
+                        <Heading as="h5" size="sm">Usado</Heading>
                     </Box>
                     <Box>
-                        {"Acciones"}
+                        <Heading as="h5" size="sm">Acciones</Heading>
                     </Box>
-                </Grid>
-    
-                {this.state.codeList.map((item, index) => (
-                    <Grid
-                        py={2}
-                        templateColumns="repeat(3, 100px)"
-                        gap={4}
-                        key={item.id}
-                    >
-                        <Box>
-                            {item.code}
-                        </Box>
-                        <Box>
-                            {(item.used) ? "Si" : "No"}
-                        </Box>
-                        <Box>
-                            <UpdateCodeModal code={item} index={index} onUpdate={this.updateCode}/>
-                            <DeleteCodeAlertDialog code={item} index={index} onDelete={this.deleteCode}/>
-                        </Box>
-                    </Grid>
-                ))
-                }
+                    {this.state.codeList.map((item, index) => (
+                        <>
+                            <Box>
+                                <Text>{item.code}</Text>
+                            </Box>
+                            <Box>
+                                <Text>{(item.used) ? "Si" : "No"}</Text>
+                            </Box>
+                            <Box>
+                                <UpdateCodeModal code={item} index={index} onUpdate={this.updateCode} />
+                                <DeleteCodeAlertDialog code={item} index={index} onDelete={this.deleteCode} />
+                            </Box>
+                        </>
+                    ))}
+                </SimpleGrid>
             </Box>
         );
     }
