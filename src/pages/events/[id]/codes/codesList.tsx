@@ -79,7 +79,7 @@ class CodesList extends Component<{ codes: object, eventId: string }, { codeList
                         <Heading as="h5" size="sm">Acciones</Heading>
                     </Box>
                     {this.state.codeList.map((item, index) => (
-                        <>
+                        <React.Fragment key={item.id}>
                             <Box>
                                 <Text>{item.code}</Text>
                             </Box>
@@ -90,7 +90,7 @@ class CodesList extends Component<{ codes: object, eventId: string }, { codeList
                                 <UpdateCodeModal code={item} index={index} onUpdate={this.updateCode} />
                                 <DeleteCodeAlertDialog code={item} index={index} onDelete={this.deleteCode} />
                             </Box>
-                        </>
+                        </React.Fragment>
                     ))}
                 </SimpleGrid>
             </Box>
