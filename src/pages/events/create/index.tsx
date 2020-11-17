@@ -17,7 +17,7 @@ const CreateEventPage: NextPage = () => {
     <Box>
       <PageTitle
         title="Crear votación"
-        description="En esta sección puede crear un evento de votación."
+        description="En esta sección se podrá crear un evento."
         onBackClick={() => router.push(`/events/`)}
         enableBackIcon
       />
@@ -27,6 +27,5 @@ const CreateEventPage: NextPage = () => {
   );
 };
 
-// export default CreateEventPage;
 export default dashboardWrapper(CreateEventPage);
 export const getServerSideProps = withAuthServerSideProps();

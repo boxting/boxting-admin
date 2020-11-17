@@ -62,7 +62,7 @@ function DeleteCodeAlertDialog(props) {
           </AlertDialogHeader>
 
           <AlertDialogBody>
-            Estas seguro que deseas eliminar este código de acceso? No podrá ser
+            ¿Estas seguro que deseas eliminar este código de acceso? No podrá ser
             utilizado por ningún usuario luego de eliminarlo.
           </AlertDialogBody>
 

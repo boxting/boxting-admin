@@ -56,7 +56,7 @@ function DeleteEventAlertDialog(props) {
 
   return (
     <>
-      <Button colorScheme="red" onClick={() => setIsOpen(true)}>
+      <Button style={{ marginRight: '12px' }} colorScheme="red" onClick={() => setIsOpen(true)}>
         Eliminar evento
       </Button>
       <AlertDialog
@@ -73,7 +73,7 @@ function DeleteEventAlertDialog(props) {
           </AlertDialogHeader>
 
           <AlertDialogBody>
-            Estas seguro que deseas eliminar este evento de votación? No se
+            ¿Estas seguro que deseas eliminar este evento de votación? No se
             podrá recuperar la información de este evento.
           </AlertDialogBody>
 
