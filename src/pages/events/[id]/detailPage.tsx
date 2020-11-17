@@ -1,4 +1,4 @@
-import { Box, Center, Grid, Icon, Text } from '@chakra-ui/core';
+import { Box, Center, Grid, HStack, Icon, PinInput, PinInputField, SimpleGrid, Text } from '@chakra-ui/core';
 import React from 'react';
 import Card from '@/components/card';
 import { useRouter } from 'next/router';
@@ -9,6 +9,7 @@ import { ButtonType } from '@/components/buttons/utils';
 import { EditIcon } from '../../../components/icons/index';
 import { LockIcon } from '@chakra-ui/icons';
 import moment from 'moment';
+import DatePicker from '@/components/datepicker/DatePicker';
 
 const EventDetail = (props) => {
   const { event } = props;
@@ -30,6 +31,7 @@ const EventDetail = (props) => {
       />
       <DeleteEventAlertDialog event={event.data} />
       <BoxtingButton
+        style={{ marginRight: '12px' }}
         text="Editar"
         typeBtn={ButtonType.primary}
         leftIcon={<EditIcon boxSize={4} />}
@@ -37,7 +39,13 @@ const EventDetail = (props) => {
           router.push(
             {
               pathname: `/events/[id]/update`,
-              query: event.data,
+              query: {
+                ...event.data,
+                startDate: event.data.startDate.toISOString(),
+                endDate: event.data.endDate.toISOString(),
+                createdAt: event.data.createdAt.toISOString(),
+                updatedAt: event.data.updatedAt.toISOString(),
+              },
             },
             `/events/${event.data.id}/update`,
           )
@@ -45,6 +53,7 @@ const EventDetail = (props) => {
       />
 
       <BoxtingButton
+        style={{ marginRight: '12px' }}
         text="Configurar códigos de acceso"
         typeBtn={ButtonType.primary}
         leftIcon={<LockIcon boxSize={4} />}
@@ -61,21 +70,36 @@ const EventDetail = (props) => {
 
       <Box>
         <Text mt="16px">
-          El código de votación para el evento es : {event.data.code}
+          El código de votación para el evento es
         </Text>
-
-        <Text mt="16px">
-          Fecha de inicio de la votación es :
-          {moment
-            .utc(event.data.startDate)
-            .local()
-            .format('DD/MM/YYYY HH:mm:SS')}
-        </Text>
-
-        <Text mt="16px">
-          Fecha de fin de la votación es :
-          {moment.utc(event.data.endDate).local().format('DD/MM/YYYY HH:mm:SS')}
-        </Text>
+        <HStack>
+          <PinInput defaultValue={event.data.code}>
+            {
+              [...Array(event.data.code.length)].map((_, i) => <PinInputField key={i} readOnly />)
+            }
+          </PinInput>
+        </HStack>
+        <br />
+        <SimpleGrid columns={2}>
+          <Box>
+            <Text>Fecha de inicio de la votación</Text>
+          </Box>
+          <Box>
+            <Text>Fecha de fin de la votación</Text>
+          </Box>
+          <Box>
+            <DatePicker
+              selectedDate={event.data.startDate}
+              inline
+            />
+          </Box>
+          <Box>
+            <DatePicker
+              selectedDate={event.data.endDate}
+              inline
+            />
+          </Box>
+        </SimpleGrid>
       </Box>
     </Box>
   );

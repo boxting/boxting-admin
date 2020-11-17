@@ -18,6 +18,9 @@ import Datetime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
 import moment from 'moment';
 import { EventService } from '../../../../data/services/events.service';
+import DatePicker from '@/components/datepicker/DatePicker';
+
+const today = new Date()
 
 const EventUpdateForm = (props) => {
   const [appState, setAppState] = useState({
@@ -30,11 +33,11 @@ const EventUpdateForm = (props) => {
   const router = useRouter();
   const toast = useToast();
 
-  const [name, setName] = useState(event == undefined ? '' : event.name);
+  const [name, setName] = useState(event == null ? '' : event.name);
   const handleNameChange = (event) => setName(event.target.value);
 
-  const [startDate, setStartDate] = useState(event == undefined ? '' : event.startDate);
-  const [endDate, setEndDate] = useState(event == undefined ? '' : event.endDate);
+  const [startDate, setStartDate] = useState(event == null ? today : new Date(event.startDate));
+  const [endDate, setEndDate] = useState(event == null ? today : new Date(event.endDate));
 
   var yesterday = moment().subtract(1, 'day');
   var valid = function (current) {
@@ -152,24 +155,18 @@ const EventUpdateForm = (props) => {
       </FormControl>
       <FormControl mt={4}>
         <FormLabel>Fecha inicio</FormLabel>
-        <Datetime
-          isValidDate={valid}
-          initialValue={moment
-            .utc(startDate)
-            .local()
-            .format('DD/MM/YYYY HH:mm:SS')}
-          onChange={onChangeStartDate}
+        <DatePicker
+          selectedDate={startDate}
+          onChange={e=>{}}
+          minDate={today}
         />
       </FormControl>
       <FormControl mt={4}>
         <FormLabel>Fecha de fin</FormLabel>
-        <Datetime
-          initialValue={moment
-            .utc(endDate)
-            .local()
-            .format('DD/MM/YYYY HH:mm:SS')}
-          isValidDate={valid}
-          onChange={onChangeEndDate}
+        <DatePicker
+          selectedDate={endDate}
+          onChange={e=>{}}
+          minDate={today}
         />
       </FormControl>
       <FormControl mt={4}>

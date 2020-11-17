@@ -33,6 +33,10 @@ const EventDetailPage: NextPage = () => {
       })
       .then((response) => {
         const eventResponse = response.data;
+        eventResponse.data.startDate = new Date(eventResponse.data.startDate)
+        eventResponse.data.endDate = new Date(eventResponse.data.endDate)
+        eventResponse.data.createdAt = new Date(eventResponse.data.createdAt)
+        eventResponse.data.updatedAt = new Date(eventResponse.data.updatedAt)
         setAppState({ loading: false, event: eventResponse });
       })
       .catch((e) => {
