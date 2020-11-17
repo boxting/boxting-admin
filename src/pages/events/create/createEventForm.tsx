@@ -39,9 +39,6 @@ const EventCreateForm = () => {
   const [name, setName] = useState('');
   const handleNameChange = (event) => setName(event.target.value);
 
-  // const [startDateOld, setStartDateOld] = useState('');
-  // const [endDateOld, setEndDateOld] = useState('');
-
   const [startDate, setStartDate] = useState(today)
   const [endDate, setEndDate] = useState(today)
 
@@ -171,7 +168,6 @@ const EventCreateForm = () => {
           onChange={onChangeStartDate}
           minDate={today}
         />
-        {/* <Datetime isValidDate={valid} onChange={onChangeStartDate} /> */}
       </FormControl>
       <FormControl mt={4}>
         <FormLabel>Fecha de fin</FormLabel>
@@ -180,7 +176,6 @@ const EventCreateForm = () => {
           onChange={onChangeEndDate}
           minDate={startDate}
         />
-        {/* <Datetime initialValue={endDate} isValidDate={valid} onChange={onChangeEndDate} /> */}
       </FormControl>
       <FormControl mt={4}>
         <BoxtingButton
