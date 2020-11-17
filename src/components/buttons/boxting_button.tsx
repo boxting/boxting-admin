@@ -10,6 +10,7 @@ interface ButtonProps {
   rightIcon?: React.ReactElement;
   submit?: boolean;
   isLoading?: boolean;
+  style?: React.CSSProperties;
   onEnter?: () => void;
 }
 
@@ -18,6 +19,7 @@ const BoxtingButton: FC<ButtonProps> = ({
   leftIcon,
   rightIcon,
   text,
+  style,
   submit,
   isLoading,
   onEnter,
@@ -39,6 +41,7 @@ const BoxtingButton: FC<ButtonProps> = ({
 
   return (
     <Button
+      style={style}
       bg={typeButton.backgroundColor}
       border={typeBtn === ButtonType.outline && `2px`}
       borderColor={typeBtn === ButtonType.outline && typeButton.fontColor}
