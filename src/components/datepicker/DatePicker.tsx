@@ -3,9 +3,10 @@ import ReactDatePicker from 'react-datepicker';
 
 interface Props {
   isClearable?: boolean;
-  onChange: (date: Date) => any;
+  onChange?: (date: Date) => any;
   selectedDate: Date | undefined;
   minDate?: Date;
+  inline?: boolean;
   showPopperArrow?: boolean;
 }
 
@@ -22,6 +23,8 @@ const DatePicker = ({
       onChange={onChange}
       isClearable={isClearable}
       showPopperArrow={showPopperArrow}
+      dateFormat="MM/dd/yyyy h:mm aa"
+      showTimeInput
       {...props}
     />
   );
