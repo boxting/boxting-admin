@@ -67,7 +67,7 @@ function UpdateCodeModal(props) {
 
   return (
     <>
-      <Button marginRight='12px' colorScheme="blue" onClick={() => checkUsed()}>
+      <Button marginRight='12px' marginBottom='12px' colorScheme="blue" onClick={() => checkUsed()}>
         Modificar
       </Button>
 

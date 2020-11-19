@@ -56,7 +56,7 @@ function DeleteEventAlertDialog(props) {
 
   return (
     <>
-      <Button style={{ marginRight: '12px' }} colorScheme="red" onClick={() => setIsOpen(true)}>
+      <Button style={{ marginRight: '12px', marginBottom: '12px' }} colorScheme="red" onClick={() => setIsOpen(true)}>
         Eliminar evento
       </Button>
       <AlertDialog

@@ -68,7 +68,7 @@ class CodesList extends Component<{ codes: object, eventId: string }, { codeList
         return (
             <Box>
                 <CreateCodeModal eventId={this.props.eventId} onAddCodes={this.addCodes} />
-                <SimpleGrid columns={3} spacingY={4}>
+                <SimpleGrid columns={3} spacing={4}>
                     <Box>
                         <Heading as="h5" size="sm">Código</Heading>
                     </Box>

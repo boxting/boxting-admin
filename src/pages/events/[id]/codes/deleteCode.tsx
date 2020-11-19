@@ -45,7 +45,7 @@ function DeleteCodeAlertDialog(props) {
 
   return (
     <>
-      <Button colorScheme="red" onClick={() => checkUsed()}>
+      <Button colorScheme="red" marginBottom='12px' onClick={() => checkUsed()}>
         Eliminar
       </Button>
       <AlertDialog

@@ -31,7 +31,7 @@ const EventDetail = (props) => {
       />
       <DeleteEventAlertDialog event={event.data} />
       <BoxtingButton
-        style={{ marginRight: '12px' }}
+        style={{ marginRight: '12px', marginBottom: '12px' }}
         text="Editar"
         typeBtn={ButtonType.primary}
         leftIcon={<EditIcon boxSize={4} />}
@@ -53,7 +53,7 @@ const EventDetail = (props) => {
       />
 
       <BoxtingButton
-        style={{ marginRight: '12px' }}
+        style={{ marginRight: '12px', marginBottom: '12px' }}
         text="Configurar códigos de acceso"
         typeBtn={ButtonType.primary}
         leftIcon={<LockIcon boxSize={4} />}
@@ -80,26 +80,22 @@ const EventDetail = (props) => {
           </PinInput>
         </HStack>
         <br />
-        <SimpleGrid columns={2}>
+        <HStack spacing={10}>
           <Box>
             <Text>Fecha de inicio de la votación</Text>
-          </Box>
-          <Box>
-            <Text>Fecha de fin de la votación</Text>
-          </Box>
-          <Box>
             <DatePicker
               selectedDate={event.data.startDate}
               inline
             />
           </Box>
           <Box>
+            <Text>Fecha de fin de la votación</Text>
             <DatePicker
               selectedDate={event.data.endDate}
               inline
             />
           </Box>
-        </SimpleGrid>
+        </HStack>
       </Box>
     </Box>
   );
