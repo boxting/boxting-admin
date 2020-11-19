@@ -64,7 +64,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
   };
 
   return (
-    <Box width={[`40%`, 2 / 3, 1 / 3, 1 / 4]} as="form" mt={5}>
+    <Box as="form">
       {error && (
         <Box mb={80}>
           <ErrorMessage message={error} onClose={closeError} />
