@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Breadcrumb, BreadcrumbItem } from '@chakra-ui/core';
+import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/core';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 
@@ -7,7 +7,7 @@ import HamburguerButton from '@/components/buttons/hamburguer';
 import { Sidebar } from '../sidebar';
 
 import { UserCircleIcon, BellIcon } from '../icons';
-import { DEFAULT_BREADCRUMBS, DEFAULT_SIDEBAR } from './dashboard_values';
+import { breadcrumbItems, DEFAULT_SIDEBAR } from './dashboard_values';
 
 const BACKGROUND_COLOR = `#fff`;
 
@@ -23,25 +23,29 @@ interface Routes {
 
 interface CustomBreadcumbProps {
   pathname: string;
-  routes: Routes;
+  breadcrumbItems: (routes: string[]) => string[];
 }
 
 const CustomBreadcumb: React.FC<CustomBreadcumbProps> = ({
   pathname,
-  routes,
+  breadcrumbItems,
 }: CustomBreadcumbProps) => {
-  const elements = pathname.split(`/`);
+  const elements = pathname.split(`/`).slice(1);
+  console.log(elements)
+  console.log(breadcrumbItems(elements))
   return (
     <Breadcrumb>
-      {elements.map((value) => (
-        <BreadcrumbItem key={value}>{routes[value]}</BreadcrumbItem>
+      {breadcrumbItems(elements).map((value, i) => (
+        <BreadcrumbItem key={i}>
+          <BreadcrumbLink>{value}</BreadcrumbLink>
+        </BreadcrumbItem>
       ))}
     </Breadcrumb>
   );
 };
 
 const PlatformLayout: React.FC<LayoutProps> = ({ children }: LayoutProps) => {
-  const [isOpen, setOpen] = useState<boolean>(true);
+  const [isOpen, setOpen] = useState<boolean>(false);
   const router = useRouter();
 
   return (
@@ -79,8 +83,8 @@ const PlatformLayout: React.FC<LayoutProps> = ({ children }: LayoutProps) => {
           <HamburguerButton isOpen={isOpen} setOpen={setOpen} />
           <Box pl={1}>
             <CustomBreadcumb
-              pathname={router.pathname}
-              routes={DEFAULT_BREADCRUMBS}
+              pathname={router.asPath}
+              breadcrumbItems={breadcrumbItems}
             />
           </Box>
         </Box>
@@ -104,7 +108,7 @@ const PlatformLayout: React.FC<LayoutProps> = ({ children }: LayoutProps) => {
         display="flex"
         flexDirection="column"
         paddingTop="55px"
-        width="60px"
+        width={['50px', '60px']}
       >
         <Box
           marginBottom="35px"

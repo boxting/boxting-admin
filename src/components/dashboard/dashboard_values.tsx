@@ -35,3 +35,23 @@ export const DEFAULT_BREADCRUMBS = {
   fundamentals: `Fundamentos`,
   position: `Puesto`,
 };
+
+export const breadcrumbItems = (routes: string[]): string[] => {
+  if (routes.length === 1) {
+    if (routes[0] === 'events') {
+      return ['Eventos']
+    }
+  } else if (routes.length === 2) {
+    if (routes[1] === 'create') {
+      return ['Eventos', 'Crear']
+    } else {
+      return ['Evento', routes[1]]
+    }
+  } else if (routes.length === 3) {
+    if (routes[2] === 'codes') {
+      return ['Evento', routes[1], 'Códigos']
+    } else if (routes[2] === 'update') {
+      return ['Evento', routes[1], 'Actualizar']
+    }
+  }
+}
