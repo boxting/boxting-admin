@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Heading, SimpleGrid, Text } from '@chakra-ui/core';
+import { Box, Button, Flex, Grid, Heading, SimpleGrid, Text } from '@chakra-ui/core';
 import React, { Component } from 'react';
 import DeleteCodeAlertDialog from './deleteCode';
 import UpdateCodeModal from './updateCode';
@@ -68,31 +68,19 @@ class CodesList extends Component<{ codes: object, eventId: string }, { codeList
         return (
             <Box>
                 <CreateCodeModal eventId={this.props.eventId} onAddCodes={this.addCodes} />
-                <SimpleGrid columns={3} spacing={4}>
-                    <Box>
-                        <Heading as="h5" size="sm">Código</Heading>
+                {this.state.codeList.map((item, index) => (
+                    <Box key={item.id} marginY={4} padding={4} borderWidth='1px' borderRadius='lg'>
+                        <Box marginBottom={2}>
+                            <Heading as='h5' size='sm'>Código</Heading>
+                            <Text>{item.code}</Text>
+                        </Box>
+                        <Text marginBottom={2}>Usado: {(item.used) ? "Si" : "No"}</Text>
+                        <Box>
+                            <UpdateCodeModal code={item} index={index} onUpdate={this.updateCode} />
+                            <DeleteCodeAlertDialog code={item} index={index} onDelete={this.deleteCode} />
+                        </Box>
                     </Box>
-                    <Box>
-                        <Heading as="h5" size="sm">Usado</Heading>
-                    </Box>
-                    <Box>
-                        <Heading as="h5" size="sm">Acciones</Heading>
-                    </Box>
-                    {this.state.codeList.map((item, index) => (
-                        <React.Fragment key={item.id}>
-                            <Box>
-                                <Text>{item.code}</Text>
-                            </Box>
-                            <Box>
-                                <Text>{(item.used) ? "Si" : "No"}</Text>
-                            </Box>
-                            <Box>
-                                <UpdateCodeModal code={item} index={index} onUpdate={this.updateCode} />
-                                <DeleteCodeAlertDialog code={item} index={index} onDelete={this.deleteCode} />
-                            </Box>
-                        </React.Fragment>
-                    ))}
-                </SimpleGrid>
+                ))}
             </Box>
         );
     }

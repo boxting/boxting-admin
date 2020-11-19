@@ -11,9 +11,11 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Icon,
 } from '@chakra-ui/core';
 import { showToast } from '../../../../components/toast/custom.toast';
 import { CodeService } from '@/data/services/codes.service';
+import { AiFillEdit } from 'react-icons/ai'
 
 function UpdateCodeModal(props) {
 
@@ -33,15 +35,15 @@ function UpdateCodeModal(props) {
       return
     }
 
-    if(code.code == newCode){
+    if (code.code == newCode) {
       showToast('Ocurrió un error', "El código nuevo no puede ser igual al anterior", false, toast);
       return
     }
 
     try {
-      
+
       await CodeService.updateCode(newCode, code.id, code.eventId)
-      
+
       showToast(
         'Código modificado!',
         'El código se ha modificado correctamente',
@@ -68,7 +70,7 @@ function UpdateCodeModal(props) {
   return (
     <>
       <Button marginRight='12px' marginBottom='12px' colorScheme="blue" onClick={() => checkUsed()}>
-        Modificar
+        <Icon as={AiFillEdit} />
       </Button>
 
       <Modal
@@ -88,7 +90,7 @@ function UpdateCodeModal(props) {
           <ModalBody>
             <FormControl>
               <FormLabel>Código de acceso</FormLabel>
-              <Input ref={initialRef} placeholder="Código" value={newCode} onChange={handleChange}/>
+              <Input ref={initialRef} placeholder="Código" value={newCode} onChange={handleChange} />
             </FormControl>
           </ModalBody>
 

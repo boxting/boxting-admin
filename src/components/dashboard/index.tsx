@@ -91,6 +91,7 @@ const PlatformLayout: React.FC<LayoutProps> = ({ children }: LayoutProps) => {
 
         <Box
           position="relative"
+          height='100%'
           zIndex={0}
           overflowX="hidden"
           py={10}

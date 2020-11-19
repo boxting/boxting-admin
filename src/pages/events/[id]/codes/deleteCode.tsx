@@ -12,6 +12,7 @@ import {
 import { showToast } from '../../../../components/toast/custom.toast';
 import { CodeService } from '@/data/services/codes.service';
 import { isRestTypeNode } from 'typescript';
+import { DeleteIcon } from '@chakra-ui/icons';
 
 function DeleteCodeAlertDialog(props) {
   const [isOpen, setIsOpen] = useState<boolean>();
@@ -35,10 +36,10 @@ function DeleteCodeAlertDialog(props) {
     }
   }
 
-  async function checkUsed(){
-    if(code.used){
+  async function checkUsed() {
+    if (code.used) {
       showToast('Ocurrió un error', "El código no se puede eliminar porque ya ha sido utilizado", false, toast);
-    }else{
+    } else {
       setIsOpen(true)
     }
   }
@@ -46,7 +47,7 @@ function DeleteCodeAlertDialog(props) {
   return (
     <>
       <Button colorScheme="red" marginBottom='12px' onClick={() => checkUsed()}>
-        Eliminar
+        <DeleteIcon />
       </Button>
       <AlertDialog
         isOpen={isOpen}

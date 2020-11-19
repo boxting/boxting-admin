@@ -1,4 +1,4 @@
-import { Box, Center, Grid, HStack, Icon, PinInput, PinInputField, SimpleGrid, Text } from '@chakra-ui/core';
+import { Box, Center, Flex, Grid, HStack, Icon, PinInput, PinInputField, SimpleGrid, Text } from '@chakra-ui/core';
 import React from 'react';
 import Card from '@/components/card';
 import { useRouter } from 'next/router';
@@ -68,34 +68,36 @@ const EventDetail = (props) => {
         }
       />
 
-      <Box>
+      <Box width='100%'>
         <Text mt="16px">
           El código de votación para el evento es
         </Text>
-        <HStack>
+        <Flex>
           <PinInput defaultValue={event.data.code}>
             {
               [...Array(event.data.code.length)].map((_, i) => <PinInputField key={i} readOnly />)
             }
           </PinInput>
-        </HStack>
+        </Flex>
         <br />
-        <HStack spacing={10}>
-          <Box>
-            <Text>Fecha de inicio de la votación</Text>
-            <DatePicker
-              selectedDate={event.data.startDate}
-              inline
-            />
-          </Box>
-          <Box>
-            <Text>Fecha de fin de la votación</Text>
-            <DatePicker
-              selectedDate={event.data.endDate}
-              inline
-            />
-          </Box>
-        </HStack>
+        <Flex>
+          <SimpleGrid columns={[1, 1, 2]} spacing={4}>
+            <Box width={['80%', '100%']}>
+              <Text>Fecha de inicio de la votación</Text>
+              <DatePicker
+                selectedDate={event.data.startDate}
+                inline
+              />
+            </Box>
+            <Box width={['80%', '100%']}>
+              <Text>Fecha de fin de la votación</Text>
+              <DatePicker
+                selectedDate={event.data.endDate}
+                inline
+              />
+            </Box>
+          </SimpleGrid>
+        </Flex>
       </Box>
     </Box>
   );
