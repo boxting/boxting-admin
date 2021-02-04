@@ -1,4 +1,4 @@
-import AxiosService from '@/data/services/service';
+import AxiosService from '@/data/connection/axios.service';
 import Cookies from 'js-cookie';
 
 const service = new AxiosService();

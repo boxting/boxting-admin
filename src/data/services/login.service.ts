@@ -1,24 +1,32 @@
-import AxiosService from '@/data/services/service';
-
-const service = new AxiosService();
+import { ErrorMapper } from "../error/error.mapper";
+import AxiosService from '@/data/connection/axios.service';
 
 export class LoginService {
-  static async login(username: string, password: string): Promise<any> {
-    try {
-      const res = await service.connection.post(`user/organizer/login`, {
-        username,
-        password,
-      });
 
-      return Promise.resolve(res.data);
-    } catch (error) {
-      let msg = ``;
-      if (error.error.statusCode == 400 || error.error.statusCode == 403) {
-        msg = `Usuario o contraseña incorrectos`;
-      } else {
-        msg = `Ocurrió un problema al iniciar sesión`;
-      }
-      return Promise.reject(msg);
+    private static _instance: LoginService
+    _service: AxiosService
+
+    constructor(service: AxiosService) {
+        this._service = service
     }
-  }
+
+    public static getInstance() {
+        return this._instance || (this._instance = new this(AxiosService.getInstance()))
+    }
+
+    async login(username: string, password: string): Promise<any> {
+        try {
+            const res = await this._service.connection.post('/user/organizer/login', {
+                username,
+                password,
+            });
+
+            return Promise.resolve(res.data);
+        } catch (error) {
+
+            let msg = ErrorMapper[error.error.errorCode] || ErrorMapper[500];
+
+            return Promise.reject(msg);
+        }
+    }
 }
