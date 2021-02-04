@@ -4,7 +4,7 @@ import AxiosService from '@/data/connection/axios.service';
 export class LoginService {
 
     private static _instance: LoginService
-    _service: AxiosService
+    private _service: AxiosService
 
     constructor(service: AxiosService) {
         this._service = service
