@@ -1,6 +1,7 @@
 
 export class Organizer {
-    name!: string
+    id: number
+    name: string
     createdAt?: Date
     updatedAt?: Date
     userId?: number

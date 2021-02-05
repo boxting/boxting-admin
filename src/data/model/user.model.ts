@@ -3,13 +3,12 @@ import { Organizer } from "./organizer.model"
 import { Voter } from "./voter.model"
 
 export class User {
-    username!: string
-    password!: string
-    mail!: string
-    isActive!: boolean
-    createdAt!: Date
-    updatedAt!: Date
-    roleId!: number
+    id: number
+    username: string
+    mail: string
+    isActive: boolean
+    createdAt?: Date
+    updatedAt?: Date
     voter?: Voter
     organizer?: Organizer
     events?: Event[]  
