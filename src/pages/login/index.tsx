@@ -6,8 +6,8 @@ import { Flex } from '@chakra-ui/core';
 import LoginForm from './login_form';
 import CookiesManager from '@/data/utils/cookies.manager';
 
-const onUserLogin = (authToken): void => {
-  CookiesManager.getInstance()._setToken(authToken, '')
+const onUserLogin = (authToken: string, refreshToken: string): void => {
+  CookiesManager.getInstance()._setToken(authToken, refreshToken)
 }
 
 const LoginPage: NextPage = () => (

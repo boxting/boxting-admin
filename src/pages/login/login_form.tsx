@@ -25,7 +25,7 @@ interface LoginInfo {
 }
 
 interface LoginFormProps {
-    onSignIn: (token: string) => void;
+    onSignIn: (token: string, refreshToken: string) => void;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
@@ -54,8 +54,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
                 toast,
             );
 
-            if (res.data.token) {
-                onSignIn(res.data.token);
+            if (res.data.token && res.data.refreshToken) {
+                onSignIn(res.data.token, res.data.refreshToken);
                 setLoading(false);
                 router.push(`/events`);
             }
