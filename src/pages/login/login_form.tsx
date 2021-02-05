@@ -7,7 +7,6 @@ import {
     InputGroup,
     InputRightElement,
     Flex,
-    Spinner,
     useToast,
 } from '@chakra-ui/core';
 import { useForm } from 'react-hook-form';
@@ -15,38 +14,44 @@ import { useRouter } from 'next/dist/client/router';
 import BoxtingButton from '@/components/buttons/boxting_button';
 import { ButtonType } from '@/components/buttons/utils';
 import Label from '@/components/label';
-import { LoginService } from '@/data/services/login.service';
+import { LoginRepository } from '@/data/login/repository/login.repository';
 import ErrorMessage from '@/components/alerts/error';
 import { showToast } from '@/components/toast/custom.toast';
-
-interface LoginInfo {
-    username: string;
-    password: string;
-}
+import { LoginRequest } from '@/data/login/api/request/login.request';
 
 interface LoginFormProps {
     onSignIn: (token: string, refreshToken: string) => void;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
+    // Forms
     const { register, handleSubmit, errors } = useForm(); // watch,
+
+    // State variables
     const [loading, setLoading] = useState<boolean>(false);
-    const [show, setShow] = React.useState(false);
-    const [error, setError] = React.useState(``);
+    const [show, setShow] = useState(false);
+    const [error, setError] = useState(``);
 
+    // Utils
     const router = useRouter();
-
-    const handleClick = () => setShow(!show);
-
-    const closeError = () => setError(``);
     const toast = useToast();
 
-    const loginService = LoginService.getInstance()
+    // Arrow functions
+    const handleClick = () => setShow(!show);
+    const closeError = () => setError(``);
 
-    const onSubmit = async (data: LoginInfo) => {
+    // Get service instance
+    const loginRepository = LoginRepository.getInstance()
+
+    const onSubmit = async (data: LoginRequest) => {
         try {
+            // Start loading state
             setLoading(true);
-            const res = await loginService.login(data.username, data.password);
+
+            // Send login request
+            const res = await loginRepository.login(data);
+
+            // Show success toast
             showToast(
                 `Se ha iniciado sesión correctamente`,
                 `Redireccionando a panel de control`,
@@ -54,11 +59,14 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
                 toast,
             );
 
-            if (res.data.token && res.data.refreshToken) {
-                onSignIn(res.data.token, res.data.refreshToken);
-                setLoading(false);
-                router.push(`/events`);
-            }
+            // Store received tokens on cookies
+            onSignIn(res.data.token, res.data.refreshToken);
+
+            // Stop loading state
+            setLoading(false);
+
+            // Redirect to events page
+            router.push('/events');
         } catch (error) {
             console.log(error)
             setLoading(false);
