@@ -16,7 +16,7 @@ export class CodeService {
         };
         try {
             const res = await service.connection.post(
-                `accesscodes/token/event/${eventId}/create`,
+                `/code/event/${eventId}/create`,
                 {
                     codes
                 },
@@ -43,7 +43,7 @@ export class CodeService {
         };
         try {
             const res = await service.connection.put(
-                `accesscodes/token/event/${eventId}/update/${codeId}`,
+                `/code/event/${eventId}/id/${codeId}`,
                 {
                     newCode
                 },
@@ -69,7 +69,7 @@ export class CodeService {
         };
         try {
             const res = await service.connection.delete(
-                `accesscodes/token/event/${eventId}/delete/${codeId}`,
+                `/code/event/${eventId}/id/${codeId}`,
                 config,
             );
             return Promise.resolve(res.data);

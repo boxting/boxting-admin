@@ -98,7 +98,7 @@ const EventCreateForm = () => {
       return;
     }
 
-    const apiUrl = 'https://blockchain-voting.herokuapp.com/event/token/create';
+    const apiUrl = 'https://boxting-rest-api.herokuapp.com/event/create';
     setAppState({ loading: true, success: null });
     const token = Cookies.get('token');
     axios

@@ -16,7 +16,7 @@ export class LoginService {
 
     async login(username: string, password: string): Promise<any> {
         try {
-            const res = await this._service.connection.post('/user/organizer/login', {
+            const res = await this._service.connection.post('/login/organizer', {
                 username,
                 password,
             });

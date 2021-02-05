@@ -17,7 +17,7 @@ export class EventService {
 
     async getAllEvents(): Promise<any> {
         try {
-            const res = await this._service.connection.get('/user/token/events/get')
+            const res = await this._service.connection.get('/user/events')
 
             return Promise.resolve(res.data);
         } catch (error) {
@@ -39,7 +39,7 @@ export class EventService {
         };
         try {
             const res = await this._service.connection.post(
-                `event/token/create`,
+                `/event/create`,
                 {
                     name,
                     information,
@@ -88,7 +88,7 @@ export class EventService {
         };
         try {
             const res = await this._service.connection.delete(
-                `event/token/delete/${id}`,
+                `/event/id/${id}`,
                 config,
             );
             return Promise.resolve(res.data);
@@ -120,7 +120,7 @@ export class EventService {
         };
         try {
             const res = await this._service.connection.put(
-                `event/token/update/${id}`,
+                `/event/id/${id}`,
                 {
                     name,
                     information,
