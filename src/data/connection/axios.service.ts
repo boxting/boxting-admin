@@ -4,13 +4,14 @@ import CookiesManager from "../utils/cookies.manager"
 export default class AxiosService {
 
     private static _instance: AxiosService
+    private _cookiesManager: CookiesManager
+    private _baseUrl: string = 'https://boxting-rest-api.herokuapp.com'
     connection: AxiosInstance
-    _cookiesManager: CookiesManager
 
     constructor() {
         try {
             this.connection = axios.create({
-                baseURL: 'https://blockchain-voting.herokuapp.com',
+                baseURL: this._baseUrl,
             })
 
             this._cookiesManager = CookiesManager.getInstance()
@@ -60,29 +61,33 @@ export default class AxiosService {
             if (error.response.status === 401 && error.config && !originalRequest._isRetryRequest) {
                 // Set retry flag to avoid loop
                 originalRequest._isRetryRequest = true;
+                
+                let token = this._cookiesManager._getToken()
+                const refreshToken = this._cookiesManager._getRefreshToken()
 
                 // Make fetch request to make the token refresh
-                let res = fetch('https://boxting-rest-api.herokuapp.com/token/refresh', {
+                let res = fetch(`${this._baseUrl}/login/token/refresh`, {
                     method: 'POST',
                     mode: 'cors',
                     cache: 'no-cache',
                     credentials: 'same-origin',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Token': this._cookiesManager._getToken()
+                        'Content-Type': 'application/json'
                     },
                     redirect: 'follow',
                     referrer: 'no-referrer',
                     body: JSON.stringify({
-                        refreshToken: this._cookiesManager._getRefreshToken()
+                        token: token,
+                        refreshToken: refreshToken
                     })
                 })
                     .then(res => res.json())
                     .then(res => {
                         // If refresh is successful, save new tokens with on Cookies
-                        this._cookiesManager._setToken(res.token, res.refreshToken)
+                        token = res.data
+                        this._cookiesManager._setToken(token, refreshToken)
                         // Update authorization header on original request
-                        originalRequest.headers['Authorization'] = `Bearer ${res.token}`;
+                        originalRequest.headers['Authorization'] = `Bearer ${token}`;
                         // Make request with updated token
                         return this.connection(originalRequest);
                     });
