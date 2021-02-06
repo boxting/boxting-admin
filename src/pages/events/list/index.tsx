@@ -5,13 +5,13 @@ import WithLoadingComponent from '../../../components/loading/withComponentLoadi
 import EventList from './eventList';
 
 import Cookies from 'js-cookie';
-import { EventService } from '@/data/services/events.service';
+import { EventRepository } from '@/data/event/repository/events.repository';
 
 function ListEventsComponent() {
 
     const EventListLoading = WithLoadingComponent(EventList);
 
-    const eventService = EventService.getInstance()
+    const eventService = EventRepository.getInstance()
 
     const [appState, setAppState] = useState({
         loading: false,

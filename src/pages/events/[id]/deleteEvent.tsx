@@ -9,7 +9,7 @@ import {
     Button,
     useToast,
 } from '@chakra-ui/core';
-import { EventService } from '@/data/services/events.service';
+import { EventRepository } from '@/data/event/repository/events.repository';
 import { showToast } from '../../../components/toast/custom.toast';
 import { useRouter } from 'next/router';
 import moment from 'moment';
@@ -39,7 +39,7 @@ function DeleteEventAlertDialog(props) {
             return;
         }
         try {
-            await EventService.delete(event.id);
+            await EventRepository.delete(event.id);
             onClose();
             router.push('/events');
             showToast(

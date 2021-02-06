@@ -1,10 +1,10 @@
 import AxiosService from '@/data/connection/axios.service';
 import Cookies from 'js-cookie';
-import { ErrorMapper } from '../error/error.mapper';
+import { ErrorMapper } from '../../error/error.mapper';
 
-export class EventService {
+export class EventRepository {
 
-    private static _instance: EventService
+    private static _instance: EventRepository
     private _service: AxiosService
 
     constructor(service: AxiosService) {
@@ -15,7 +15,7 @@ export class EventService {
         return this._instance || (this._instance = new this(AxiosService.getInstance()))
     }
 
-    async getAllEvents(): Promise<any> {
+    async getAll(): Promise<any> {
         try {
             const res = await this._service.connection.get('/user/events')
 

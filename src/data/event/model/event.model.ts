@@ -1,6 +1,6 @@
-import { AccessCode } from "./access.code.model"
-import { Election } from "./election.model"
-import { User } from "./user.model"
+import { AccessCode } from "../../access_code/model/access.code.model"
+import { Election } from "../../election/model/election.model"
+import { User } from "../../user/model/user.model"
 
 export class Event {
     id: number

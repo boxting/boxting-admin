@@ -17,7 +17,7 @@ import { showToast } from '@/components/toast/custom.toast';
 import Datetime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
 import moment from 'moment';
-import { EventService } from '../../../../data/services/events.service';
+import { EventRepository } from '../../../../data/event/repository/events.repository';
 import DatePicker from '@/components/datepicker/DatePicker';
 
 const today = new Date()
@@ -114,7 +114,7 @@ const EventUpdateForm = (props) => {
         try {
             setAppState({ loading: true, success: null });
 
-            await EventService.updateEvent(
+            await EventRepository.updateEvent(
                 event.id,
                 name,
                 information,
