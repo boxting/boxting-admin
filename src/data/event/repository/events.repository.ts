@@ -1,6 +1,12 @@
 import AxiosService from '@/data/connection/axios.service';
-import Cookies from 'js-cookie';
 import { ErrorMapper } from '../../error/error.mapper';
+import { CreateRequestDto } from '../api/dto/request/create.request.dto';
+import { UpdateRequestDto } from '../api/dto/request/update.request.dto';
+import { CreateResponseDto } from '../api/dto/response/create.response.dto';
+import { DeleteResponseDto } from '../api/dto/response/delete.response.dto';
+import { GetAllResponseDto } from '../api/dto/response/get.all.response.dto';
+import { GetOneResponseDto } from '../api/dto/response/get.one.response.dto';
+import { UpdateResponseDto } from '../api/dto/response/update.response.dto';
 
 export class EventRepository {
 
@@ -15,132 +21,93 @@ export class EventRepository {
         return this._instance || (this._instance = new this(AxiosService.getInstance()))
     }
 
-    async getAll(): Promise<any> {
+    async getAll(): Promise<GetAllResponseDto> {
         try {
+            // Make request
             const res = await this._service.connection.get('/user/events')
-
-            return Promise.resolve(res.data);
+            // Assign data to response dto
+            const data: GetAllResponseDto = res.data
+            // Return data
+            return Promise.resolve(data);
         } catch (error) {
-            let msg = ErrorMapper[error.error.errorCode] || ErrorMapper[500];
-
-            return Promise.reject(msg);
-        }
-    }
-
-    async createEvent(
-        name: string,
-        information: string,
-        startDate: string,
-        endDate: string,
-    ): Promise<any> {
-        const token = Cookies.get(`token`);
-        const config = {
-            headers: { Authorization: `Bearer ${token}` },
-        };
-        try {
-            const res = await this._service.connection.post(
-                `/event/create`,
-                {
-                    name,
-                    information,
-                    startDate,
-                    endDate,
-                },
-                config,
-            );
-            return Promise.resolve(res.data);
-        } catch (error) {
+            // Log error for internal use
             console.log(error)
-            let msg = ``;
-            if (error.error.statusCode == 400 || error.error.statusCode == 403) {
-                msg = `No se pudo crear un nuevo evento de votación`;
-            } else {
-                msg = `Ocurrió un error en el sistema`;
-            }
+            // Set the message using the error mapper
+            let msg = ErrorMapper[error.error.errorCode] || ErrorMapper[500];
+            // Return the obtained message
             return Promise.reject(msg);
         }
     }
 
-    async read(): Promise<Array<any>> {
-        const token = Cookies.get(`token`);
-        const config = {
-            headers: { Authorization: `Bearer ${token}` },
-        };
-        try {
-            const res = await this._service.connection.get(`user/token/events/get`, config);
-            return Promise.resolve(res.data);
-        } catch (error) {
-            let msg = ``;
+    async create(event: CreateRequestDto): Promise<CreateResponseDto> {
 
-            if (error.statusCode === 400 || error.statusCode === 403) {
-                msg = `No se pudieron traer los eventos de votación`;
-            } else {
-                msg = `Ocurrió un error en el sistema`;
-            }
+        try {
+            // Make request
+            const res = await this._service.connection.post('/event/create', event);
+            // Assign data to response dto
+            const data: CreateResponseDto = res.data
+            // Return data
+            return Promise.resolve(data);
+        } catch (error) {
+            // Log error for internal use
+            console.log(error)
+            // Set the message using the error mapper
+            let msg = ErrorMapper[error.error.errorCode] || ErrorMapper[500];
+            // Return the obtained message
             return Promise.reject(msg);
         }
     }
 
-    async delete(id: string): Promise<any> {
-        const token = Cookies.get(`token`);
-        const config = {
-            headers: { Authorization: `Bearer ${token}` },
-        };
+    async getOne(id: string): Promise<GetOneResponseDto> {
         try {
-            const res = await this._service.connection.delete(
-                `/event/id/${id}`,
-                config,
-            );
-            return Promise.resolve(res.data);
+            // Make request
+            const res = await this._service.connection.get(`/event/id/${id}`);
+            // Assign data to response dto
+            const data: CreateResponseDto = res.data
+            // Return data
+            return Promise.resolve(data);
         } catch (error) {
-            let msg = ``;
-            console.log(error);
-            if (error.error.errorCode == 4002) {
-                msg = `No puede eliminar el evento de votación porque ya ha iniciado`;
-            }
-            else if (error.error.statusCode == 400 || error.error.statusCode == 403) {
-                msg = `No se pudo eliminar el evento de votación`;
-            } else {
-                msg = `Ocurrió un error en el sistema`;
-            }
+            // Log error for internal use
+            console.log(error)
+            // Set the message using the error mapper
+            let msg = ErrorMapper[error.error.errorCode] || ErrorMapper[500];
+            // Return the obtained message
             return Promise.reject(msg);
         }
     }
 
-    async updateEvent(
-        id: string,
-        name: string,
-        information: string,
-        startDate: string,
-        endDate: string,
-    ): Promise<any> {
-        const token = Cookies.get(`token`);
-        const config = {
-            headers: { Authorization: `Bearer ${token}` },
-        };
+    async delete(id: string): Promise<boolean> {
         try {
-            const res = await this._service.connection.put(
-                `/event/id/${id}`,
-                {
-                    name,
-                    information,
-                    startDate,
-                    endDate,
-                },
-                config,
-            );
-            return Promise.resolve(res.data);
+            // Make request
+            const res = await this._service.connection.delete(`/event/id/${id}`);
+            // Assign data to response dto
+            const data: DeleteResponseDto = res.data
+            // Return data
+            return Promise.resolve(data.success);
         } catch (error) {
-            console.log(error);
-            let msg = ``;
-            if (error.error.errorCode == 4002) {
-                msg = `No se puede modificar el evento de votación porque ya ha iniciado`;
-            }
-            else if (error.error.statusCode == 400 || error.error.statusCode == 403) {
-                msg = `No se pudo crear un nuevo evento de votación`;
-            } else {
-                msg = `Ocurrió un error en el sistema`;
-            }
+            // Log error for internal use
+            console.log(error)
+            // Set the message using the error mapper
+            let msg = ErrorMapper[error.error.errorCode] || ErrorMapper[500];
+            // Return the obtained message
+            return Promise.reject(msg);
+        }
+    }
+
+    async update(newEvent: UpdateRequestDto): Promise<boolean> {
+        try {
+            // Make request
+            const res = await this._service.connection.put(`/event/id/${newEvent.id}`);
+            // Assign data to response dto
+            const data: UpdateResponseDto = res.data
+            // Return data
+            return Promise.resolve(data.success);
+        } catch (error) {
+            // Log error for internal use
+            console.log(error)
+            // Set the message using the error mapper
+            let msg = ErrorMapper[error.error.errorCode] || ErrorMapper[500];
+            // Return the obtained message
             return Promise.reject(msg);
         }
     }
