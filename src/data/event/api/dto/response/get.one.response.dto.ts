@@ -1,6 +1,6 @@
 import { EventDto } from "../event.dto";
 
-export interface GetAllResponseDto {
+export interface GetOneResponseDto {
     success: boolean,
     data: EventDto
 }
