@@ -1,6 +1,6 @@
 import AxiosService from '@/data/connection/axios.service';
 import Cookies from 'js-cookie';
-import {ErrorMapper} from '../error/error.mapper'
+import {ErrorMapper} from '../../error/error.mapper'
 
 const service = new AxiosService();
 

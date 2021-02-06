@@ -1,4 +1,4 @@
-import { Event } from "./event.model"
+import { Event } from "../../event/model/event.model"
 import { Organizer } from "./organizer.model"
 import { Voter } from "./voter.model"
 

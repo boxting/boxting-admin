@@ -10,7 +10,7 @@ import BoxtingButton from '@/components/buttons/boxting_button';
 import { ButtonType } from '@/components/buttons/utils';
 import { AddSmallIcon } from '@/components/icons';
 
-import { EventService } from '../../data/services/events.service';
+import { EventRepository } from '../../data/event/repository/events.repository';
 import ListEventsComponent from './list/index';
 
 const EventPage: NextPage = () => {

@@ -1,4 +1,4 @@
-import { Election } from "./election.model"
+import { Election } from "../../election/model/election.model"
 
 export class Type {
     id: number

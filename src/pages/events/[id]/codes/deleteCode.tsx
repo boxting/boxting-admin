@@ -10,7 +10,7 @@ import {
     useToast,
 } from '@chakra-ui/core';
 import { showToast } from '../../../../components/toast/custom.toast';
-import { CodeService } from '@/data/services/codes.service';
+import { CodeService } from '@/data/access_code/repository/codes.service';
 import { isRestTypeNode } from 'typescript';
 import { DeleteIcon } from '@chakra-ui/icons';
 

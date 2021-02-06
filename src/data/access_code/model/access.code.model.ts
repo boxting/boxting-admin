@@ -1,4 +1,4 @@
-import { Event } from "./event.model"
+import { Event } from "../../event/model/event.model"
 
 export class AccessCode {
     id: number

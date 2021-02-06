@@ -1,5 +1,5 @@
-import { List } from "./list.model"
-import { Type } from "./type.model"
+import { List } from "../../list/model/list.model"
+import { Type } from "../../type/model/type.model"
 
 export class Election {
     id: number
