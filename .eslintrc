@@ -14,8 +14,17 @@
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
   },
-  "extends": ["plugin:react/recommended", "airbnb", "prettier/react"],
-  "plugins": ["react", "react-hooks", "jsx-a11y", "prettier"],
+  "extends": [
+    "plugin:react/recommended",
+    "airbnb",
+    "prettier/react"
+  ],
+  "plugins": [
+    "react",
+    "react-hooks",
+    "jsx-a11y",
+    "prettier"
+  ],
   "rules": {
     "prettier/prettier": "error",
     "import/prefer-default-export": "off",
@@ -32,7 +41,10 @@
         "jsx": "never"
       }
     ],
-    "quotes": ["error", "backtick"],
+    "quotes": [
+      "error",
+      "backtick"
+    ],
   },
   "overrides": [
     {
@@ -41,7 +53,9 @@
       "parserOptions": {
         "project": "./tsconfig.json"
       },
-      "plugins": ["@typescript-eslint/eslint-plugin"],
+      "plugins": [
+        "@typescript-eslint/eslint-plugin"
+      ],
       "extends": [
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
@@ -54,8 +68,12 @@
             "allowExpressions": true
           }
         ],
-        "no-use-before-define": [0],
-        "@typescript-eslint/no-use-before-define": [1],
+        "no-use-before-define": [
+          0
+        ],
+        "@typescript-eslint/no-use-before-define": [
+          1
+        ],
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-var-requires": "off",
         "@typescript-eslint/quotes": [

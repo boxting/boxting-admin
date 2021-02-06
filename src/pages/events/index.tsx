@@ -14,27 +14,27 @@ import { EventService } from '../../data/services/events.service';
 import ListEventsComponent from './list/index';
 
 const EventPage: NextPage = () => {
-  const router = useRouter();
+    const router = useRouter();
 
-  return (
-    <Box>
-      <PageTitle
-        title="Votaciones"
-        description="En esta sección se deberá poder ver, crear, editar y eliminar las diferentes listas y datos que sirven de base para los demás módulos de la plataforma."
-      />
+    return (
+        <Box>
+            <PageTitle
+                title="Votaciones"
+                description="En esta sección se deberá poder ver, crear, editar y eliminar las diferentes listas y datos que sirven de base para los demás módulos de la plataforma."
+            />
 
-      <Flex pb={6}>
-        <BoxtingButton
-          text="Nuevo"
-          typeBtn={ButtonType.primary}
-          leftIcon={<AddSmallIcon boxSize={4} />}
-          onEnter={() => router.push(`/events/create/`)}
-        />
-      </Flex>
+            <Flex pb={6}>
+                <BoxtingButton
+                    text="Nuevo"
+                    typeBtn={ButtonType.primary}
+                    leftIcon={<AddSmallIcon boxSize={4} />}
+                    onEnter={() => router.push(`/events/create/`)}
+                />
+            </Flex>
 
-      <ListEventsComponent />
-    </Box>
-  );
+            <ListEventsComponent />
+        </Box>
+    );
 };
 
 export default dashboardWrapper(EventPage);

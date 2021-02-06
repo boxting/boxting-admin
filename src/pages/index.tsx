@@ -4,60 +4,60 @@ import Head from 'next/head';
 import Title from '@/components/title';
 
 const Home: React.FC = () => (
-  <div className="container">
-    <Head>
-      <title>Create Next App</title>
-      <link rel="icon" href="/favicon.ico" />
-    </Head>
+	<div className="container">
+		<Head>
+			<title>Create Next App</title>
+			<link rel="icon" href="/favicon.ico" />
+		</Head>
 
-    <main>
-      <Title />
+		<main>
+			<Title />
 
-      <p className="description">
-        Get started by editing <code>pages/index.js</code>
-      </p>
+			<p className="description">
+				Get started by editing <code>pages/index.js</code>
+			</p>
 
-      <p className="description">This is not an official starter!</p>
+			<p className="description">This is not an official starter!</p>
 
-      <div className="grid">
-        <a href="https://nextjs.org/docs" className="card">
-          <h3>Documentation &rarr;</h3>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
+			<div className="grid">
+				<a href="https://nextjs.org/docs" className="card">
+					<h3>Documentation &rarr;</h3>
+					<p>Find in-depth information about Next.js features and API.</p>
+				</a>
 
-        <a href="https://nextjs.org/learn" className="card">
-          <h3>Learn &rarr;</h3>
-          <p>Learn about Next.js in an interactive course with quizzes!</p>
-        </a>
+				<a href="https://nextjs.org/learn" className="card">
+					<h3>Learn &rarr;</h3>
+					<p>Learn about Next.js in an interactive course with quizzes!</p>
+				</a>
 
-        <a
-          href="https://github.com/zeit/next.js/tree/master/examples"
-          className="card"
-        >
-          <h3>Examples &rarr;</h3>
-          <p>Discover and deploy boilerplate example Next.js projects.</p>
-        </a>
+				<a
+					href="https://github.com/zeit/next.js/tree/master/examples"
+					className="card"
+				>
+					<h3>Examples &rarr;</h3>
+					<p>Discover and deploy boilerplate example Next.js projects.</p>
+				</a>
 
-        <a
-          href="https://zeit.co/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          className="card"
-        >
-          <h3>Deploy &rarr;</h3>
-          <p>
-            Instantly deploy your Next.js site to a public URL with ZEIT Now.
+				<a
+					href="https://zeit.co/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+					className="card"
+				>
+					<h3>Deploy &rarr;</h3>
+					<p>
+						Instantly deploy your Next.js site to a public URL with ZEIT Now.
           </p>
-        </a>
-      </div>
-    </main>
+				</a>
+			</div>
+		</main>
 
-    <footer>
-      <a href="https://zeit.co" target="_blank" rel="noopener noreferrer">
-        Powered by <img src="/zeit.svg" alt="ZEIT Logo" />
-      </a>
-    </footer>
+		<footer>
+			<a href="https://zeit.co" target="_blank" rel="noopener noreferrer">
+				Powered by <img src="/zeit.svg" alt="ZEIT Logo" />
+			</a>
+		</footer>
 
-    <style jsx>
-      {`
+		<style jsx>
+			{`
         .container {
           min-height: 100vh;
           padding: 0 0.5rem;
@@ -165,10 +165,10 @@ const Home: React.FC = () => (
           }
         }
       `}
-    </style>
+		</style>
 
-    <style jsx global>
-      {`
+		<style jsx global>
+			{`
         html,
         body {
           padding: 0;
@@ -182,8 +182,8 @@ const Home: React.FC = () => (
           box-sizing: border-box;
         }
       `}
-    </style>
-  </div>
+		</style>
+	</div>
 );
 
 export default Home;

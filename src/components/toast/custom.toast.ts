@@ -1,5 +1,5 @@
 
-export function showToast(title:string, message:string, success:boolean, toast:any){
+export function showToast(title: string, message: string, success: boolean, toast: any) {
     toast({
         position: "top-right",
         title: title,

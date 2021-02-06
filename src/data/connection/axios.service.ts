@@ -61,7 +61,7 @@ export default class AxiosService {
             if (error.response.status === 401 && error.config && !originalRequest._isRetryRequest) {
                 // Set retry flag to avoid loop
                 originalRequest._isRetryRequest = true;
-                
+
                 let token = this._cookiesManager._getToken()
                 const refreshToken = this._cookiesManager._getRefreshToken()
 

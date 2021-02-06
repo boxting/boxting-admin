@@ -10,21 +10,21 @@ import { NextPage } from 'next';
 import EventCreateForm from './createEventForm';
 
 const CreateEventPage: NextPage = () => {
-  const router = useRouter();
-  const [] = useState(new Date());
+	const router = useRouter();
+	const [] = useState(new Date());
 
-  return (
-    <Box>
-      <PageTitle
-        title="Crear votación"
-        description="En esta sección se podrá crear un evento."
-        onBackClick={() => router.push(`/events/`)}
-        enableBackIcon
-      />
+	return (
+		<Box>
+			<PageTitle
+				title="Crear votación"
+				description="En esta sección se podrá crear un evento."
+				onBackClick={() => router.push(`/events/`)}
+				enableBackIcon
+			/>
 
-      <EventCreateForm />
-    </Box>
-  );
+			<EventCreateForm />
+		</Box>
+	);
 };
 
 export default dashboardWrapper(CreateEventPage);

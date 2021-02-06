@@ -28,7 +28,7 @@ function ListEventsComponent() {
                 setAppState({ loading: false, events: res })
             } catch (error) {
                 setAppState({ loading: false, events: [] })
-            }   
+            }
         }
 
         fetchData()

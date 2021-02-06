@@ -11,22 +11,22 @@ import { NextPage } from 'next';
 import EventUpdateForm from './updateEventForm';
 
 const UpdateEventPage: NextPage = (props) => {
-  const pageRouter = useRouter();
+    const pageRouter = useRouter();
 
-  const event = props.router.query;
+    const event = props.router.query;
 
-  return (
-    <Box>
-      <PageTitle
-        title="Actualizar votación"
-        description="En esta sección se podrá editar la información del evento."
-        onBackClick={() => pageRouter.push(`/events/`)}
-        enableBackIcon
-      />
+    return (
+        <Box>
+            <PageTitle
+                title="Actualizar votación"
+                description="En esta sección se podrá editar la información del evento."
+                onBackClick={() => pageRouter.push(`/events/`)}
+                enableBackIcon
+            />
 
-      <EventUpdateForm event={event} />
-    </Box>
-  );
+            <EventUpdateForm event={event} />
+        </Box>
+    );
 };
 
 export default dashboardWrapper(withRouter(UpdateEventPage));
