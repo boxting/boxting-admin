@@ -1,7 +1,7 @@
 import { ErrorMapper } from "../../error/error.mapper";
 import AxiosService from '@/data/connection/axios.service';
-import { LoginRequest } from "../api/request/login.request";
-import { LoginResponse } from "../api/response/login.response";
+import { LoginRequestDto } from "../api/dto/request/login.request.dto";
+import { LoginResponseDto } from "../api/dto/response/login.response.dto";
 
 export class LoginRepository {
 
@@ -16,13 +16,13 @@ export class LoginRepository {
         return this._instance || (this._instance = new this(AxiosService.getInstance()))
     }
 
-    async login(request: LoginRequest): Promise<LoginResponse> {
+    async login(request: LoginRequestDto): Promise<LoginResponseDto> {
         try {
 
             const res = await this._service.connection.post('/login/organizer', request);
-            const loginResponse: LoginResponse = res.data
+            const loginResponseDto: LoginResponseDto = res.data
 
-            return Promise.resolve(loginResponse);
+            return Promise.resolve(loginResponseDto);
         } catch (error) {
 
             let msg = ErrorMapper[error.error.errorCode] || ErrorMapper[500];

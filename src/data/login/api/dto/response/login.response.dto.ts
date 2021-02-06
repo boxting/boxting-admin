@@ -1,4 +1,4 @@
-export interface LoginResponseData {
+interface LoginResponseDataDto {
     id: number,
     username: string,
     mail: string,
@@ -13,7 +13,7 @@ export interface LoginResponseData {
     refreshToken: string
 }
 
-export interface LoginResponse {
+export interface LoginResponseDto {
     success: boolean,
-    data: LoginResponseData
+    data: LoginResponseDataDto
 }

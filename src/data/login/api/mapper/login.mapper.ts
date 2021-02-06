@@ -1,7 +1,7 @@
-import { User } from "@/data/model/user.model";
-import { LoginResponse } from "../response/login.response";
+import { User } from "@/data/user/model/user.model";
+import { LoginResponseDto } from "../dto/response/login.response.dto";
 
-export function loginResponseToUserMapper(response: LoginResponse): User {
+export function loginResponseDtoToUserMapper(response: LoginResponseDto): User {
 
     const user: User = {
         id: response.data.id,

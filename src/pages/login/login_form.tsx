@@ -17,7 +17,7 @@ import Label from '@/components/label';
 import { LoginRepository } from '@/data/login/repository/login.repository';
 import ErrorMessage from '@/components/alerts/error';
 import { showToast } from '@/components/toast/custom.toast';
-import { LoginRequest } from '@/data/login/api/request/login.request';
+import { LoginRequestDto } from '@/data/login/api/dto/request/login.request.dto';
 
 interface LoginFormProps {
     onSignIn: (token: string, refreshToken: string) => void;
@@ -43,13 +43,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
     const handleClick = () => setShow(!show);
     const closeError = () => setError('');
 
-    const onSubmit = async (data: LoginRequest) => {
+    const onSubmit = async (data: LoginRequestDto) => {
         try {
             // Start loading state
             setLoading(true);
 
             // Send login request
-            const res = await loginRepository.login(data);
+            const loginResponse = await loginRepository.login(data);
 
             // Show success toast
             showToast(
@@ -60,7 +60,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
             );
 
             // Store received tokens on cookies
-            onSignIn(res.data.token, res.data.refreshToken);
+            onSignIn(loginResponse.data.token, loginResponse.data.refreshToken);
 
             // Stop loading state
             setLoading(false);
