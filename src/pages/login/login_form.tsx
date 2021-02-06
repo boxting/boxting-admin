@@ -25,23 +25,23 @@ interface LoginFormProps {
 
 const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
     // Forms
-    const { register, handleSubmit, errors } = useForm(); // watch,
+    const { register, handleSubmit, errors } = useForm();
 
     // State variables
     const [loading, setLoading] = useState<boolean>(false);
     const [show, setShow] = useState(false);
-    const [error, setError] = useState(``);
+    const [error, setError] = useState('');
 
     // Utils
     const router = useRouter();
     const toast = useToast();
 
-    // Arrow functions
-    const handleClick = () => setShow(!show);
-    const closeError = () => setError(``);
-
     // Get service instance
     const loginRepository = LoginRepository.getInstance()
+
+    // Arrow functions
+    const handleClick = () => setShow(!show);
+    const closeError = () => setError('');
 
     const onSubmit = async (data: LoginRequest) => {
         try {
