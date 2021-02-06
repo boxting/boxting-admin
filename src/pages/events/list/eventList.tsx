@@ -7,16 +7,17 @@ const EventList = (props) => {
     const { events } = props;
     const router = useRouter();
 
-    if (events == null || events.data.length == 0)
+    if (events == null || events.length == 0){
         return <p>No se han registrado eventos de votación.</p>;
-
+    }
+        
     return (
         <Grid
             py={2}
             templateColumns="repeat(auto-fill, minmax(250px, 1fr))"
             gap={4}
         >
-            {events.data.map((item) => (
+            {events.map((item) => (
                 <Card
                     key={item.id}
                     textHead={item.name}

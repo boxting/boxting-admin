@@ -19,33 +19,35 @@ import { showToast } from '@/components/toast/custom.toast'
 import moment from 'moment'
 import { ErrorMapper } from '@/data/error/error.mapper'
 import DatePicker from '@/components/datepicker/DatePicker'
+import { EventRepository } from '@/data/event/repository/events.repository'
+import { CreateRequestDto } from '@/data/event/api/dto/request/create.request.dto'
 
 const today = new Date()
 
 const EventCreateForm = () => {
+
+	// State variables
 	const [appState, setAppState] = useState({
 		loading: false,
 		success: null,
 	})
+	const [startDate, setStartDate] = useState(today)
+	const [endDate, setEndDate] = useState(today)
+	const [information, setInformation] = useState('')
+	const [name, setName] = useState('')
 
+	// Utils
 	const router = useRouter()
 	const toast = useToast()
 
-	var yesterday = moment().subtract(1, 'day')
-	var valid = function (current) {
-		return current.isAfter(yesterday)
-	}
+	// Get service instance
+	const eventRepository = EventRepository.getInstance()
 
-	const [name, setName] = useState('')
+	// Functions
 	const handleNameChange = (event) => setName(event.target.value)
+	const handleInformationChange = (event) => setInformation(event.target.value)
 
-	const [startDate, setStartDate] = useState(today)
-	const [endDate, setEndDate] = useState(today)
-
-	const [information, setInformation] = useState('')
-	const handleInformationChange = (event) =>
-		setInformation(event.target.value)
-
+	// State listeners
 	useEffect(() => {
 		if (endDate < startDate) {
 			setEndDate(startDate)
@@ -63,12 +65,8 @@ const EventCreateForm = () => {
 		showToast(`Error!`, msg, false, toast)
 	}
 
-	function validateLength(
-		value: string,
-		minLen: number,
-		maxLen: number,
-		fieldName: string
-	) {
+	// Validators
+	function validateLength(value: string, minLen: number, maxLen: number, fieldName: string) {
 		let errors = false
 
 		if (value.length > maxLen) {
@@ -87,92 +85,47 @@ const EventCreateForm = () => {
 		return errors
 	}
 
-	function createNewEvent() {
-		console.log(startDate, endDate, name, information)
-		if (
-			startDate == null ||
-			endDate == null ||
-			name.length == 0 ||
-			information.length == 0
-		) {
+	const createNewEvent = async () => {
+
+		if (startDate == null || endDate == null || name.length == 0 || information.length == 0) {
 			showError(
 				'Debes completar todos los campos para crear el evento de votación'
 			)
 			return
 		}
 
-		if (
-			validateLength(name, 5, 100, 'nombre') ||
-			validateLength(
-				information,
-				10,
-				500,
-				'información'
-			)
-		) {
+		if (validateLength(name, 5, 100, 'nombre') || validateLength(information, 10, 500, 'información')) {
 			return
 		}
 
-		const apiUrl =
-			'https://boxting-rest-api.herokuapp.com/event/create'
-		setAppState({ loading: true, success: null })
-		const token = Cookies.get('token')
-		axios.post(
-			apiUrl,
-			{
+		try {
+			setAppState({ loading: true, success: null })
+
+			const eventRequest: CreateRequestDto = {
 				name: name,
 				information: information,
 				startDate: startDate.toISOString(),
 				endDate: endDate.toISOString(),
-			},
-			{
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
 			}
-		)
-			.then((response) => {
-				console.log(response)
-				const responseSuccess =
-					response != null
-						? response.data
-								.success
-						: false
-				if (!responseSuccess)
-					throw Error(
-						'Create new event fails'
-					)
-				setAppState({
-					loading: false,
-					success: responseSuccess,
-				})
-				showToast(
-					`Éxito`,
-					`El evento de votación fue creado correctamente`,
-					true,
-					toast
-				)
-				router.back()
-			})
-			.catch((error) => {
-				console.log(error.response.data.error)
-				let msg =
-					ErrorMapper[
-						error.response.data
-							.error
-							.errorCode
-					] || ErrorMapper[500]
-				showToast(
-					`Ocurrió un error!`,
-					msg,
-					false,
-					toast
-				)
-				setAppState({
-					loading: false,
-					success: false,
-				})
-			})
+
+			const res = await eventRepository.create(eventRequest)
+			const responseSuccess = res != null ? res.success : false
+
+			if (!responseSuccess) {
+				throw Error('Create new event fails')
+			}
+
+			setAppState({ loading: false, success: responseSuccess })
+
+			showToast('Éxito', 'El evento de votación fue creado correctamente',
+				true, toast)
+
+			router.back()
+		} catch (error) {
+			console.log(error)
+			showToast('Ocurrió un error!', error, false, toast)
+			setAppState({ loading: false, success: false })
+		}
 	}
 
 	return (
@@ -216,9 +169,7 @@ const EventCreateForm = () => {
 					isLoading={appState.loading}
 					typeBtn={ButtonType.primary}
 					text="Guardar"
-					onEnter={() => {
-						createNewEvent()
-					}}
+					onEnter={createNewEvent}
 				/>
 			</FormControl>
 		</Box>

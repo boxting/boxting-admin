@@ -1,16 +1,13 @@
-import { Box, Flex, Grid, Text } from '@chakra-ui/core';
+import { Box, Flex } from '@chakra-ui/core';
 import { NextPage } from 'next';
 import React from 'react';
 import dashboardWrapper from '@/utils/dashboard-wrapper';
 import withAuthServerSideProps from '@/utils/auth-middleware';
 import { useRouter } from 'next/router';
-import Card from '@/components/card';
 import PageTitle from '@/components/pageTitle';
 import BoxtingButton from '@/components/buttons/boxting_button';
 import { ButtonType } from '@/components/buttons/utils';
 import { AddSmallIcon } from '@/components/icons';
-
-import { EventRepository } from '../../data/event/repository/events.repository';
 import ListEventsComponent from './list/index';
 
 const EventPage: NextPage = () => {

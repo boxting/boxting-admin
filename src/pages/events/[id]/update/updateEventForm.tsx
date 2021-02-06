@@ -19,58 +19,38 @@ import 'react-datetime/css/react-datetime.css';
 import moment from 'moment';
 import { EventRepository } from '../../../../data/event/repository/events.repository';
 import DatePicker from '@/components/datepicker/DatePicker';
+import { UpdateResponseDto } from '@/data/event/api/dto/response/update.response.dto';
+import { UpdateRequestDto } from '@/data/event/api/dto/request/update.request.dto';
 
 const today = new Date()
 
 const EventUpdateForm = (props) => {
+
+    // Props
+    const { event } = props;
+
+    // State variables
     const [appState, setAppState] = useState({
         loading: false,
         success: null,
     });
-
-    const { event } = props;
-
-    const router = useRouter();
-    const toast = useToast();
-
     const [name, setName] = useState(event == null ? '' : event.name);
-    const handleNameChange = (event) => setName(event.target.value);
-
     const [startDate, setStartDate] = useState(event == null ? today : new Date(event.startDate));
     const [endDate, setEndDate] = useState(event == null ? today : new Date(event.endDate));
-
-    var yesterday = moment().subtract(1, 'day');
-    var valid = function (current) {
-        return current.isAfter(yesterday);
-    };
-
     const [information, setInformation] = useState(
         event == undefined ? '' : event.information,
     );
-    const handleInformationChange = (event) => setInformation(event.target.value);
 
-    function onChangeStartDate(date) {
-        const d = moment(date).format('YYYY-MM-DD HH:mm:ss');
-        setStartDate(`${d} GMT-05:00`);
-    }
-    function onChangeEndDate(date) {
-        const d = moment(date).format('YYYY-MM-DD HH:mm:ss');
-        setEndDate(`${d} GMT-05:00`);
-    }
+    // Utils
+    const router = useRouter();
+    const toast = useToast();
 
-    function showError(msg) {
-        showToast(
-            `Error!`,
-            msg,
-            false,
-            toast,
-        );
-    }
+    // Get service instance
+    const eventRepository = EventRepository.getInstance()
 
+    // Validators
     function validateLength(value: string, minLen: number, maxLen: number, fieldName: string) {
-
         let errors = false
-
         if (value.length > maxLen) {
             showError(`La longitud del campo ${fieldName} debe ser menor a la máxima establecida: ${maxLen}.`)
             errors = true;
@@ -78,29 +58,34 @@ const EventUpdateForm = (props) => {
             showError(`La longitud del campo ${fieldName} debe ser mayor a la mínima establecida: ${minLen}.`)
             errors = true;
         }
-
         return errors
     }
 
-    async function updateNewEvent() {
-        if (
-            startDate == null ||
-            endDate == null ||
-            name.length == 0 ||
-            information.length == 0
-        ) {
+    // Functions
+    const handleInformationChange = (event) => setInformation(event.target.value);
+    const handleNameChange = (event) => setName(event.target.value);
+
+    function showError(msg) {
+        showToast('Error!', msg, false, toast);
+    }
+
+    const updateNewEvent = async () => {
+        // Validate null data
+        if (startDate == null || endDate == null ||
+            name.length == 0 || information.length == 0) {
             showError('Debes completar todos los campos para crear el evento de votación')
             return;
         }
 
+        // Validate if fields are correct
         if (validateLength(name, 5, 100, "nombre") || validateLength(information, 10, 500, "información")) {
             return;
         }
 
+        // Validate if event has not started
         const startDateMoment = moment(event.startDate, 'DD/MM/YYYY HH:mm:SS');
         const endDateMoment = moment(event.endDate, 'DD/MM/YYYY HH:mm:SS');
 
-        console.log(startDateMoment, endDateMoment);
         if (moment().isBetween(startDateMoment, endDateMoment)) {
             showToast(
                 'Ocurrió un error',
@@ -114,23 +99,35 @@ const EventUpdateForm = (props) => {
         try {
             setAppState({ loading: true, success: null });
 
-            await EventRepository.updateEvent(
-                event.id,
-                name,
-                information,
-                startDate,
-                endDate,
-            );
+            // Prepare dto to update
+            const updateDto: UpdateRequestDto = {
+                id: event.id,
+                endDate: endDate,
+                startDate: startDate,
+                information: information,
+                name: name
+            }
+
+            // Update request
+            await eventRepository.update(updateDto)
+
+            // Show successful toast
             showToast(
                 `Éxito`,
                 `El evento de votación fue modificado con correctamente.`,
                 true,
                 toast,
             );
+
+            // Set state
             setAppState({ loading: false, success: true });
+
+            // Go back to last screen
             router.back();
         } catch (error) {
+            // Show error toast
             showToast(`Ocurrió un error!`, error, false, toast);
+            // Stop loading
             setAppState({ loading: false, success: false });
         }
     }

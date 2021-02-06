@@ -16,9 +16,9 @@ const CreateEventPage: NextPage = () => {
 	return (
 		<Box>
 			<PageTitle
-				title="Crear votación"
-				description="En esta sección se podrá crear un evento."
-				onBackClick={() => router.push(`/events/`)}
+				title='Crear votación'
+				description='En esta sección se podrá crear un evento.'
+				onBackClick={() => router.push('/events/')}
 				enableBackIcon
 			/>
 

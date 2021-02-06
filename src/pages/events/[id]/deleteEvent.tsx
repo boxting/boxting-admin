@@ -15,19 +15,29 @@ import { useRouter } from 'next/router';
 import moment from 'moment';
 
 function DeleteEventAlertDialog(props) {
+
+    // State variables
     const [isOpen, setIsOpen] = useState<boolean>();
     const onClose = () => setIsOpen(false);
+
+    // Props
     const { event } = props;
+
+    // Utils
     const cancelRef = useRef();
     const toast = useToast();
     const router = useRouter();
+
+    // Get service instance
+    const eventRepository = EventRepository.getInstance()
+
     async function onConfirm() {
         // TODO: Validate not delete started events
         // No puede eliminar el evento de votación porque ya ha iniciado
         const startDateMoment = moment(event.startDate, 'DD/MM/YYYY HH:mm:SS');
         const endDateMoment = moment(event.endDate, 'DD/MM/YYYY HH:mm:SS');
 
-        console.log(startDateMoment, endDateMoment, moment.utc());
+        // Validate if event has not started
         if (moment.utc().isBetween(startDateMoment, endDateMoment)) {
             showToast(
                 'Ocurrió un error',
@@ -38,16 +48,21 @@ function DeleteEventAlertDialog(props) {
             onClose();
             return;
         }
+
         try {
-            await EventRepository.delete(event.id);
+            // Delete request
+            await eventRepository.delete(event.id);
+
+            // Close detail
             onClose();
+
+            // Go to events page
             router.push('/events');
-            showToast(
-                'Éxito',
-                'El evento de votación fue eliminado correctamente.',
-                true,
-                toast,
-            );
+
+            // Show success toast
+            showToast('Éxito', 'El evento de votación fue eliminado correctamente.',
+                true, toast);
+
         } catch (error) {
             showToast('Ocurrió un error', error, false, toast);
             onClose();

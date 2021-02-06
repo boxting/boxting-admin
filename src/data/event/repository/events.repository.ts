@@ -97,7 +97,7 @@ export class EventRepository {
     async update(newEvent: UpdateRequestDto): Promise<boolean> {
         try {
             // Make request
-            const res = await this._service.connection.put(`/event/id/${newEvent.id}`);
+            const res = await this._service.connection.put(`/event/id/${newEvent.id}`, newEvent);
             // Assign data to response dto
             const data: UpdateResponseDto = res.data
             // Return data

@@ -16,20 +16,21 @@ const EventDetail = (props) => {
 
     const router = useRouter();
 
-    if (event == null || event.data == null)
+    if (event == null) {
         return <Center>No hay información del evento de votación</Center>;
+    }
 
-    console.log('daw', event.data);
+    console.log(event)
 
     return (
         <Box>
             <PageTitle
-                title={event.data.name}
-                description={event.data.information}
+                title={event.name}
+                description={event.information}
                 onBackClick={() => router.back()}
                 enableBackIcon
             />
-            <DeleteEventAlertDialog event={event.data} />
+            <DeleteEventAlertDialog event={event} />
             <BoxtingButton
                 style={{ marginRight: '12px', marginBottom: '12px' }}
                 text="Editar"
@@ -40,14 +41,12 @@ const EventDetail = (props) => {
                         {
                             pathname: `/events/[id]/update`,
                             query: {
-                                ...event.data,
-                                startDate: event.data.startDate.toISOString(),
-                                endDate: event.data.endDate.toISOString(),
-                                createdAt: event.data.createdAt.toISOString(),
-                                updatedAt: event.data.updatedAt.toISOString(),
+                                ...event,
+                                startDate: event.startDate.toISOString(),
+                                endDate: event.endDate.toISOString()
                             },
                         },
-                        `/events/${event.data.id}/update`,
+                        `/events/${event.id}/update`,
                     )
                 }
             />
@@ -61,9 +60,9 @@ const EventDetail = (props) => {
                     router.push(
                         {
                             pathname: `/events/[id]/codes`,
-                            query: event.data,
+                            query: event,
                         },
-                        `/events/${event.data.id}/codes`,
+                        `/events/${event.id}/codes`,
                     )
                 }
             />
@@ -73,9 +72,9 @@ const EventDetail = (props) => {
                     El código de votación para el evento es
         </Text>
                 <Flex>
-                    <PinInput defaultValue={event.data.code}>
+                    <PinInput defaultValue={event.code}>
                         {
-                            [...Array(event.data.code.length)].map((_, i) => <PinInputField key={i} readOnly />)
+                            [...Array(event.code.length)].map((_, i) => <PinInputField key={i} readOnly />)
                         }
                     </PinInput>
                 </Flex>
@@ -85,14 +84,14 @@ const EventDetail = (props) => {
                         <Box width={['80%', '100%']}>
                             <Text>Fecha de inicio de la votación</Text>
                             <DatePicker
-                                selectedDate={event.data.startDate}
+                                selectedDate={event.startDate}
                                 inline
                             />
                         </Box>
                         <Box width={['80%', '100%']}>
                             <Text>Fecha de fin de la votación</Text>
                             <DatePicker
-                                selectedDate={event.data.endDate}
+                                selectedDate={event.endDate}
                                 inline
                             />
                         </Box>

@@ -4,14 +4,14 @@ import axios from 'axios';
 import WithLoadingComponent from '../../../components/loading/withComponentLoading';
 import EventList from './eventList';
 
-import Cookies from 'js-cookie';
 import { EventRepository } from '@/data/event/repository/events.repository';
+import * as EventMapper from '@/data/event/api/mapper/event.mapper'
 
 function ListEventsComponent() {
 
     const EventListLoading = WithLoadingComponent(EventList);
 
-    const eventService = EventRepository.getInstance()
+    const eventRepository = EventRepository.getInstance()
 
     const [appState, setAppState] = useState({
         loading: false,
@@ -24,8 +24,9 @@ function ListEventsComponent() {
         const fetchData = async () => {
 
             try {
-                const res = await eventService.getAllEvents()
-                setAppState({ loading: false, events: res })
+                const res = await eventRepository.getAll()
+                const events = await EventMapper.getAllToEventList(res)
+                setAppState({ loading: false, events: events })
             } catch (error) {
                 setAppState({ loading: false, events: [] })
             }
