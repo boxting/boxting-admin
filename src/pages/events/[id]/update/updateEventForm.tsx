@@ -4,27 +4,27 @@ import {
     FormLabel,
     Box,
     Input,
-    Text,
     useToast,
     Textarea,
 } from '@chakra-ui/core';
 import { ButtonType } from '@/components/buttons/utils';
 import React, { useState } from 'react';
-
 import { useRouter } from 'next/router';
 import { showToast } from '@/components/toast/custom.toast';
-
-import Datetime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
 import moment from 'moment';
 import { EventRepository } from '../../../../data/event/repository/events.repository';
 import DatePicker from '@/components/datepicker/DatePicker';
-import { UpdateResponseDto } from '@/data/event/api/dto/response/update.response.dto';
 import { UpdateRequestDto } from '@/data/event/api/dto/request/update.request.dto';
+import { Event } from '@/data/event/model/event.model';
 
 const today = new Date()
 
-const EventUpdateForm = (props) => {
+interface EventUpdateFormProps {
+    event: Event
+}
+
+const EventUpdateForm = (props: EventUpdateFormProps) => {
 
     // Props
     const { event } = props;
@@ -65,6 +65,14 @@ const EventUpdateForm = (props) => {
     const handleInformationChange = (event) => setInformation(event.target.value);
     const handleNameChange = (event) => setName(event.target.value);
 
+    function onChangeStartDate (date: Date) {
+		setStartDate(date)
+	}
+
+	function onChangeEndDate (date: Date) {
+		setEndDate(date)
+	}
+
     function showError(msg) {
         showToast('Error!', msg, false, toast);
     }
@@ -101,7 +109,7 @@ const EventUpdateForm = (props) => {
 
             // Prepare dto to update
             const updateDto: UpdateRequestDto = {
-                id: event.id,
+                id: event.id.toString(),
                 endDate: endDate,
                 startDate: startDate,
                 information: information,
@@ -154,7 +162,7 @@ const EventUpdateForm = (props) => {
                 <FormLabel>Fecha inicio</FormLabel>
                 <DatePicker
                     selectedDate={startDate}
-                    onChange={e => { }}
+                    onChange={onChangeStartDate}
                     minDate={today}
                 />
             </FormControl>
@@ -162,8 +170,8 @@ const EventUpdateForm = (props) => {
                 <FormLabel>Fecha de fin</FormLabel>
                 <DatePicker
                     selectedDate={endDate}
-                    onChange={e => { }}
-                    minDate={today}
+                    onChange={onChangeEndDate}
+                    minDate={startDate}
                 />
             </FormControl>
             <FormControl mt={4}>
