@@ -13,8 +13,13 @@ import { EventRepository } from '@/data/event/repository/events.repository';
 import { showToast } from '../../../components/toast/custom.toast';
 import { useRouter } from 'next/router';
 import moment from 'moment';
+import { Event } from '@/data/event/model/event.model';
 
-function DeleteEventAlertDialog(props) {
+interface DeleteEventProps{
+    event: Event
+}
+
+function DeleteEventAlertDialog(props: DeleteEventProps) {
 
     // State variables
     const [isOpen, setIsOpen] = useState<boolean>();

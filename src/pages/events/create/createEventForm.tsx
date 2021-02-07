@@ -4,20 +4,13 @@ import {
 	FormLabel,
 	Box,
 	Input,
-	Spinner,
 	useToast,
 	Textarea,
 } from '@chakra-ui/core'
 import { ButtonType } from '@/components/buttons/utils'
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
-
-import Cookies from 'js-cookie'
+import React, { useEffect, useState, ChangeEvent } from 'react'
 import { useRouter } from 'next/router'
 import { showToast } from '@/components/toast/custom.toast'
-
-import moment from 'moment'
-import { ErrorMapper } from '@/data/error/error.mapper'
 import DatePicker from '@/components/datepicker/DatePicker'
 import { EventRepository } from '@/data/event/repository/events.repository'
 import { CreateRequestDto } from '@/data/event/api/dto/request/create.request.dto'
@@ -44,8 +37,8 @@ const EventCreateForm = () => {
 	const eventRepository = EventRepository.getInstance()
 
 	// Functions
-	const handleNameChange = (event) => setName(event.target.value)
-	const handleInformationChange = (event) => setInformation(event.target.value)
+	const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => setName(event.target.value)
+	const handleInformationChange = (event: ChangeEvent<HTMLTextAreaElement>) => setInformation(event.target.value)
 
 	// State listeners
 	useEffect(() => {
@@ -54,10 +47,11 @@ const EventCreateForm = () => {
 		}
 	}, [startDate])
 
-	function onChangeStartDate(date) {
+	function onChangeStartDate(date: Date) {
 		setStartDate(date)
 	}
-	function onChangeEndDate(date) {
+
+	function onChangeEndDate (date: Date) {
 		setEndDate(date)
 	}
 
@@ -142,9 +136,7 @@ const EventCreateForm = () => {
 				<FormLabel>Descripción</FormLabel>
 				<Textarea
 					value={information}
-					onChange={
-						handleInformationChange
-					}
+					onChange={handleInformationChange}
 					placeholder="Información"
 				/>
 			</FormControl>

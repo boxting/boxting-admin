@@ -1,6 +1,5 @@
-import { Box, Center, Flex, Grid, HStack, Icon, PinInput, PinInputField, SimpleGrid, Text } from '@chakra-ui/core';
+import { Box, Center, Flex, PinInput, PinInputField, SimpleGrid, Text } from '@chakra-ui/core';
 import React from 'react';
-import Card from '@/components/card';
 import { useRouter } from 'next/router';
 import PageTitle from '@/components/pageTitle';
 import DeleteEventAlertDialog from './deleteEvent';
@@ -8,10 +7,14 @@ import BoxtingButton from '@/components/buttons/boxting_button';
 import { ButtonType } from '@/components/buttons/utils';
 import { EditIcon } from '../../../components/icons/index';
 import { LockIcon } from '@chakra-ui/icons';
-import moment from 'moment';
 import DatePicker from '@/components/datepicker/DatePicker';
+import { Event } from '@/data/event/model/event.model';
 
-const EventDetail = (props) => {
+interface EventDetailProps{
+    event: Event
+}
+
+const EventDetail = (props: EventDetailProps) => {
     const { event } = props;
 
     const router = useRouter();
@@ -40,11 +43,7 @@ const EventDetail = (props) => {
                     router.push(
                         {
                             pathname: `/events/[id]/update`,
-                            query: {
-                                ...event,
-                                startDate: event.startDate.toISOString(),
-                                endDate: event.endDate.toISOString()
-                            },
+                            query: { data: JSON.stringify(event) },
                         },
                         `/events/${event.id}/update`,
                     )
@@ -60,7 +59,7 @@ const EventDetail = (props) => {
                     router.push(
                         {
                             pathname: `/events/[id]/codes`,
-                            query: event,
+                            query: { id: event.id },
                         },
                         `/events/${event.id}/codes`,
                     )
@@ -86,6 +85,7 @@ const EventDetail = (props) => {
                             <DatePicker
                                 selectedDate={event.startDate}
                                 inline
+                                disabled
                             />
                         </Box>
                         <Box width={['80%', '100%']}>
@@ -93,6 +93,7 @@ const EventDetail = (props) => {
                             <DatePicker
                                 selectedDate={event.endDate}
                                 inline
+                                disabled
                             />
                         </Box>
                     </SimpleGrid>

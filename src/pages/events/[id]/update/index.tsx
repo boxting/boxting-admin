@@ -1,26 +1,24 @@
-import { Box, FormControl, FormLabel, Input } from '@chakra-ui/core';
-import React, { useState } from 'react';
-
+import { Box } from '@chakra-ui/core';
+import React from 'react';
 import dashboardWrapper from '@/utils/dashboard-wrapper';
 import withAuthServerSideProps from '@/utils/auth-middleware';
 import PageTitle from '@/components/pageTitle';
 import { useRouter } from 'next/router';
-import { withRouter } from 'next/router';
-
 import { NextPage } from 'next';
 import EventUpdateForm from './updateEventForm';
+import { Event } from '@/data/event/model/event.model';
 
-const UpdateEventPage: NextPage = (props) => {
-    const pageRouter = useRouter();
+const UpdateEventPage: NextPage = () => {
+    const router = useRouter();
 
-    const event = props.router.query;
+    const event:Event = JSON.parse(router.query.data as string);
 
     return (
         <Box>
             <PageTitle
                 title="Actualizar votación"
                 description="En esta sección se podrá editar la información del evento."
-                onBackClick={() => pageRouter.push(`/events/`)}
+                onBackClick={() => router.push(`/events/`)}
                 enableBackIcon
             />
 
@@ -29,5 +27,5 @@ const UpdateEventPage: NextPage = (props) => {
     );
 };
 
-export default dashboardWrapper(withRouter(UpdateEventPage));
+export default dashboardWrapper(UpdateEventPage);
 export const getServerSideProps = withAuthServerSideProps();
