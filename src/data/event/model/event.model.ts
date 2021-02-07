@@ -8,7 +8,7 @@ export class Event {
     information: string
     startDate: Date
     endDate: Date
-    code: String
+    code: string
     createdAt?: Date
     updatedAt?: Date
     users?: User[]

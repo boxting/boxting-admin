@@ -2,8 +2,14 @@ import { Grid } from '@chakra-ui/core';
 import React from 'react';
 import Card from '@/components/card';
 import { useRouter } from 'next/router';
+import { Event } from '@/data/event/model/event.model';
 
-const EventList = (props) => {
+interface EventListProps{
+    events: Event[]
+}
+
+const EventList = (props: EventListProps) => {
+    
     const { events } = props;
     const router = useRouter();
 

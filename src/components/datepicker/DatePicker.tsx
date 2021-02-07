@@ -8,6 +8,7 @@ interface Props {
 	minDate?: Date;
 	inline?: boolean;
 	showPopperArrow?: boolean;
+	disabled?: boolean
 }
 
 const DatePicker = ({
@@ -16,7 +17,7 @@ const DatePicker = ({
 	isClearable = false,
 	showPopperArrow = false,
 	...props
-}: Props & HTMLAttributes<HTMLElement>) => {
+}: Props /*& HTMLAttributes<HTMLElement>*/) => {
 	return (
 		<ReactDatePicker
 			selected={selectedDate}
