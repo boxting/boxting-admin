@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-
 import WithLoadingComponent from '../../../components/loading/withComponentLoading';
 import EventList from './eventList';
 

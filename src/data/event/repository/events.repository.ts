@@ -40,7 +40,6 @@ export class EventRepository {
     }
 
     async create(event: CreateRequestDto): Promise<CreateResponseDto> {
-
         try {
             // Make request
             const res = await this._service.connection.post('/event/create', event);
@@ -58,7 +57,7 @@ export class EventRepository {
         }
     }
 
-    async getOne(id: string): Promise<GetOneResponseDto> {
+    async getOne(id: string | number): Promise<GetOneResponseDto> {
         try {
             // Make request
             const res = await this._service.connection.get(`/event/id/${id}`);
@@ -76,7 +75,7 @@ export class EventRepository {
         }
     }
 
-    async delete(id: string): Promise<boolean> {
+    async delete(id: string | number): Promise<boolean> {
         try {
             // Make request
             const res = await this._service.connection.delete(`/event/id/${id}`);
