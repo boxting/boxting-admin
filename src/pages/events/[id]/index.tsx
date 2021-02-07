@@ -1,52 +1,51 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/dist/client/router';
-import { Text } from '@chakra-ui/core';
 import dashboardWrapper from '@/utils/dashboard-wrapper';
 import withAuthServerSideProps from '@/utils/auth-middleware';
 import WithLoadingComponent from '@/components/loading/withComponentLoading';
 import EventDetail from './detailPage';
 import { useEffect, useState } from 'react';
-import Cookies from 'js-cookie';
-import axios from 'axios';
+import { EventRepository } from '@/data/event/repository/events.repository';
+import * as EventMapper from '@/data/event/api/mapper/event.mapper'
 
 const EventDetailPage: NextPage = () => {
-  const router = useRouter();
-  const { id } = router.query;
 
-  const EventDetailLoading = WithLoadingComponent(EventDetail);
-  const [appState, setAppState] = useState({
-    loading: false,
-    event: null,
-  });
+    // Utils
+    const router = useRouter();
 
-  useEffect(() => {
-    setAppState({ loading: true, event: null });
-    const token = Cookies.get('token');
+    // Query variables
+    const { id } = router.query;
 
-    const apiUrl = `https://blockchain-voting.herokuapp.com/event/token/get/${id}`;
+    // State variables
+    const EventDetailLoading = WithLoadingComponent(EventDetail);
+    const [appState, setAppState] = useState({
+        loading: false,
+        event: null,
+    });
 
-    axios
-      .get(apiUrl, {
-        headers: {
-          Authorization: `token ${token}`,
-        },
-      })
-      .then((response) => {
-        const eventResponse = response.data;
-        eventResponse.data.startDate = new Date(eventResponse.data.startDate)
-        eventResponse.data.endDate = new Date(eventResponse.data.endDate)
-        eventResponse.data.createdAt = new Date(eventResponse.data.createdAt)
-        eventResponse.data.updatedAt = new Date(eventResponse.data.updatedAt)
-        setAppState({ loading: false, event: eventResponse });
-      })
-      .catch((e) => {
-        setAppState({ loading: false, event: null });
-      });
-  }, [setAppState]);
+    // Get service instance
+    const eventRepository = EventRepository.getInstance()
 
-  return (
-    <EventDetailLoading isLoading={appState.loading} event={appState.event} />
-  );
+    useEffect(() => {
+        setAppState({ loading: true, event: null });
+
+        const fetchData = async () => {
+
+            try {
+                const res = await eventRepository.getOne(id as string)
+                const event = await EventMapper.getOneToEvent(res)
+                setAppState({ loading: false, event: event })
+            } catch (error) {
+                setAppState({ loading: false, event: null });
+            }
+        }
+
+        fetchData()
+    }, [setAppState]);
+
+    return (
+        <EventDetailLoading isLoading={appState.loading} event={appState.event} />
+    );
 };
 
 export default dashboardWrapper(EventDetailPage);

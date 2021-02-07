@@ -2,32 +2,32 @@ import React, { HTMLAttributes } from 'react';
 import ReactDatePicker from 'react-datepicker';
 
 interface Props {
-  isClearable?: boolean;
-  onChange?: (date: Date) => any;
-  selectedDate: Date | undefined;
-  minDate?: Date;
-  inline?: boolean;
-  showPopperArrow?: boolean;
+	isClearable?: boolean;
+	onChange?: (date: Date) => any;
+	selectedDate: Date | undefined;
+	minDate?: Date;
+	inline?: boolean;
+	showPopperArrow?: boolean;
 }
 
 const DatePicker = ({
-  selectedDate,
-  onChange,
-  isClearable = false,
-  showPopperArrow = false,
-  ...props
+	selectedDate,
+	onChange,
+	isClearable = false,
+	showPopperArrow = false,
+	...props
 }: Props & HTMLAttributes<HTMLElement>) => {
-  return (
-    <ReactDatePicker
-      selected={selectedDate}
-      onChange={onChange}
-      isClearable={isClearable}
-      showPopperArrow={showPopperArrow}
-      dateFormat="MM/dd/yyyy h:mm aa"
-      showTimeInput
-      {...props}
-    />
-  );
+	return (
+		<ReactDatePicker
+			selected={selectedDate}
+			onChange={onChange}
+			isClearable={isClearable}
+			showPopperArrow={showPopperArrow}
+			dateFormat="MM/dd/yyyy h:mm aa"
+			showTimeInput
+			{...props}
+		/>
+	);
 };
 
 export default DatePicker;

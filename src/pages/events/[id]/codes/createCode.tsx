@@ -1,137 +1,150 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, ChangeEvent } from 'react';
 import {
-  Button,
-  Modal,
-  ModalContent,
-  ModalOverlay,
-  ModalHeader,
-  ModalFooter,
-  useToast,
-  ModalBody,
-  FormControl,
-  FormLabel,
-  Input,
-  Box,
-  HStack,
+    Button, Modal, ModalContent, ModalOverlay, ModalHeader, ModalFooter, useToast,
+    ModalBody, FormControl, FormLabel, Input, HStack,
 } from '@chakra-ui/core';
 import { showToast } from '../../../../components/toast/custom.toast';
-import { CodeService } from '@/data/services/codes.service';
-import { isRestTypeNode } from 'typescript';
+import { CodeRepository } from '@/data/access_code/repository/codes.repository';
 import { AddSmallIcon, MinusSmallIcon } from '@/components/icons';
+import { AccessCode } from '@/data/access_code/model/access.code.model';
+import { CreateCodesRequestDto } from '@/data/access_code/api/dto/request/create.request.dto';
+import * as AccessCodeMapper from '@/data/access_code/api/mapper/code.mapper'
 
-function CreateCodeModal(props) {
+interface CreateCodesProps {
+    eventId: string,
+    onAddCodes: (newCodes: AccessCode[]) => void
+}
 
-  const [isOpen, setIsOpen] = useState<boolean>();
-  const { eventId, onAddCodes } = props
-  const initialRef = useRef();
-  const toast = useToast();
+function CreateCodeModal(props: CreateCodesProps) {
 
-  const [insertedCodes, setinsertedCodes] = useState(['']);
+    // Props
+    const { eventId, onAddCodes } = props
 
-  const onClose = () => {
-    setIsOpen(false)
-    setinsertedCodes([''])
-  }
+    // Utils
+    const initialRef = useRef();
+    const toast = useToast();
 
-  const handleChangeInput = (index, event) => {
-    const values = [...insertedCodes];
-    values[index] = event.target.value;
-    setinsertedCodes(values);
-  }
+    // State variables
+    const [isOpen, setIsOpen] = useState<boolean>();
+    const [insertedCodes, setinsertedCodes] = useState<string[]>(['']);
 
-  const handleAddFields = () => {
-    setinsertedCodes([...insertedCodes, ''])
-  }
+    // Repository
+    const codeRepository = CodeRepository.getInstance()
 
-  const handleRemoveFields = (index) => {
-    const values = [...insertedCodes];
-    values.splice(index, 1);
-    setinsertedCodes(values);
-  }
-
-  async function onConfirm() {
-    let count = insertedCodes.findIndex((value) => { return value.trim().length == 0 })
-
-    if (count != -1) {
-      showToast('Ocurrió un error', "No pueden haber códigos vacíos", false, toast);
-      return
+    // Functions
+    const onClose = () => {
+        setIsOpen(false)
+        setinsertedCodes([''])
     }
 
-    try {
-      const response = await CodeService.createCodes(insertedCodes, eventId)
-      showToast(
-        'Códigos creados!',
-        'Código de acceso creado correctamente',
-        true,
-        toast,
-      );
-
-      console.log(response.data)
-      onAddCodes(response.data)
-      setinsertedCodes([''])
-      setIsOpen(false)
-    } catch (error) {
-      showToast('Ocurrió un error', error, false, toast);
+    const handleChangeInput = (index: number, event: ChangeEvent<HTMLInputElement>) => {
+        const values = [...insertedCodes];
+        values[index] = event.target.value;
+        setinsertedCodes(values);
     }
-  }
 
-  return (
-    <>
-      <Button colorScheme="purple" onClick={() => setIsOpen(true)} mb={3}>
-        Crear códigos de acceso
-      </Button>
+    const handleAddFields = () => {
+        setinsertedCodes([...insertedCodes, ''])
+    }
 
-      <Modal
-        isOpen={isOpen}
-        onClose={onClose}
-        motionPreset="slideInBottom"
-        isCentered
-      >
-        <ModalOverlay />
+    const handleRemoveFields = (index: number) => {
+        const values = [...insertedCodes];
+        values.splice(index, 1);
+        setinsertedCodes(values);
+    }
 
-        <ModalContent>
+    async function onConfirm() {
+        // Find if there is an empty code
+        let emptyCodeIndex = insertedCodes.findIndex((value) => { return value.trim().length == 0 })
 
-          <ModalHeader fontSize="lg" fontWeight="bold">
-            Crear código(s)
-          </ModalHeader>
+        // If empty code found, show error message
+        if (emptyCodeIndex != -1) {
+            showToast('Ocurrió un error', "No pueden haber códigos vacíos", false, toast);
+            return
+        }
 
-          <ModalBody>
-            <form>
-              {insertedCodes.map((code, index) => (
-                <HStack key={index} style={{marginBottom:'20px'}}>
-                  <FormControl>
-                    <FormLabel>Nuevo código</FormLabel>
-                    <Input ref={initialRef} placeholder="Código" value={code}
-                      onChange={event => handleChangeInput(index, event)} />
-                  </FormControl>
+        try {
+            // Create request Dto
+            const request: CreateCodesRequestDto = {
+                codes: insertedCodes,
+                eventId: Number(eventId)
+            }
 
-                  {(insertedCodes.length == 1) ?
-                    '' :
-                    <Button alignSelf='flex-end' onClick={() => handleRemoveFields(index)} colorScheme="red" mr={1.5} mt={1.5}>
-                      <MinusSmallIcon />
-                    </Button>
-                  }
-                </HStack>
-              ))}
-              <Button onClick={() => handleAddFields()} ml={1.5} mt={1.5}>
-                <AddSmallIcon />
-              </Button>
-            </form>
-          </ModalBody>
+            // Send request
+            const response = await codeRepository.create(request)
 
-          <ModalFooter>
-            <Button onClick={onClose}>
-              Cancelar
+            // Show successfull message
+            showToast('Códigos creados!', 'Código de acceso creado correctamente',
+                true, toast,
+            );
+
+            // Map response to AccessCodes array
+            const createdCodes = await AccessCodeMapper.createToCodesList(response)
+
+            // Add codes to original list
+            onAddCodes(createdCodes)
+
+            // Set state variables
+            setinsertedCodes([''])
+            setIsOpen(false)
+
+        } catch (error) {
+            // Show error message
+            showToast('Ocurrió un error', error, false, toast);
+        }
+    }
+
+    return (
+        <>
+            <Button colorScheme="purple" onClick={() => setIsOpen(true)} mb={3}>
+                Crear códigos de acceso
             </Button>
-            <Button colorScheme="red" onClick={onConfirm} ml={3}>
-              Guardar
-            </Button>
-          </ModalFooter>
 
-        </ModalContent>
-      </Modal>
-    </>
-  );
+            <Modal isOpen={isOpen} onClose={onClose}
+                motionPreset="slideInBottom" isCentered>
+
+                <ModalOverlay />
+
+                <ModalContent>
+                    <ModalHeader fontSize="lg" fontWeight="bold">
+                        Crear código(s)
+                    </ModalHeader>
+                    <ModalBody>
+                        <form>
+                            {insertedCodes.map((code, index) => (
+                                <HStack key={index} style={{ marginBottom: '20px' }}>
+                                    <FormControl>
+                                        <FormLabel>Nuevo código</FormLabel>
+                                        <Input ref={initialRef} placeholder="Código" value={code}
+                                            onChange={event => handleChangeInput(index, event)} />
+                                    </FormControl>
+
+                                    {(insertedCodes.length == 1) ?
+                                        '' :
+                                        <Button alignSelf='flex-end' onClick={() => handleRemoveFields(index)}
+                                            colorScheme="red" mr={1.5} mt={1.5}>
+                                            <MinusSmallIcon />
+                                        </Button>}
+                                </HStack>
+                            ))}
+                            <Button onClick={() => handleAddFields()} ml={1.5} mt={1.5}>
+                                <AddSmallIcon />
+                            </Button>
+                        </form>
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button onClick={onClose}>
+                            Cancelar
+                        </Button>
+                        <Button colorScheme="red" onClick={onConfirm} ml={3}>
+                            Guardar
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+        </>
+    );
 }
 
 export default CreateCodeModal;
