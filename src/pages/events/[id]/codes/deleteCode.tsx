@@ -10,33 +10,52 @@ import {
     useToast,
 } from '@chakra-ui/core';
 import { showToast } from '../../../../components/toast/custom.toast';
-import { CodeService } from '@/data/access_code/repository/codes.service';
-import { isRestTypeNode } from 'typescript';
+import { CodeRepository } from '@/data/access_code/repository/codes.repository';
 import { DeleteIcon } from '@chakra-ui/icons';
+import { AccessCode } from '@/data/access_code/model/access.code.model';
 
-function DeleteCodeAlertDialog(props) {
-    const [isOpen, setIsOpen] = useState<boolean>();
-    const onClose = () => setIsOpen(false);
+interface DelteCodeProps {
+    code: AccessCode,
+    index: number,
+    onDelete: (index: number) => void
+}
+
+function DeleteCodeAlertDialog(props: DelteCodeProps) {
+
+    // props
     let { code, onDelete, index } = props;
+
+    // State variables
+    const [isOpen, setIsOpen] = useState<boolean>();
+
+    // Utils
     const cancelRef = useRef();
     const toast = useToast();
 
+    // Repository
+    const codeRepository = CodeRepository.getInstance()
+
+    // Functions
+    const onClose = () => setIsOpen(false);
+
     async function onConfirm() {
         try {
-            const response = await CodeService.deleteCode(code.eventId, code.id)
-            showToast(
-                'Código eliminado!',
-                'El código se ha eliminado correctamente',
-                true,
-                toast,
-            );
+            // Make request
+            await codeRepository.delete(code.id, code.eventId)
+
+            // Show success toast
+            showToast('Código eliminado!', 'El código se ha eliminado correctamente',
+                true, toast);
+
+            // Call delete function
             onDelete(index)
         } catch (error) {
+            // Show error toast
             showToast('Ocurrió un error', error, false, toast);
         }
     }
 
-    async function checkUsed() {
+    function checkUsed() {
         if (code.used) {
             showToast('Ocurrió un error', "El código no se puede eliminar porque ya ha sido utilizado", false, toast);
         } else {
@@ -49,31 +68,27 @@ function DeleteCodeAlertDialog(props) {
             <Button colorScheme="red" marginBottom='12px' onClick={() => checkUsed()}>
                 <DeleteIcon />
             </Button>
-            <AlertDialog
-                isOpen={isOpen}
-                leastDestructiveRef={cancelRef}
-                onClose={onClose}
-                motionPreset="slideInBottom"
-                isCentered
-            >
+            
+            <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef}
+                onClose={onClose} motionPreset="slideInBottom" isCentered>
                 <AlertDialogOverlay />
                 <AlertDialogContent>
                     <AlertDialogHeader fontSize="lg" fontWeight="bold">
                         Eliminar código
-          </AlertDialogHeader>
+                    </AlertDialogHeader>
 
                     <AlertDialogBody>
                         ¿Estas seguro que deseas eliminar este código de acceso? No podrá ser
                         utilizado por ningún usuario luego de eliminarlo.
-          </AlertDialogBody>
+                    </AlertDialogBody>
 
                     <AlertDialogFooter>
                         <Button ref={cancelRef} onClick={onClose}>
                             Cancelar
-            </Button>
+                        </Button>
                         <Button colorScheme="red" onClick={onConfirm} ml={3}>
                             Confirmar
-            </Button>
+                        </Button>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, ChangeEvent } from 'react';
 import {
     Button,
     Modal,
@@ -14,20 +14,36 @@ import {
     Icon,
 } from '@chakra-ui/core';
 import { showToast } from '../../../../components/toast/custom.toast';
-import { CodeService } from '@/data/access_code/repository/codes.service';
+import { CodeRepository } from '@/data/access_code/repository/codes.repository';
 import { AiFillEdit } from 'react-icons/ai'
+import { AccessCode } from '@/data/access_code/model/access.code.model';
+import { UpdateCodeRequestDto } from '@/data/access_code/api/dto/request/update.request.dto';
 
-function UpdateCodeModal(props) {
+interface UpdateCodeProps {
+    code: AccessCode,
+    index: number,
+    onUpdate: (item: AccessCode, index: number) => void
+}
 
-    const [isOpen, setIsOpen] = useState<boolean>();
-    const onClose = () => setIsOpen(false);
+function UpdateCodeModal(props: UpdateCodeProps) {
+
+    // Props
     let { code, onUpdate, index } = props;
 
+    // State variables
+    const [isOpen, setIsOpen] = useState<boolean>();
     const [newCode, setNewCode] = useState<string>((code == undefined) ? '' : code.code);
-    const handleChange = event => setNewCode(event.target.value);
 
+    // Utils
     const initialRef = useRef();
     const toast = useToast();
+
+    // Repository
+    const codeRepository = CodeRepository.getInstance()
+
+    // Functions
+    const onClose = () => setIsOpen(false);
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => setNewCode(event.target.value);
 
     async function onConfirm() {
         if (newCode.trim().length == 0) {
@@ -41,20 +57,32 @@ function UpdateCodeModal(props) {
         }
 
         try {
+            // Create request dto
+            const request: UpdateCodeRequestDto = {
+                codeId: code.id.toString(),
+                eventId: code.eventId,
+                newCode: newCode
+            }
 
-            await CodeService.updateCode(newCode, code.id, code.eventId)
+            // Make request
+            await codeRepository.update(request)
 
+            // Show success toast
             showToast(
                 'Código modificado!',
                 'El código se ha modificado correctamente',
                 true,
                 toast,
             );
-
+            
+            // Assign new code to old code
             code.code = newCode
+            // Call update function
             onUpdate(code, index)
+            // Close modal
             setIsOpen(false)
         } catch (error) {
+            // Show error toast
             showToast('Ocurrió un error', error, false, toast);
         }
     }

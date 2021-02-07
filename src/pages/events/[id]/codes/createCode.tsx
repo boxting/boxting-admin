@@ -1,39 +1,43 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, ChangeEvent } from 'react';
 import {
-    Button,
-    Modal,
-    ModalContent,
-    ModalOverlay,
-    ModalHeader,
-    ModalFooter,
-    useToast,
-    ModalBody,
-    FormControl,
-    FormLabel,
-    Input,
-    Box,
-    HStack,
+    Button, Modal, ModalContent, ModalOverlay, ModalHeader, ModalFooter, useToast,
+    ModalBody, FormControl, FormLabel, Input, HStack,
 } from '@chakra-ui/core';
 import { showToast } from '../../../../components/toast/custom.toast';
-import { CodeService } from '@/data/access_code/repository/codes.service';
-import { isRestTypeNode } from 'typescript';
+import { CodeRepository } from '@/data/access_code/repository/codes.repository';
 import { AddSmallIcon, MinusSmallIcon } from '@/components/icons';
+import { AccessCode } from '@/data/access_code/model/access.code.model';
+import { CreateCodesRequestDto } from '@/data/access_code/api/dto/request/create.request.dto';
+import * as AccessCodeMapper from '@/data/access_code/api/mapper/code.mapper'
 
-function CreateCodeModal(props) {
+interface CreateCodesProps {
+    eventId: string,
+    onAddCodes: (newCodes: AccessCode[]) => void
+}
 
-    const [isOpen, setIsOpen] = useState<boolean>();
+function CreateCodeModal(props: CreateCodesProps) {
+
+    // Props
     const { eventId, onAddCodes } = props
+
+    // Utils
     const initialRef = useRef();
     const toast = useToast();
 
-    const [insertedCodes, setinsertedCodes] = useState(['']);
+    // State variables
+    const [isOpen, setIsOpen] = useState<boolean>();
+    const [insertedCodes, setinsertedCodes] = useState<string[]>(['']);
 
+    // Repository
+    const codeRepository = CodeRepository.getInstance()
+
+    // Functions
     const onClose = () => {
         setIsOpen(false)
         setinsertedCodes([''])
     }
 
-    const handleChangeInput = (index, event) => {
+    const handleChangeInput = (index: number, event: ChangeEvent<HTMLInputElement>) => {
         const values = [...insertedCodes];
         values[index] = event.target.value;
         setinsertedCodes(values);
@@ -43,34 +47,49 @@ function CreateCodeModal(props) {
         setinsertedCodes([...insertedCodes, ''])
     }
 
-    const handleRemoveFields = (index) => {
+    const handleRemoveFields = (index: number) => {
         const values = [...insertedCodes];
         values.splice(index, 1);
         setinsertedCodes(values);
     }
 
     async function onConfirm() {
-        let count = insertedCodes.findIndex((value) => { return value.trim().length == 0 })
+        // Find if there is an empty code
+        let emptyCodeIndex = insertedCodes.findIndex((value) => { return value.trim().length == 0 })
 
-        if (count != -1) {
+        // If empty code found, show error message
+        if (emptyCodeIndex != -1) {
             showToast('Ocurrió un error', "No pueden haber códigos vacíos", false, toast);
             return
         }
 
         try {
-            const response = await CodeService.createCodes(insertedCodes, eventId)
-            showToast(
-                'Códigos creados!',
-                'Código de acceso creado correctamente',
-                true,
-                toast,
+            // Create request Dto
+            const request: CreateCodesRequestDto = {
+                codes: insertedCodes,
+                eventId: Number(eventId)
+            }
+
+            // Send request
+            const response = await codeRepository.create(request)
+
+            // Show successfull message
+            showToast('Códigos creados!', 'Código de acceso creado correctamente',
+                true, toast,
             );
 
-            console.log(response.data)
-            onAddCodes(response.data)
+            // Map response to AccessCodes array
+            const createdCodes = await AccessCodeMapper.createToCodesList(response)
+
+            // Add codes to original list
+            onAddCodes(createdCodes)
+
+            // Set state variables
             setinsertedCodes([''])
             setIsOpen(false)
+
         } catch (error) {
+            // Show error message
             showToast('Ocurrió un error', error, false, toast);
         }
     }
@@ -79,22 +98,17 @@ function CreateCodeModal(props) {
         <>
             <Button colorScheme="purple" onClick={() => setIsOpen(true)} mb={3}>
                 Crear códigos de acceso
-      </Button>
+            </Button>
 
-            <Modal
-                isOpen={isOpen}
-                onClose={onClose}
-                motionPreset="slideInBottom"
-                isCentered
-            >
+            <Modal isOpen={isOpen} onClose={onClose}
+                motionPreset="slideInBottom" isCentered>
+
                 <ModalOverlay />
 
                 <ModalContent>
-
                     <ModalHeader fontSize="lg" fontWeight="bold">
                         Crear código(s)
-          </ModalHeader>
-
+                    </ModalHeader>
                     <ModalBody>
                         <form>
                             {insertedCodes.map((code, index) => (
@@ -107,10 +121,10 @@ function CreateCodeModal(props) {
 
                                     {(insertedCodes.length == 1) ?
                                         '' :
-                                        <Button alignSelf='flex-end' onClick={() => handleRemoveFields(index)} colorScheme="red" mr={1.5} mt={1.5}>
+                                        <Button alignSelf='flex-end' onClick={() => handleRemoveFields(index)}
+                                            colorScheme="red" mr={1.5} mt={1.5}>
                                             <MinusSmallIcon />
-                                        </Button>
-                                    }
+                                        </Button>}
                                 </HStack>
                             ))}
                             <Button onClick={() => handleAddFields()} ml={1.5} mt={1.5}>
@@ -122,12 +136,11 @@ function CreateCodeModal(props) {
                     <ModalFooter>
                         <Button onClick={onClose}>
                             Cancelar
-            </Button>
+                        </Button>
                         <Button colorScheme="red" onClick={onConfirm} ml={3}>
                             Guardar
-            </Button>
+                        </Button>
                     </ModalFooter>
-
                 </ModalContent>
             </Modal>
         </>
