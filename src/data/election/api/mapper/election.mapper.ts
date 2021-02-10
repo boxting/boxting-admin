@@ -2,7 +2,7 @@ import { Election } from "../../model/election.model";
 import { GetAllElectionsResponseDto } from "../dto/response/get.all.response.dto";
 import { GetOneElectionResponseDto } from "../dto/response/get.one.response.dto";
 
-export async function getAllToEventList(response: GetAllElectionsResponseDto): Promise<Election[]> {
+export async function getAllToElectionList(response: GetAllElectionsResponseDto): Promise<Election[]> {
 
     const electionList: Election[] = response.data.map((value) => {
         let election: Election = {
@@ -19,7 +19,7 @@ export async function getAllToEventList(response: GetAllElectionsResponseDto): P
     return electionList
 }
 
-export async function getOneToEvent(response: GetOneElectionResponseDto): Promise<Election> {
+export async function getOneToElection(response: GetOneElectionResponseDto): Promise<Election> {
 
     const election: Election = {
         id: response.data.id,
