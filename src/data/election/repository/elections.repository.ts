@@ -39,10 +39,10 @@ export class ElectionRepository {
         }
     }
 
-    async create(event: CreateElectionRequestDto): Promise<CreateElectionResponseDto> {
+    async create( eventId: string | number, election: CreateElectionRequestDto): Promise<CreateElectionResponseDto> {
         try {
             // Make request
-            const res = await this._service.connection.post('/event/create', event);
+            const res = await this._service.connection.post(`/election/event/${eventId}`, election);
             // Assign data to response dto
             const data: CreateElectionResponseDto = res.data
             // Return data

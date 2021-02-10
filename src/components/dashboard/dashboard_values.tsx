@@ -19,6 +19,16 @@ export const DEFAULT_SIDEBAR: SidebarData = {
                 },
             ] as Module[],
         },
+        {
+            label: `Gestión de elecciones`,
+            modules: [
+                {
+                    icon: <CheckIcon />,
+                    name: `Actividades de elección`,
+                    route: `/elections`,
+                },
+            ] as Module[],
+        }
     ],
 };
 
@@ -41,11 +51,21 @@ export const breadcrumbItems = (routes: string[]): string[] => {
         if (routes[0] === 'events') {
             return ['Eventos']
         }
+        if (routes[0] === 'elections') {
+            return ['Elecciones']
+        }
     } else if (routes.length === 2) {
-        if (routes[1] === 'create') {
-            return ['Eventos', 'Crear']
-        } else {
-            return ['Evento', routes[1]]
+        if (routes[0] === 'events') {
+            if (routes[1] === 'create') {
+                return ['Eventos', 'Crear']
+            } else {
+                return ['Evento', routes[1]]
+            }
+        }
+        if (routes[0] === 'elections') {
+            if (routes[1] === 'create') {
+                return ['Elecciones', 'Crear']
+            }
         }
     } else if (routes.length === 3) {
         if (routes[2] === 'codes') {

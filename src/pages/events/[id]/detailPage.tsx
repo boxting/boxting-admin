@@ -10,7 +10,7 @@ import { LockIcon } from '@chakra-ui/icons';
 import DatePicker from '@/components/datepicker/DatePicker';
 import { Event } from '@/data/event/model/event.model';
 
-interface EventDetailProps{
+interface EventDetailProps {
     event: Event
 }
 
@@ -22,8 +22,6 @@ const EventDetail = (props: EventDetailProps) => {
     if (event == null) {
         return <Center>No hay información del evento de votación</Center>;
     }
-
-    console.log(event)
 
     return (
         <Box>
@@ -62,6 +60,22 @@ const EventDetail = (props: EventDetailProps) => {
                             query: { id: event.id },
                         },
                         `/events/${event.id}/codes`,
+                    )
+                }
+            />
+
+            <BoxtingButton
+                style={{ marginRight: '12px', marginBottom: '12px' }}
+                text="Configurar actividades de elección"
+                typeBtn={ButtonType.primary}
+                leftIcon={<LockIcon boxSize={4} />}
+                onEnter={() =>
+                    router.push(
+                        {
+                            pathname: `/elections/`,
+                            query: { eventId: event.id },
+                        },
+                        `/elections/`,
                     )
                 }
             />
