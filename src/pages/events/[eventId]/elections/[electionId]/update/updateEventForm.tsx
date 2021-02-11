@@ -13,7 +13,7 @@ import { useRouter } from 'next/router';
 import { showToast } from '@/components/toast/custom.toast';
 import 'react-datetime/css/react-datetime.css';
 import moment from 'moment';
-import { EventRepository } from '../../../../data/event/repository/events.repository';
+import { EventRepository } from '../../../../../../data/event/repository/events.repository';
 import DatePicker from '@/components/datepicker/DatePicker';
 import { UpdateRequestDto } from '@/data/event/api/dto/request/update.request.dto';
 import { Event } from '@/data/event/model/event.model';

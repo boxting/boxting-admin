@@ -47,6 +47,7 @@ export const DEFAULT_BREADCRUMBS = {
 };
 
 export const breadcrumbItems = (routes: string[]): string[] => {
+
     if (routes.length === 1) {
         if (routes[0] === 'events') {
             return ['Eventos']
@@ -62,16 +63,21 @@ export const breadcrumbItems = (routes: string[]): string[] => {
                 return ['Evento', routes[1]]
             }
         }
-        if (routes[0] === 'elections') {
-            if (routes[1] === 'create') {
-                return ['Elecciones', 'Crear']
-            }
-        }
     } else if (routes.length === 3) {
         if (routes[2] === 'codes') {
             return ['Evento', routes[1], 'Códigos']
         } else if (routes[2] === 'update') {
             return ['Evento', routes[1], 'Actualizar']
+        }
+    } else if (routes.length === 4) {
+        if (routes[0] === 'events') {
+            if (routes[2] === 'elections') {
+                if (routes[3] === 'create') {
+                    return ['Evento', routes[1], 'Elecciones', 'Crear']
+                }else {
+                    return ['Evento', routes[1], 'Elecciones', routes[3]]
+                }
+            }
         }
     }
 }

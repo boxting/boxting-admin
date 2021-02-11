@@ -40,7 +40,7 @@ const EventDetail = (props: EventDetailProps) => {
                 onEnter={() =>
                     router.push(
                         {
-                            pathname: `/events/[id]/update`,
+                            pathname: `/events/[eventId]/update`,
                             query: { data: JSON.stringify(event) },
                         },
                         `/events/${event.id}/update`,
@@ -56,8 +56,8 @@ const EventDetail = (props: EventDetailProps) => {
                 onEnter={() =>
                     router.push(
                         {
-                            pathname: `/events/[id]/codes`,
-                            query: { id: event.id },
+                            pathname: `/events/[eventId]/codes`,
+                            query: { eventId: event.id },
                         },
                         `/events/${event.id}/codes`,
                     )

@@ -12,7 +12,7 @@ const CodesEventPage: NextPage = () => {
     const router = useRouter();
 
     // Props
-    const eventId = router.query.id as string;
+    const eventId = router.query.eventId as string;
 
     return (
         <Box>

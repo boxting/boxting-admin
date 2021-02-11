@@ -88,15 +88,12 @@ class ElectionList extends Component<ElectionListProps, ElectionListState> {
     }
 
     onCreateElection = () => {
-        if(this.state.currentEvent != undefined && this.state.currentEvent != ''){
+        if (this.state.currentEvent != undefined && this.state.currentEvent != '') {
             this.router.push(
-                {
-                    pathname: `/elections/create/`,
-                    query: { eventId: this.state.currentEvent }
-                },
-                `/elections/create/`
+                `/events/[eventId]/elections/create/`,
+                `/events/${this.state.currentEvent}/elections/create/`
             )
-        }else{
+        } else {
             console.log('No event selected')
         }
     }
@@ -119,7 +116,7 @@ class ElectionList extends Component<ElectionListProps, ElectionListState> {
                         text="Nuevo"
                         typeBtn={ButtonType.primary}
                         leftIcon={<AddSmallIcon boxSize={4} />}
-                        onEnter={ this.onCreateElection }
+                        onEnter={this.onCreateElection}
                     />
                 </Flex>
 
@@ -135,7 +132,11 @@ class ElectionList extends Component<ElectionListProps, ElectionListState> {
                                     key={item.id}
                                     textHead={item.name}
                                     textBody={item.information}
-                                //onEnter={() => router.push(`/events/[id]`, `/events/${item.id}`)}
+                                    onEnter={() =>
+                                        this.router.push(
+                                            `/events/[eventId]/elections/[electionId]`,
+                                            `/events/${item.eventId}/elections/${item.id}`,
+                                        )}
                                 />
                             ))}
                         </Grid>
