@@ -65,7 +65,8 @@ class ElectionList extends Component<ElectionListProps, ElectionListState> {
         if (propCurrentEvent != undefined && propEvents.length != 0) {
             currentElections = await this.getElections(propCurrentEvent)
         } else if (propEvents.length != 0) {
-            currentElections = await this.getElections(propEvents[1].id.toString())
+            currentElections = await this.getElections(propEvents[0].id.toString())
+            propCurrentEvent = propEvents[1].id.toString()
         }
 
         this.setState({
