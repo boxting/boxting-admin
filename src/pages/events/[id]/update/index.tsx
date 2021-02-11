@@ -18,7 +18,9 @@ const UpdateEventPage: NextPage = () => {
             <PageTitle
                 title="Actualizar votación"
                 description="En esta sección se podrá editar la información del evento."
-                onBackClick={() => router.push(`/events/`)}
+                onBackClick={
+                    () => router.push(`/events/[id]`, `/events/${event.id}`)
+                }
                 enableBackIcon
             />
 

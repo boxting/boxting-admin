@@ -131,7 +131,7 @@ const EventUpdateForm = (props: EventUpdateFormProps) => {
             setAppState({ loading: false, success: true });
 
             // Go back to last screen
-            router.back();
+            router.push(`/events/[id]`, `/events/${event.id}`)
         } catch (error) {
             // Show error toast
             showToast(`Ocurrió un error!`, error, false, toast);

@@ -28,7 +28,7 @@ const EventDetail = (props: EventDetailProps) => {
             <PageTitle
                 title={event.name}
                 description={event.information}
-                onBackClick={() => router.back()}
+                onBackClick={() => router.push(`/events/`)}
                 enableBackIcon
             />
             <DeleteEventAlertDialog event={event} />
