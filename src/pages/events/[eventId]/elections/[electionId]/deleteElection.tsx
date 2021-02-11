@@ -9,24 +9,23 @@ import {
     Button,
     useToast,
 } from '@chakra-ui/core';
-import { EventRepository } from '@/data/event/repository/events.repository';
+import { ElectionRepository } from '@/data/election/repository/elections.repository';
 import { showToast } from '../../../../../components/toast/custom.toast';
 import { useRouter } from 'next/router';
-import moment from 'moment';
-import { Event } from '@/data/event/model/event.model';
+import { Election } from '@/data/election/model/election.model';
 
-interface DeleteEventProps{
-    event: Event
+interface DeleteElectionProps {
+    election: Election
 }
 
-function DeleteEventAlertDialog(props: DeleteEventProps) {
+function DeleteElectionAlertDialog(props: DeleteElectionProps) {
 
     // State variables
     const [isOpen, setIsOpen] = useState<boolean>();
     const onClose = () => setIsOpen(false);
 
     // Props
-    const { event } = props;
+    const { election } = props;
 
     // Utils
     const cancelRef = useRef();
@@ -34,38 +33,28 @@ function DeleteEventAlertDialog(props: DeleteEventProps) {
     const router = useRouter();
 
     // Get service instance
-    const eventRepository = EventRepository.getInstance()
+    const electionRepository = ElectionRepository.getInstance()
 
     async function onConfirm() {
-        // TODO: Validate not delete started events
-        // No puede eliminar el evento de votación porque ya ha iniciado
-        const startDateMoment = moment(event.startDate, 'DD/MM/YYYY HH:mm:SS');
-        const endDateMoment = moment(event.endDate, 'DD/MM/YYYY HH:mm:SS');
-
-        // Validate if event has not started
-        if (moment.utc().isBetween(startDateMoment, endDateMoment)) {
-            showToast(
-                'Ocurrió un error',
-                'No se puede eliminar un evento que ya ha iniciado',
-                false,
-                toast,
-            );
-            onClose();
-            return;
-        }
 
         try {
             // Delete request
-            await eventRepository.delete(event.id);
+            await electionRepository.delete(election.id, election.eventId);
 
             // Close detail
             onClose();
 
-            // Go to events page
-            router.push('/events');
+            // Go to elections page
+            router.push(
+                {
+                    pathname: `/elections/`,
+                    query: { eventId: election.eventId.toString() },
+                },
+                `/elections/`,
+            )
 
             // Show success toast
-            showToast('Éxito', 'El evento de votación fue eliminado correctamente.',
+            showToast('Éxito', 'La actividad de elección fue eliminada correctamente.',
                 true, toast);
 
         } catch (error) {
@@ -77,7 +66,7 @@ function DeleteEventAlertDialog(props: DeleteEventProps) {
     return (
         <>
             <Button style={{ marginRight: '12px', marginBottom: '12px' }} colorScheme="red" onClick={() => setIsOpen(true)}>
-                Eliminar evento
+                Eliminar actividad de elección
       </Button>
             <AlertDialog
                 isOpen={isOpen}
@@ -89,21 +78,21 @@ function DeleteEventAlertDialog(props: DeleteEventProps) {
                 <AlertDialogOverlay />
                 <AlertDialogContent>
                     <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                        Eliminar evento
-          </AlertDialogHeader>
+                        Eliminar actividad de elección
+                    </AlertDialogHeader>
 
                     <AlertDialogBody>
-                        ¿Estas seguro que deseas eliminar este evento de votación? No se
-                        podrá recuperar la información de este evento.
-          </AlertDialogBody>
+                        ¿Estas seguro que deseas eliminar esta actividad de elección? No se
+                        podrá recuperar la información es esta actividad.
+                    </AlertDialogBody>
 
                     <AlertDialogFooter>
                         <Button ref={cancelRef} onClick={onClose}>
                             Cancelar
-            </Button>
+                        </Button>
                         <Button colorScheme="red" onClick={onConfirm} ml={3}>
                             Confirmar
-            </Button>
+                        </Button>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
@@ -111,4 +100,4 @@ function DeleteEventAlertDialog(props: DeleteEventProps) {
     );
 }
 
-export default DeleteEventAlertDialog;
+export default DeleteElectionAlertDialog;

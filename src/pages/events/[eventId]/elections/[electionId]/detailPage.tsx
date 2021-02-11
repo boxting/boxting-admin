@@ -2,13 +2,13 @@ import { Box, Center, Flex, PinInput, PinInputField, SimpleGrid, Text } from '@c
 import React from 'react';
 import { useRouter } from 'next/router';
 import PageTitle from '@/components/pageTitle';
-import DeleteEventAlertDialog from './deleteEvent';
 import BoxtingButton from '@/components/buttons/boxting_button';
 import { ButtonType } from '@/components/buttons/utils';
 import { EditIcon } from '../../../../../components/icons/index';
 import { LockIcon } from '@chakra-ui/icons';
 import DatePicker from '@/components/datepicker/DatePicker';
 import { Election } from '@/data/election/model/election.model';
+import DeleteElectionAlertDialog from './deleteElection';
 
 interface ElectionDetailProps {
     election: Election
@@ -38,7 +38,10 @@ const ElectionDetail = (props: ElectionDetailProps) => {
                 )}
                 enableBackIcon
             />
-            
+
+            <DeleteElectionAlertDialog election={election} />
+
+
         </Box>
     );
 };
