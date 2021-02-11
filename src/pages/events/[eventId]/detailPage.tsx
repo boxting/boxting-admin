@@ -10,7 +10,7 @@ import { LockIcon } from '@chakra-ui/icons';
 import DatePicker from '@/components/datepicker/DatePicker';
 import { Event } from '@/data/event/model/event.model';
 
-interface EventDetailProps{
+interface EventDetailProps {
     event: Event
 }
 
@@ -23,14 +23,12 @@ const EventDetail = (props: EventDetailProps) => {
         return <Center>No hay información del evento de votación</Center>;
     }
 
-    console.log(event)
-
     return (
         <Box>
             <PageTitle
                 title={event.name}
                 description={event.information}
-                onBackClick={() => router.back()}
+                onBackClick={() => router.push(`/events/`)}
                 enableBackIcon
             />
             <DeleteEventAlertDialog event={event} />
@@ -42,7 +40,7 @@ const EventDetail = (props: EventDetailProps) => {
                 onEnter={() =>
                     router.push(
                         {
-                            pathname: `/events/[id]/update`,
+                            pathname: `/events/[eventId]/update`,
                             query: { data: JSON.stringify(event) },
                         },
                         `/events/${event.id}/update`,
@@ -58,10 +56,26 @@ const EventDetail = (props: EventDetailProps) => {
                 onEnter={() =>
                     router.push(
                         {
-                            pathname: `/events/[id]/codes`,
-                            query: { id: event.id },
+                            pathname: `/events/[eventId]/codes`,
+                            query: { eventId: event.id },
                         },
                         `/events/${event.id}/codes`,
+                    )
+                }
+            />
+
+            <BoxtingButton
+                style={{ marginRight: '12px', marginBottom: '12px' }}
+                text="Configurar actividades de elección"
+                typeBtn={ButtonType.primary}
+                leftIcon={<LockIcon boxSize={4} />}
+                onEnter={() =>
+                    router.push(
+                        {
+                            pathname: `/elections/`,
+                            query: { eventId: event.id },
+                        },
+                        `/elections/`,
                     )
                 }
             />

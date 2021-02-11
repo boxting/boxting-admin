@@ -28,7 +28,7 @@ const EventList = (props: EventListProps) => {
                     key={item.id}
                     textHead={item.name}
                     textBody={item.information}
-                    onEnter={() => router.push(`/events/[id]`, `/events/${item.id}`)}
+                    onEnter={() => router.push(`/events/[eventId]`, `/events/${item.id}`)}
                 />
             ))}
         </Grid>

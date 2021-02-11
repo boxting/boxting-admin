@@ -2,6 +2,7 @@ import { Module, SidebarData } from '@/components/sidebar';
 import React from 'react';
 
 import { CheckIcon } from '@chakra-ui/icons';
+import { BookIcon } from '../icons';
 
 export const DEFAULT_SIDEBAR: SidebarData = {
     logo: {
@@ -19,6 +20,16 @@ export const DEFAULT_SIDEBAR: SidebarData = {
                 },
             ] as Module[],
         },
+        {
+            label: `Gestión de elecciones`,
+            modules: [
+                {
+                    icon: <BookIcon />,
+                    name: `Actividades de elección`,
+                    route: `/elections`,
+                },
+            ] as Module[],
+        }
     ],
 };
 
@@ -37,21 +48,45 @@ export const DEFAULT_BREADCRUMBS = {
 };
 
 export const breadcrumbItems = (routes: string[]): string[] => {
+
     if (routes.length === 1) {
         if (routes[0] === 'events') {
             return ['Eventos']
         }
+        if (routes[0] === 'elections') {
+            return ['Elecciones']
+        }
     } else if (routes.length === 2) {
-        if (routes[1] === 'create') {
-            return ['Eventos', 'Crear']
-        } else {
-            return ['Evento', routes[1]]
+        if (routes[0] === 'events') {
+            if (routes[1] === 'create') {
+                return ['Eventos', 'Crear']
+            } else {
+                return ['Evento', routes[1]]
+            }
         }
     } else if (routes.length === 3) {
         if (routes[2] === 'codes') {
             return ['Evento', routes[1], 'Códigos']
         } else if (routes[2] === 'update') {
             return ['Evento', routes[1], 'Actualizar']
+        }
+    } else if (routes.length === 4) {
+        if (routes[0] === 'events') {
+            if (routes[2] === 'elections') {
+                if (routes[3] === 'create') {
+                    return ['Evento', routes[1], 'Elecciones', 'Crear']
+                }else {
+                    return ['Evento', routes[1], 'Elecciones', routes[3]]
+                }
+            }
+        }
+    } else if (routes.length === 5) {
+        if (routes[0] === 'events') {
+            if (routes[2] === 'elections') {
+                if (routes[4] === 'update') {
+                    return ['Evento', routes[1], 'Elecciones', routes[3], 'Actualizar']
+                }
+            }
         }
     }
 }

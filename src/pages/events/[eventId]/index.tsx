@@ -14,8 +14,8 @@ const EventDetailPage: NextPage = () => {
     const router = useRouter();
 
     // Query variables
-    const { id } = router.query;
-
+    const { eventId } = router.query;
+    console.log(router.query)
     // State variables
     const EventDetailLoading = WithLoadingComponent(EventDetail);
     const [appState, setAppState] = useState({
@@ -32,7 +32,7 @@ const EventDetailPage: NextPage = () => {
         const fetchData = async () => {
 
             try {
-                const res = await eventRepository.getOne(id as string)
+                const res = await eventRepository.getOne(eventId as string)
                 const event = await EventMapper.getOneToEvent(res)
                 setAppState({ loading: false, event: event })
             } catch (error) {
