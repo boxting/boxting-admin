@@ -5,7 +5,7 @@ export class List {
     id: number
     name: string
     information: string
-    imageUrl: string
+    imageUrl?: string
     createdAt?: Date
     updatedAt?: Date
     electionId: number
