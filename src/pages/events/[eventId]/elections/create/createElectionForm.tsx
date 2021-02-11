@@ -49,10 +49,10 @@ const ElectionCreateForm = (props: ElectionCreateFormProps) => {
 	const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => setName(event.target.value)
 	const handleInformationChange = (event: ChangeEvent<HTMLTextAreaElement>) => setInformation(event.target.value)
 	const handleTypeChange = (event: ChangeEvent<HTMLSelectElement>) => {
-		if(Number(event.target.value) == 1){
+		if (Number(event.target.value) == 1) {
 			setType(1)
 			setWinners(1)
-		}else{
+		} else {
 			setWinners(0)
 			setType(Number(event.target.value))
 		}
@@ -84,10 +84,10 @@ const ElectionCreateForm = (props: ElectionCreateFormProps) => {
 	}
 
 	const createNewElection = async () => {
-		
+
 		if (type < 1 || winners < 1 || name.length == 0 || information.length == 0) {
 			showError(
-				'Debes completar todos los campos para crear el evento de votación'
+				'Debes completar todos los campos para crear la actividad de elección'
 			)
 			return
 		}
@@ -110,12 +110,12 @@ const ElectionCreateForm = (props: ElectionCreateFormProps) => {
 			const responseSuccess = res != null ? res.success : false
 
 			if (!responseSuccess) {
-				throw Error('Create new event fails')
+				throw Error('Create new election fails')
 			}
 
 			setAppState({ loading: false, success: responseSuccess })
 
-			showToast('Éxito', 'El evento de votación fue creado correctamente',
+			showToast('Éxito', 'La actividad de elección fue creada correctamente',
 				true, toast)
 
 			router.push(
@@ -138,7 +138,7 @@ const ElectionCreateForm = (props: ElectionCreateFormProps) => {
 				<Input
 					value={name}
 					onChange={handleNameChange}
-					placeholder="Nombre del evento"
+					placeholder="Nombre de la actividad de elección"
 				/>
 			</FormControl>
 			<FormControl mt={4}>

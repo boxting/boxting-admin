@@ -11,6 +11,7 @@ const ElectionPage: NextPage = () => {
     const router = useRouter();
 
     const eventId = router.query.eventId
+
     return (
         <Box>
             <PageTitle

@@ -122,7 +122,7 @@ const EventUpdateForm = (props: EventUpdateFormProps) => {
             // Show successful toast
             showToast(
                 `Éxito`,
-                `El evento de votación fue modificado con correctamente.`,
+                `El evento de votación fue modificado correctamente.`,
                 true,
                 toast,
             );
