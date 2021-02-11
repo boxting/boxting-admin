@@ -17,7 +17,7 @@ const ElectionDetailPage: NextPage = () => {
     const { electionId, eventId } = router.query;
 
     // State variables
-    const EventDetailLoading = WithLoadingComponent(ElectionDetail);
+    const ElectionDetailLoading = WithLoadingComponent(ElectionDetail);
     const [appState, setAppState] = useState({
         loading: false,
         election: null,
@@ -44,7 +44,7 @@ const ElectionDetailPage: NextPage = () => {
     }, [setAppState]);
 
     return (
-        <EventDetailLoading isLoading={appState.loading} election={appState.election} />
+        <ElectionDetailLoading isLoading={appState.loading} election={appState.election} />
     );
 };
 

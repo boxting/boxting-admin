@@ -13,21 +13,18 @@ import React, { ChangeEvent, useState } from 'react';
 import { useRouter } from 'next/router';
 import { showToast } from '@/components/toast/custom.toast';
 import 'react-datetime/css/react-datetime.css';
-import DatePicker from '@/components/datepicker/DatePicker';
-import { UpdateRequestDto } from '@/data/event/api/dto/request/update.request.dto';
-import { Election } from '@/data/election/model/election.model';
-import { ElectionRepository } from '@/data/election/repository/elections.repository';
-import { UpdateElectionRequestDto } from '@/data/election/api/dto/request/update.request.dto';
-import { ElectionTypeEnum } from '@/data/utils/type.enum';
+import { List } from '@/data/list/model/list.model';
+import { ListRepository } from '@/data/list/repository/list.repository';
+import { UpdateListRequestDto } from '@/data/list/api/dto/request/update.request.dto';
 
-interface ElectionUpdateFormProps {
-    election: Election
+interface ListUpdateFormProps {
+    list: List
 }
 
-const ElectionUpdateForm = (props: ElectionUpdateFormProps) => {
+const ListUpdateForm = (props: ListUpdateFormProps) => {
 
     // Props
-    const { election } = props;
+    const { list } = props;
 
     // State variables
     const [appState, setAppState] = useState({
@@ -36,24 +33,18 @@ const ElectionUpdateForm = (props: ElectionUpdateFormProps) => {
     });
 
     const [name, setName] = useState(
-        election == null ? '' : election.name)
+        list == null ? '' : list.name)
         ;
     const [information, setInformation] = useState(
-        election == undefined ? '' : election.information
+        list == undefined ? '' : list.information
     );
-    const [type, setType] = useState<number>(
-        election == undefined ? 1 : election.typeId
-    );
-    const [winners, setWinners] = useState<number>(
-        election == undefined ? 1 : election.winners
-    );
-
+    
     // Utils
     const router = useRouter();
     const toast = useToast();
 
     // Get service instance
-    const electionRepository = ElectionRepository.getInstance()
+    const listRepository = ListRepository.getInstance()
 
     // Validators
     function validateLength(value: string, minLen: number, maxLen: number, fieldName: string) {
@@ -71,27 +62,17 @@ const ElectionUpdateForm = (props: ElectionUpdateFormProps) => {
     // Functions
     const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => setName(event.target.value)
     const handleInformationChange = (event: ChangeEvent<HTMLTextAreaElement>) => setInformation(event.target.value)
-    const handleTypeChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        if (Number(event.target.value) == 1) {
-            setType(1)
-            setWinners(1)
-        } else {
-            setWinners(0)
-            setType(Number(event.target.value))
-        }
-    }
-    const handleWinnersChange = (event: ChangeEvent<HTMLSelectElement>) => setWinners(Number(event.target.value))
-
+    
     function showError(msg: string) {
         showToast('Error!', msg, false, toast);
     }
 
-    const updateNewEvent = async () => {
+    const updateList = async () => {
 
         // Validate null data
-        if (type < 1 || winners < 1 || name.length == 0 || information.length == 0) {
+        if (name.length == 0 || information.length == 0) {
             showError(
-                'Debes completar todos los campos para editar la actividad de elección'
+                'Debes completar todos los campos para editar la lista de candidatos.'
             )
             return
         }
@@ -105,22 +86,20 @@ const ElectionUpdateForm = (props: ElectionUpdateFormProps) => {
             setAppState({ loading: true, success: null });
 
             // Prepare dto to update
-            const updateDto: UpdateElectionRequestDto = {
-                id: election.id.toString(),
-                eventId: election.eventId,
-                winners: winners,
+            const updateDto: UpdateListRequestDto = {
+                id: list.id,
+                electionId: list.electionId,
                 information: information,
-                name: name,
-                typeId: type
+                name: name
             }
 
             // Update request
-            await electionRepository.update(updateDto)
+            await listRepository.update(updateDto)
 
             // Show successful toast
             showToast(
                 `Éxito`,
-                `La actividad de elección fue modificada correctamente.`,
+                `El evento de votación fue modificado con correctamente.`,
                 true,
                 toast,
             );
@@ -129,10 +108,7 @@ const ElectionUpdateForm = (props: ElectionUpdateFormProps) => {
             setAppState({ loading: false, success: true });
 
             // Go back to last screen
-            router.push(
-                `/events/[eventId]/elections/[electionId]`,
-                `/events/${election.eventId}/elections/${election.id}`
-            )
+            router.back()
         } catch (error) {
             // Show error toast
             showToast(`Ocurrió un error!`, error, false, toast);
@@ -160,36 +136,12 @@ const ElectionUpdateForm = (props: ElectionUpdateFormProps) => {
                 />
             </FormControl>
             <FormControl mt={4}>
-				<FormLabel>Tipo de actividad</FormLabel>
-				<Select value={type} onChange={handleTypeChange} placeholder="Tipo de actividad">
-					<option key={ElectionTypeEnum.SINGLE} value={ElectionTypeEnum.SINGLE}>Actividad de elección única</option>
-					<option key={ElectionTypeEnum.MULTIPLE} value={ElectionTypeEnum.MULTIPLE}>Actividad de elección múltiple</option>
-				</Select>
-			</FormControl>
-			<FormControl mt={4}>
-				<FormLabel>Cantidad de ganadores</FormLabel>
-				{
-					(type == ElectionTypeEnum.SINGLE) ?
-						<Input
-							value={1}
-							disabled
-						/>
-						:
-						<Select value={winners} onChange={handleWinnersChange} placeholder="Cantidad de ganadores">
-							<option key={2} value={2}>2</option>
-							<option key={3} value={3}>3</option>
-							<option key={4} value={4}>4</option>
-							<option key={5} value={5}>5</option>
-						</Select>
-				}
-			</FormControl>
-            <FormControl mt={4}>
                 <BoxtingButton
                     isLoading={appState.loading}
                     typeBtn={ButtonType.primary}
                     text="Modificar"
                     onEnter={() => {
-                        updateNewEvent();
+                        updateList();
                     }}
                 />
             </FormControl>
@@ -197,4 +149,4 @@ const ElectionUpdateForm = (props: ElectionUpdateFormProps) => {
     );
 };
 
-export default ElectionUpdateForm;
+export default ListUpdateForm;

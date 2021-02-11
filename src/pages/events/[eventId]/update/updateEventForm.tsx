@@ -81,7 +81,7 @@ const EventUpdateForm = (props: EventUpdateFormProps) => {
         // Validate null data
         if (startDate == null || endDate == null ||
             name.length == 0 || information.length == 0) {
-            showError('Debes completar todos los campos para crear el evento de votación')
+            showError('Debes completar todos los campos para editar el evento de votación')
             return;
         }
 
@@ -122,7 +122,7 @@ const EventUpdateForm = (props: EventUpdateFormProps) => {
             // Show successful toast
             showToast(
                 `Éxito`,
-                `El evento de votación fue modificado con correctamente.`,
+                `El evento de votación fue modificado correctamente.`,
                 true,
                 toast,
             );

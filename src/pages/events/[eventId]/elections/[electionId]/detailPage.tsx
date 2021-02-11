@@ -1,4 +1,4 @@
-import { Box, Center } from '@chakra-ui/core';
+import { Box, Center, Flex, PinInput, SimpleGrid, Text } from '@chakra-ui/core';
 import React from 'react';
 import { useRouter } from 'next/router';
 import PageTitle from '@/components/pageTitle';
@@ -18,8 +18,8 @@ const ElectionDetail = (props: ElectionDetailProps) => {
 
     const router = useRouter();
 
-    if (event == null) {
-        return <Center>No hay información del evento de votación</Center>;
+    if (election == null) {
+        return <Center>No hay información de la actividad de elección</Center>;
     }
 
     return (
@@ -54,6 +54,29 @@ const ElectionDetail = (props: ElectionDetailProps) => {
                     )
                 }
             />
+
+            <BoxtingButton
+                style={{ marginRight: '12px', marginBottom: '12px' }}
+                text="Gestionar listas"
+                typeBtn={ButtonType.primary}
+                leftIcon={<EditIcon boxSize={4} />}
+                onEnter={() =>
+                    router.push(
+                        `/elections/[electionId]/lists/`,
+                        `/elections/${election.id}/lists/`,
+                    )
+                }
+            />
+
+            <Box width='100%'>
+                <Text mt="16px">
+                    <b>Tipo de actividad:</b> {(election.typeId == 1) ?
+                        'Actividad de elección única' : 'Actividad de elección múltiple'}
+                </Text>
+                <Text mt="16px">
+                    <b>Cantidad de ganadores:</b> {election.winners}
+                </Text>
+            </Box>
 
         </Box>
     );
