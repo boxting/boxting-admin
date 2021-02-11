@@ -2,6 +2,7 @@ import { Module, SidebarData } from '@/components/sidebar';
 import React from 'react';
 
 import { CheckIcon } from '@chakra-ui/icons';
+import { BookIcon } from '../icons';
 
 export const DEFAULT_SIDEBAR: SidebarData = {
     logo: {
@@ -23,7 +24,7 @@ export const DEFAULT_SIDEBAR: SidebarData = {
             label: `Gestión de elecciones`,
             modules: [
                 {
-                    icon: <CheckIcon />,
+                    icon: <BookIcon />,
                     name: `Actividades de elección`,
                     route: `/elections`,
                 },
