@@ -79,5 +79,13 @@ export const breadcrumbItems = (routes: string[]): string[] => {
                 }
             }
         }
+    } else if (routes.length === 5) {
+        if (routes[0] === 'events') {
+            if (routes[2] === 'elections') {
+                if (routes[4] === 'update') {
+                    return ['Evento', routes[1], 'Elecciones', routes[3], 'Actualizar']
+                }
+            }
+        }
     }
 }

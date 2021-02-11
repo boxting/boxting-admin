@@ -32,12 +32,12 @@ const ElectionCreateForm = (props: ElectionCreateFormProps) => {
 
 	const [information, setInformation] = useState('')
 	const [name, setName] = useState('')
-	const [type, setType] = useState<number>(1)
-	const [winners, setWinners] = useState<number>(1)
+	const [type, setType] = useState<number>(0)
+	const [winners, setWinners] = useState<number>(0)
 
 	// Props
 	const eventId = props.eventId
-	console.log(eventId)
+
 	// Utils
 	const router = useRouter()
 	const toast = useToast()
@@ -48,7 +48,15 @@ const ElectionCreateForm = (props: ElectionCreateFormProps) => {
 	// Functions
 	const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => setName(event.target.value)
 	const handleInformationChange = (event: ChangeEvent<HTMLTextAreaElement>) => setInformation(event.target.value)
-	const handleTypeChange = (event: ChangeEvent<HTMLSelectElement>) => setType(Number(event.target.value))
+	const handleTypeChange = (event: ChangeEvent<HTMLSelectElement>) => {
+		if(Number(event.target.value) == 1){
+			setType(1)
+			setWinners(1)
+		}else{
+			setWinners(0)
+			setType(Number(event.target.value))
+		}
+	}
 	const handleWinnersChange = (event: ChangeEvent<HTMLSelectElement>) => setWinners(Number(event.target.value))
 
 	function showError(msg: string) {
@@ -76,7 +84,7 @@ const ElectionCreateForm = (props: ElectionCreateFormProps) => {
 	}
 
 	const createNewElection = async () => {
-
+		
 		if (type < 1 || winners < 1 || name.length == 0 || information.length == 0) {
 			showError(
 				'Debes completar todos los campos para crear el evento de votación'
@@ -95,7 +103,7 @@ const ElectionCreateForm = (props: ElectionCreateFormProps) => {
 				name: name,
 				information: information,
 				typeId: type,
-				winners: (type == ElectionTypeEnum.SINGLE) ? 1 : winners + 1,
+				winners: winners,
 			}
 			console.log(eventId)
 			const res = await electionRepository.create(eventId, electionRequest)
@@ -158,10 +166,10 @@ const ElectionCreateForm = (props: ElectionCreateFormProps) => {
 						/>
 						:
 						<Select value={winners} onChange={handleWinnersChange} placeholder="Cantidad de ganadores">
-							<option key={1} value={1}>2</option>
-							<option key={2} value={2}>3</option>
-							<option key={3} value={3}>4</option>
-							<option key={4} value={4}>5</option>
+							<option key={2} value={2}>2</option>
+							<option key={3} value={3}>3</option>
+							<option key={4} value={4}>4</option>
+							<option key={5} value={5}>5</option>
 						</Select>
 				}
 			</FormControl>

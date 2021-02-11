@@ -6,39 +6,46 @@ import {
     Input,
     useToast,
     Textarea,
+    Select,
 } from '@chakra-ui/core';
 import { ButtonType } from '@/components/buttons/utils';
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { useRouter } from 'next/router';
 import { showToast } from '@/components/toast/custom.toast';
 import 'react-datetime/css/react-datetime.css';
-import moment from 'moment';
-import { EventRepository } from '../../../../../../data/event/repository/events.repository';
 import DatePicker from '@/components/datepicker/DatePicker';
 import { UpdateRequestDto } from '@/data/event/api/dto/request/update.request.dto';
-import { Event } from '@/data/event/model/event.model';
+import { Election } from '@/data/election/model/election.model';
+import { ElectionRepository } from '@/data/election/repository/elections.repository';
+import { UpdateElectionRequestDto } from '@/data/election/api/dto/request/update.request.dto';
+import { ElectionTypeEnum } from '@/data/utils/type.enum';
 
-const today = new Date()
-
-interface EventUpdateFormProps {
-    event: Event
+interface ElectionUpdateFormProps {
+    election: Election
 }
 
-const EventUpdateForm = (props: EventUpdateFormProps) => {
+const ElectionUpdateForm = (props: ElectionUpdateFormProps) => {
 
     // Props
-    const { event } = props;
+    const { election } = props;
 
     // State variables
     const [appState, setAppState] = useState({
         loading: false,
         success: null,
     });
-    const [name, setName] = useState(event == null ? '' : event.name);
-    const [startDate, setStartDate] = useState(event == null ? today : new Date(event.startDate));
-    const [endDate, setEndDate] = useState(event == null ? today : new Date(event.endDate));
+
+    const [name, setName] = useState(
+        election == null ? '' : election.name)
+        ;
     const [information, setInformation] = useState(
-        event == undefined ? '' : event.information,
+        election == undefined ? '' : election.information
+    );
+    const [type, setType] = useState<number>(
+        election == undefined ? 1 : election.typeId
+    );
+    const [winners, setWinners] = useState<number>(
+        election == undefined ? 1 : election.winners
     );
 
     // Utils
@@ -46,7 +53,7 @@ const EventUpdateForm = (props: EventUpdateFormProps) => {
     const toast = useToast();
 
     // Get service instance
-    const eventRepository = EventRepository.getInstance()
+    const electionRepository = ElectionRepository.getInstance()
 
     // Validators
     function validateLength(value: string, minLen: number, maxLen: number, fieldName: string) {
@@ -62,27 +69,31 @@ const EventUpdateForm = (props: EventUpdateFormProps) => {
     }
 
     // Functions
-    const handleInformationChange = (event) => setInformation(event.target.value);
-    const handleNameChange = (event) => setName(event.target.value);
+    const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => setName(event.target.value)
+    const handleInformationChange = (event: ChangeEvent<HTMLTextAreaElement>) => setInformation(event.target.value)
+    const handleTypeChange = (event: ChangeEvent<HTMLSelectElement>) => {
+        if (Number(event.target.value) == 1) {
+            setType(1)
+            setWinners(1)
+        } else {
+            setWinners(0)
+            setType(Number(event.target.value))
+        }
+    }
+    const handleWinnersChange = (event: ChangeEvent<HTMLSelectElement>) => setWinners(Number(event.target.value))
 
-    function onChangeStartDate (date: Date) {
-		setStartDate(date)
-	}
-
-	function onChangeEndDate (date: Date) {
-		setEndDate(date)
-	}
-
-    function showError(msg) {
+    function showError(msg: string) {
         showToast('Error!', msg, false, toast);
     }
 
     const updateNewEvent = async () => {
+
         // Validate null data
-        if (startDate == null || endDate == null ||
-            name.length == 0 || information.length == 0) {
-            showError('Debes completar todos los campos para crear el evento de votación')
-            return;
+        if (type < 1 || winners < 1 || name.length == 0 || information.length == 0) {
+            showError(
+                'Debes completar todos los campos para crear el evento de votación'
+            )
+            return
         }
 
         // Validate if fields are correct
@@ -90,34 +101,21 @@ const EventUpdateForm = (props: EventUpdateFormProps) => {
             return;
         }
 
-        // Validate if event has not started
-        const startDateMoment = moment(event.startDate, 'DD/MM/YYYY HH:mm:SS');
-        const endDateMoment = moment(event.endDate, 'DD/MM/YYYY HH:mm:SS');
-
-        if (moment().isBetween(startDateMoment, endDateMoment)) {
-            showToast(
-                'Ocurrió un error',
-                'No se puede modificar un evento que ya ha iniciado',
-                false,
-                toast,
-            );
-            return;
-        }
-
         try {
             setAppState({ loading: true, success: null });
 
             // Prepare dto to update
-            const updateDto: UpdateRequestDto = {
-                id: event.id.toString(),
-                endDate: endDate,
-                startDate: startDate,
+            const updateDto: UpdateElectionRequestDto = {
+                id: election.id.toString(),
+                eventId: election.eventId,
+                winners: winners,
                 information: information,
-                name: name
+                name: name,
+                typeId: type
             }
 
             // Update request
-            await eventRepository.update(updateDto)
+            await electionRepository.update(updateDto)
 
             // Show successful toast
             showToast(
@@ -131,7 +129,10 @@ const EventUpdateForm = (props: EventUpdateFormProps) => {
             setAppState({ loading: false, success: true });
 
             // Go back to last screen
-            router.push(`/events/[id]`, `/events/${event.id}`)
+            router.push(
+                `/events/[eventId]/elections/[electionId]`,
+                `/events/${election.eventId}/elections/${election.id}`
+            )
         } catch (error) {
             // Show error toast
             showToast(`Ocurrió un error!`, error, false, toast);
@@ -159,21 +160,29 @@ const EventUpdateForm = (props: EventUpdateFormProps) => {
                 />
             </FormControl>
             <FormControl mt={4}>
-                <FormLabel>Fecha inicio</FormLabel>
-                <DatePicker
-                    selectedDate={startDate}
-                    onChange={onChangeStartDate}
-                    minDate={today}
-                />
-            </FormControl>
-            <FormControl mt={4}>
-                <FormLabel>Fecha de fin</FormLabel>
-                <DatePicker
-                    selectedDate={endDate}
-                    onChange={onChangeEndDate}
-                    minDate={startDate}
-                />
-            </FormControl>
+				<FormLabel>Tipo de actividad</FormLabel>
+				<Select value={type} onChange={handleTypeChange} placeholder="Tipo de actividad">
+					<option key={ElectionTypeEnum.SINGLE} value={ElectionTypeEnum.SINGLE}>Actividad de elección única</option>
+					<option key={ElectionTypeEnum.MULTIPLE} value={ElectionTypeEnum.MULTIPLE}>Actividad de elección múltiple</option>
+				</Select>
+			</FormControl>
+			<FormControl mt={4}>
+				<FormLabel>Cantidad de ganadores</FormLabel>
+				{
+					(type == ElectionTypeEnum.SINGLE) ?
+						<Input
+							value={1}
+							disabled
+						/>
+						:
+						<Select value={winners} onChange={handleWinnersChange} placeholder="Cantidad de ganadores">
+							<option key={2} value={2}>2</option>
+							<option key={3} value={3}>3</option>
+							<option key={4} value={4}>4</option>
+							<option key={5} value={5}>5</option>
+						</Select>
+				}
+			</FormControl>
             <FormControl mt={4}>
                 <BoxtingButton
                     isLoading={appState.loading}
@@ -188,4 +197,4 @@ const EventUpdateForm = (props: EventUpdateFormProps) => {
     );
 };
 
-export default EventUpdateForm;
+export default ElectionUpdateForm;

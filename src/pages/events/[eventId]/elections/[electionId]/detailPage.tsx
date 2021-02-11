@@ -1,12 +1,10 @@
-import { Box, Center, Flex, PinInput, PinInputField, SimpleGrid, Text } from '@chakra-ui/core';
+import { Box, Center } from '@chakra-ui/core';
 import React from 'react';
 import { useRouter } from 'next/router';
 import PageTitle from '@/components/pageTitle';
 import BoxtingButton from '@/components/buttons/boxting_button';
 import { ButtonType } from '@/components/buttons/utils';
 import { EditIcon } from '../../../../../components/icons/index';
-import { LockIcon } from '@chakra-ui/icons';
-import DatePicker from '@/components/datepicker/DatePicker';
 import { Election } from '@/data/election/model/election.model';
 import DeleteElectionAlertDialog from './deleteElection';
 
@@ -41,6 +39,21 @@ const ElectionDetail = (props: ElectionDetailProps) => {
 
             <DeleteElectionAlertDialog election={election} />
 
+            <BoxtingButton
+                style={{ marginRight: '12px', marginBottom: '12px' }}
+                text="Editar"
+                typeBtn={ButtonType.primary}
+                leftIcon={<EditIcon boxSize={4} />}
+                onEnter={() =>
+                    router.push(
+                        {
+                            pathname: `/events/[eventId]/elections/[electionId]/update`,
+                            query: { data: JSON.stringify(election) },
+                        },
+                        `/events/${election.eventId}/elections/${election.id}/update`,
+                    )
+                }
+            />
 
         </Box>
     );

@@ -5,13 +5,13 @@ import withAuthServerSideProps from '@/utils/auth-middleware';
 import PageTitle from '@/components/pageTitle';
 import { useRouter } from 'next/router';
 import { NextPage } from 'next';
-import EventUpdateForm from './updateEventForm';
-import { Event } from '@/data/event/model/event.model';
+import { Election } from '@/data/election/model/election.model';
+import ElectionUpdateForm from './updateElectionForm';
 
-const UpdateEventPage: NextPage = () => {
+const UpdateElectionPage: NextPage = () => {
     const router = useRouter();
 
-    const event:Event = JSON.parse(router.query.data as string);
+    const election: Election = JSON.parse(router.query.data as string);
 
     return (
         <Box>
@@ -19,15 +19,18 @@ const UpdateEventPage: NextPage = () => {
                 title="Actualizar votación"
                 description="En esta sección se podrá editar la información del evento."
                 onBackClick={
-                    () => router.push(`/events/[id]`, `/events/${event.id}`)
+                    () => router.push(
+                        `/events/[eventId]/elections/[electionId]`,
+                        `/events/${election.eventId}/elections/${election.id}`
+                    )
                 }
                 enableBackIcon
             />
 
-            <EventUpdateForm event={event} />
+            <ElectionUpdateForm election={election} />
         </Box>
     );
 };
 
-export default dashboardWrapper(UpdateEventPage);
+export default dashboardWrapper(UpdateElectionPage);
 export const getServerSideProps = withAuthServerSideProps();
