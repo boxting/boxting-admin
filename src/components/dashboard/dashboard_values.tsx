@@ -65,18 +65,33 @@ export const breadcrumbItems = (routes: string[]): string[] => {
             }
         }
     } else if (routes.length === 3) {
-        if (routes[2] === 'codes') {
-            return ['Evento', routes[1], 'Códigos']
-        } else if (routes[2] === 'update') {
-            return ['Evento', routes[1], 'Actualizar']
+        if (routes[0] == 'events') {
+            if (routes[2] === 'codes') {
+                return ['Evento', routes[1], 'Códigos']
+            } else if (routes[2] === 'update') {
+                return ['Evento', routes[1], 'Actualizar']
+            }
+        } else if (routes[0] == 'elections') {
+            if (routes[2] == 'lists') {
+                return ['Elección', routes[1], 'Listas']
+            }
         }
+
     } else if (routes.length === 4) {
         if (routes[0] === 'events') {
             if (routes[2] === 'elections') {
                 if (routes[3] === 'create') {
                     return ['Evento', routes[1], 'Elecciones', 'Crear']
-                }else {
-                    return ['Evento', routes[1], 'Elecciones', routes[3]]
+                } else {
+                    return ['Evento', routes[1], 'Elección', routes[3]]
+                }
+            }
+        } else if (routes[0] == 'elections') {
+            if (routes[2] == 'lists') {
+                if (routes[3] === 'create') {
+                    return ['Elección', routes[1], 'Listas', 'Crear']
+                } else {
+                    return ['Elección', routes[1], 'Lista', routes[3]]
                 }
             }
         }
@@ -85,6 +100,12 @@ export const breadcrumbItems = (routes: string[]): string[] => {
             if (routes[2] === 'elections') {
                 if (routes[4] === 'update') {
                     return ['Evento', routes[1], 'Elecciones', routes[3], 'Actualizar']
+                }
+            }
+        } else if (routes[0] == 'elections') {
+            if (routes[2] == 'lists') {
+                if (routes[4] === 'update') {
+                    return ['Elección', routes[1], 'Lista', routes[3], 'Actualizar']
                 }
             }
         }
