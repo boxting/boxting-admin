@@ -4,11 +4,11 @@ import Card from '@/components/card';
 import { useRouter } from 'next/router';
 import { List } from '@/data/list/model/list.model';
 
-interface EventListProps {
+interface ListListProps {
     lists: List[]
 }
 
-const ListList = (props: EventListProps) => {
+const ListList = (props: ListListProps) => {
 
     const { lists } = props;
     const router = useRouter();

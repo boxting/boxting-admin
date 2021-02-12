@@ -1,3 +1,4 @@
+import { List } from "@/data/list/model/list.model"
 
 export class Candidate {
     id: number
@@ -5,10 +6,11 @@ export class Candidate {
     lastName: string
     information: string
     age: number
-    imageUrl: string
+    imageUrl?: string
     isActive: boolean
     createdAt?: Date
     updatedAt?: Date
     listId?: number
     electionId?: number
+    list?: List
 }

@@ -68,6 +68,19 @@ const ElectionDetail = (props: ElectionDetailProps) => {
                 }
             />
 
+            <BoxtingButton
+                style={{ marginRight: '12px', marginBottom: '12px' }}
+                text="Gestionar candidatos"
+                typeBtn={ButtonType.primary}
+                leftIcon={<EditIcon boxSize={4} />}
+                onEnter={() =>
+                    router.push(
+                        `/elections/[electionId]/candidates/`,
+                        `/elections/${election.id}/candidates/`,
+                    )
+                }
+            />
+
             <Box width='100%'>
                 <Text mt="16px">
                     <b>Tipo de actividad:</b> {(election.typeId == 1) ?
