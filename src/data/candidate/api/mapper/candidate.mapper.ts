@@ -14,7 +14,8 @@ export async function getAllToCandidateList(response: GetAllCandidatesResponseDt
             isActive: value.isActive,
             electionId: value.electionId,
             imageUrl: value.imageUrl,
-            listId: value.listId
+            listId: value.listId,
+            list: value.list
         }
         return candidate
     })
@@ -33,7 +34,8 @@ export async function getOneToCandidate(response: GetOneCandidateResponseDto): P
         isActive: response.data.isActive,
         electionId: response.data.electionId,
         imageUrl: response.data.imageUrl,
-        listId: response.data.listId
+        listId: response.data.listId,
+        list: response.data.list
     }
 
     return candidate

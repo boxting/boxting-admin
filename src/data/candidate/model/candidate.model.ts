@@ -1,3 +1,4 @@
+import { List } from "@/data/list/model/list.model"
 
 export class Candidate {
     id: number
@@ -11,4 +12,5 @@ export class Candidate {
     updatedAt?: Date
     listId?: number
     electionId?: number
+    list?: List
 }

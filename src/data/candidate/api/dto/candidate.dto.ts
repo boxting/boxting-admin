@@ -1,3 +1,5 @@
+import { List } from "@/data/list/model/list.model";
+
 export interface CandidateDto {
     id: number,
     firstName: string,
@@ -9,5 +11,6 @@ export interface CandidateDto {
     listId: number,
     electionId: number,
     createdAt?: Date,
-    updatedAt?: Date
+    updatedAt?: Date,
+    list?: List
 }
