@@ -6,5 +6,5 @@ export interface CreateCandidateRequestDto {
     imageUrl?: string,
     isActive?: boolean,
     listId: number,
-    electionId?: number
+    electionId: number
 }

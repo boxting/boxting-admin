@@ -57,7 +57,7 @@ export class CandidateRepository {
         }
     }
 
-    async create( listId: string | number, candidate: CreateCandidateRequestDto): Promise<CreateCandidateResponseDto> {
+    async create(listId: string | number, candidate: CreateCandidateRequestDto): Promise<CreateCandidateResponseDto> {
         try {
             // Make request
             const res = await this._service.connection.post(`/candidate/list/${listId}`, candidate);
@@ -93,6 +93,24 @@ export class CandidateRepository {
         }
     }
 
+    async getOneByElection(id: string | number, electionId: string | number): Promise<GetOneCandidateResponseDto> {
+        try {
+            // Make request
+            const res = await this._service.connection.get(`/candidate/${id}/election/${electionId}`);
+            // Assign data to response dto
+            const data: GetOneCandidateResponseDto = res.data
+            // Return data
+            return Promise.resolve(data);
+        } catch (error) {
+            // Log error for internal use
+            console.log(error)
+            // Set the message using the error mapper
+            let msg = ErrorMapper[error.error.errorCode] || ErrorMapper[500];
+            // Return the obtained message
+            return Promise.reject(msg);
+        }
+    }
+
     async delete(id: string | number, listId: string | number): Promise<boolean> {
         try {
             // Make request
@@ -111,10 +129,48 @@ export class CandidateRepository {
         }
     }
 
+    async deleteByElection(id: string | number, electionId: string | number): Promise<boolean> {
+        try {
+            // Make request
+            const res = await this._service.connection.delete(`/candidate/${id}/election/${electionId}`);
+            // Assign data to response dto
+            const data: DeleteCandidateResponseDto = res.data
+            // Return data
+            return Promise.resolve(data.success);
+        } catch (error) {
+            // Log error for internal use
+            console.log(error)
+            // Set the message using the error mapper
+            let msg = ErrorMapper[error.error.errorCode] || ErrorMapper[500];
+            // Return the obtained message
+            return Promise.reject(msg);
+        }
+    }
+
     async update(newCandidate: UpdateCandidateRequestDto): Promise<boolean> {
         try {
             // Make request
-            const res = await this._service.connection.put(`/candidate/${newCandidate.id}/list/${newCandidate.listId}`, newCandidate);
+            const res = await this._service.connection.put(
+                `/candidate/${newCandidate.id}/list/${newCandidate.listId}`, newCandidate);
+            // Assign data to response dto
+            const data: UpdateCandidateResponseDto = res.data
+            // Return data
+            return Promise.resolve(data.success);
+        } catch (error) {
+            // Log error for internal use
+            console.log(error)
+            // Set the message using the error mapper
+            let msg = ErrorMapper[error.error.errorCode] || ErrorMapper[500];
+            // Return the obtained message
+            return Promise.reject(msg);
+        }
+    }
+
+    async updateByElection(newCandidate: UpdateCandidateRequestDto): Promise<boolean> {
+        try {
+            // Make request
+            const res = await this._service.connection.put(
+                `/candidate/${newCandidate.id}/election/${newCandidate.electionId}`, newCandidate);
             // Assign data to response dto
             const data: UpdateCandidateResponseDto = res.data
             // Return data
