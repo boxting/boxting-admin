@@ -5,7 +5,7 @@ export class Candidate {
     lastName: string
     information: string
     age: number
-    imageUrl: string
+    imageUrl?: string
     isActive: boolean
     createdAt?: Date
     updatedAt?: Date
