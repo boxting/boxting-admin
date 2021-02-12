@@ -1,23 +1,22 @@
-import { Box, useToast } from '@chakra-ui/core';
+import { Box } from '@chakra-ui/core';
 import React, { useState, useEffect } from 'react';
 import dashboardWrapper from '@/utils/dashboard-wrapper';
 import withAuthServerSideProps from '@/utils/auth-middleware';
 import PageTitle from '@/components/pageTitle';
 import { useRouter } from 'next/router';
-import * as ListMapper from '@/data/list/api/mapper/list.mapper'
 import { NextPage } from 'next';
-import CandidateCreateForm from './createCandidateForm';
+import { Candidate } from '@/data/candidate/model/candidate.model';
+import CandidateUpdateForm from './updateCandidateForm';
 import { ListRepository } from '@/data/list/repository/list.repository';
-import { showToast } from '@/components/toast/custom.toast'
+import * as ListMapper from '@/data/list/api/mapper/list.mapper';
 
-const CreateCandidatePage: NextPage = () => {
+const UpdateCandidatePage: NextPage = () => {
     const router = useRouter();
 
-    const listRepository = ListRepository.getInstance()
-
-    const toast = useToast()
-
+    const candidate: Candidate = JSON.parse(router.query.data as string);
     const { electionId } = router.query
+
+    const listRepository = ListRepository.getInstance()
 
     const [appState, setAppState] = useState({
         loading: false,
@@ -32,14 +31,7 @@ const CreateCandidatePage: NextPage = () => {
             try {
                 const res = await listRepository.getAll(electionId as string)
                 const lists = await ListMapper.getAllToListList(res)
-
-                if (lists == undefined || lists.length == 0) {
-                    showToast('Ocurrió un error!', 'No puedes crear candidatos sin haber creado una lista.', false, toast)
-                    router.back()
-                    return
-                }
-
-                setAppState({ loading: false, lists: lists })                
+                setAppState({ loading: false, lists: lists })
             } catch (error) {
                 setAppState({ loading: false, lists: [] })
             }
@@ -52,16 +44,18 @@ const CreateCandidatePage: NextPage = () => {
     return (
         <Box>
             <PageTitle
-                title='Crear lista de candidatos'
-                description='En esta sección se podrá crear un nuevo candidato.'
-                onBackClick={() => router.back()}
+                title="Actualizar candidato"
+                description="En esta sección se podrá editar la información del candidato."
+                onBackClick={
+                    () => router.back()
+                }
                 enableBackIcon
             />
 
-            <CandidateCreateForm electionId={electionId as string} lists={appState.lists} />
+            <CandidateUpdateForm candidate={candidate} lists={appState.lists} />
         </Box>
     );
 };
 
-export default dashboardWrapper(CreateCandidatePage);
+export default dashboardWrapper(UpdateCandidatePage);
 export const getServerSideProps = withAuthServerSideProps();

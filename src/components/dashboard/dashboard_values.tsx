@@ -75,7 +75,7 @@ export const breadcrumbItems = (routes: string[]): string[] => {
             if (routes[2] == 'lists') {
                 return ['Elección', routes[1], 'Listas']
             } else if (routes[2] == 'candidates') {
-                return ['Elección', routes[1], 'Candidates']
+                return ['Elección', routes[1], 'Candidatos']
             }
         }
 
@@ -98,6 +98,8 @@ export const breadcrumbItems = (routes: string[]): string[] => {
             }else if (routes[2] == 'candidates') {
                 if (routes[3] === 'create') {
                     return ['Elección', routes[1], 'Candidatos', 'Crear']
+                }else {
+                    return ['Elección', routes[1], 'Candidato', routes[3]]
                 }
             }
         }
@@ -112,6 +114,10 @@ export const breadcrumbItems = (routes: string[]): string[] => {
             if (routes[2] == 'lists') {
                 if (routes[4] === 'update') {
                     return ['Elección', routes[1], 'Lista', routes[3], 'Actualizar']
+                }
+            } else if (routes[2] == 'candidates') {
+                if (routes[4] === 'update') {
+                    return ['Elección', routes[1], 'Candidato', routes[3], 'Actualizar']
                 }
             }
         }

@@ -31,8 +31,8 @@ const CandidateList = (props: CandidateListProps) => {
                         textHead={`${item.firstName} ${item.lastName}`}
                         textBody={item.information}
                         onEnter={() => router.push(
-                            `/lists/[listId]/candidates/[candidateId]`,
-                            `/lists/${item.listId}/candidates/${item.id}`
+                            `/elections/[electionId]/candidates/[candidateId]`,
+                            `/elections/${item.electionId}/candidates/${item.id}`
                         )}
                     />
 
