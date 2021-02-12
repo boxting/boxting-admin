@@ -5,7 +5,6 @@ export interface UpdateCandidateRequestDto {
     information: string,
     age: number,
     imageUrl?: string,
-    isActive: boolean,
+    isActive?: boolean,
     listId: number,
-    electionId: number
 }
