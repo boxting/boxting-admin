@@ -1,4 +1,5 @@
 export interface UpdateCandidateRequestDto {
+    id: number,
     firstName: string,
     lastName: string,
     information: string,
