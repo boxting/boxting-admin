@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/core';
+import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Button, Icon, Menu, MenuButton, MenuItem, MenuList, useToast } from '@chakra-ui/core';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 
@@ -8,6 +8,9 @@ import { Sidebar } from '../sidebar';
 
 import { UserCircleIcon, BellIcon } from '../icons';
 import { breadcrumbItems, DEFAULT_SIDEBAR } from './dashboard_values';
+import { showToast } from '../toast/custom.toast';
+import { LoginRepository } from '@/data/login/repository/login.repository';
+import CookiesManager from '@/data/utils/cookies.manager';
 
 const BACKGROUND_COLOR = `#fff`;
 
@@ -47,6 +50,33 @@ const CustomBreadcumb: React.FC<CustomBreadcumbProps> = ({
 const PlatformLayout: React.FC<LayoutProps> = ({ children }: LayoutProps) => {
     const [isOpen, setOpen] = useState<boolean>(false);
     const router = useRouter();
+    const toast = useToast();
+
+    // Get service instance
+    const loginRepository = LoginRepository.getInstance()
+    const cookiesManager = CookiesManager.getInstance()
+
+    const onLogout = async () => {
+        try {
+
+            const refresh = cookiesManager._getRefreshToken();
+            // Delete request
+            await loginRepository.logout(refresh);
+
+            // Delete tokens
+            cookiesManager._clearToken();
+
+            // Go to events page
+            router.push('/login');
+
+            // Show success toast
+            showToast('Éxito', 'Sesión cerrada correctamente.',
+                true, toast);
+
+        } catch (error) {
+            showToast('Ocurrió un error', error, false, toast);
+        }
+    }
 
     return (
         <Box
@@ -119,7 +149,18 @@ const PlatformLayout: React.FC<LayoutProps> = ({ children }: LayoutProps) => {
                     alignItems="center"
                     background="#ffffff"
                 >
-                    <UserCircleIcon boxSize={5} color="#bbbbbb" />
+                    <Menu>
+                        <MenuButton as={Box}>
+                            <UserCircleIcon boxSize={5} color="#bbbbbb" />
+                        </MenuButton>
+                        <MenuList>
+                            <MenuItem
+                                onClick={onLogout}
+                            >
+                                Cerrar sesión
+                            </MenuItem>
+                        </MenuList>
+                    </Menu>
                 </Box>
                 <Box
                     marginBottom="35px"
