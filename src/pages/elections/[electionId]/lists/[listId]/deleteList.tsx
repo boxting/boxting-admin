@@ -45,7 +45,7 @@ function DeleteListAlertDialog(props: DeleteListProps) {
 
             // Delete image if exists
             if(list.imageUrl){
-                firebaseManager.storage.refFromURL(list.imageUrl).delete()
+                firebaseManager.storage.refFromURL(list.imageUrl).delete().catch(()=>{})
             }
 
             // Close detail

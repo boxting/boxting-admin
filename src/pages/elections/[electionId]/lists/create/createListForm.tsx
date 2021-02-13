@@ -9,7 +9,7 @@ import {
 	Image,
 } from '@chakra-ui/core'
 import { ButtonType } from '@/components/buttons/utils'
-import React, { ChangeEvent, useState } from 'react'
+import React, { ChangeEvent, createRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import { showToast } from '@/components/toast/custom.toast'
 import { ListRepository } from '@/data/list/repository/list.repository'
@@ -41,6 +41,7 @@ const ListCreateForm = (props: ListCreateFormProps) => {
 	// Utils
 	const router = useRouter()
 	const toast = useToast()
+	const InputRef = createRef<HTMLInputElement>()
 
 	// Get service instance
 	const listRepository = ListRepository.getInstance()
@@ -125,7 +126,7 @@ const ListCreateForm = (props: ListCreateFormProps) => {
 
 			const imageData: ImageUploadInterface = {
 				image: image,
-				name: `${imageName}.png`,
+				name: `${imageName}_${new Date().getTime()}.png`,
 				path: `images/election-${electionId}/lists`
 			}
 
@@ -214,8 +215,14 @@ const ListCreateForm = (props: ListCreateFormProps) => {
 				/>
 			</FormControl>
 			<FormControl mt={4}>
-				<FormLabel>Imagen (opcional)</FormLabel>
+				<BoxtingButton
+					typeBtn={ButtonType.outline}
+					text="Subir imagen (opcional)"
+					onEnter={()=>{InputRef.current.click()}}
+				/> 				
 				<input
+					style={{display:'none'}}
+					ref={InputRef}
 					type="file"
 					onChange={handleImageChange}
 					accept="image/png, image/jpeg"

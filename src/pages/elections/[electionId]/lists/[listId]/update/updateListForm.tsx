@@ -9,7 +9,7 @@ import {
     Image
 } from '@chakra-ui/core';
 import { ButtonType } from '@/components/buttons/utils';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, createRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { showToast } from '@/components/toast/custom.toast';
 import 'react-datetime/css/react-datetime.css';
@@ -49,6 +49,7 @@ const ListUpdateForm = (props: ListUpdateFormProps) => {
     // Utils
     const router = useRouter();
     const toast = useToast();
+    const InputRef = createRef<HTMLInputElement>();
 
     // Get service instance
     const listRepository = ListRepository.getInstance()
@@ -128,7 +129,7 @@ const ListUpdateForm = (props: ListUpdateFormProps) => {
 
             const imageData: ImageUploadInterface = {
                 image: image,
-                name: `${imageName}.png`,
+                name: `${imageName}_${new Date().getTime()}.png`,
                 path: `images/election-${list.electionId}/lists`
             }
 
@@ -160,11 +161,9 @@ const ListUpdateForm = (props: ListUpdateFormProps) => {
                                 toast,
                             );
 
-                            // Check if necessary to delete old image
-                            const oldName = firebaseManager.storage.refFromURL(list.imageUrl).name
-                            if (list.imageUrl && oldName != imageData.name) {
-                                // Remove image with old name as the new image has been saved
-                                firebaseManager.storage.refFromURL(list.imageUrl).delete()
+                            // Remove image with old name as the new image has been saved
+                            if (list.imageUrl) {
+                                firebaseManager.storage.refFromURL(list.imageUrl).delete().catch(()=>{})
                             }
 
                             // Set state
@@ -227,8 +226,14 @@ const ListUpdateForm = (props: ListUpdateFormProps) => {
                 />
             </FormControl>
             <FormControl mt={4}>
-                <FormLabel>Imagen (opcional)</FormLabel>
+                <BoxtingButton
+                    typeBtn={ButtonType.outline}
+                    text="Subir imagen (opcional)"
+                    onEnter={() => { InputRef.current.click() }}
+                />
                 <input
+                    style={{ display: 'none' }}
+                    ref={InputRef}
                     type="file"
                     onChange={handleImageChange}
                     accept="image/png, image/jpeg"
