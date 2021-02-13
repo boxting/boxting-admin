@@ -15,7 +15,7 @@ import { useRouter } from 'next/router';
 import moment from 'moment';
 import { Event } from '@/data/event/model/event.model';
 
-interface DeleteEventProps{
+interface DeleteEventProps {
     event: Event
 }
 
@@ -90,20 +90,20 @@ function DeleteEventAlertDialog(props: DeleteEventProps) {
                 <AlertDialogContent>
                     <AlertDialogHeader fontSize="lg" fontWeight="bold">
                         Eliminar evento
-          </AlertDialogHeader>
+                    </AlertDialogHeader>
 
                     <AlertDialogBody>
                         ¿Estas seguro que deseas eliminar este evento de votación? No se
                         podrá recuperar la información de este evento.
-          </AlertDialogBody>
+                    </AlertDialogBody>
 
                     <AlertDialogFooter>
                         <Button ref={cancelRef} onClick={onClose}>
                             Cancelar
-            </Button>
+                        </Button>
                         <Button colorScheme="red" onClick={onConfirm} ml={3}>
                             Confirmar
-            </Button>
+                        </Button>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
