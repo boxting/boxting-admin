@@ -61,7 +61,7 @@ const ListCreateForm = (props: ListCreateFormProps) => {
 				return
 			}
 
-			ImageResizer.imageFileResizer(file, 500, 500, "JPEG", 70, 0, (blob: Blob) => {
+			ImageResizer.imageFileResizer(file, 500, 500, "PNG", 70, 0, (blob: Blob) => {
 				setImage(blob)
 				setImagePath(URL.createObjectURL(blob))
 			}, "blob")
@@ -125,8 +125,8 @@ const ListCreateForm = (props: ListCreateFormProps) => {
 
 			const imageData: ImageUploadInterface = {
 				image: image,
-				name: `${imageName}.jpeg`,
-				path: `images/election${electionId}/lists`
+				name: `${imageName}.png`,
+				path: `images/election-${electionId}/lists`
 			}
 
 			const uploadTask = firebaseManager.storage.ref(

@@ -1,4 +1,4 @@
-import { Box, Center, Flex, PinInput, SimpleGrid, Text } from '@chakra-ui/core';
+import { Box, Center, Flex, Image, PinInput, SimpleGrid, Text } from '@chakra-ui/core';
 import React from 'react';
 import { useRouter } from 'next/router';
 import PageTitle from '@/components/pageTitle';
@@ -49,6 +49,13 @@ const ListDetail = (props: ListDetailProps) => {
                 }
             />
 
+            <Box width='100%'>
+                <Image
+                    mt="16px"
+                    src={(list.imageUrl) ? list.imageUrl : '/images/logo/boxting_logo.png'}
+                    maxWidth='300px'
+                />
+            </Box>
         </Box>
     );
 };
