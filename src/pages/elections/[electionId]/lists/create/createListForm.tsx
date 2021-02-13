@@ -6,6 +6,7 @@ import {
 	Input,
 	useToast,
 	Textarea,
+	Image,
 } from '@chakra-ui/core'
 import { ButtonType } from '@/components/buttons/utils'
 import React, { ChangeEvent, useState } from 'react'
@@ -13,6 +14,10 @@ import { useRouter } from 'next/router'
 import { showToast } from '@/components/toast/custom.toast'
 import { ListRepository } from '@/data/list/repository/list.repository'
 import { CreateListRequestDto } from '@/data/list/api/dto/request/create.request.dto'
+import ImageResizer from 'react-image-file-resizer'
+import { FirebaseManager } from '@/data/firebase-cfg'
+import { ImageUploadInterface } from '@/data/utils/image.interface'
+import { CreateListResponseDto } from '@/data/list/api/dto/response/create.response.dto'
 
 interface ListCreateFormProps {
 	electionId: string | number
@@ -27,6 +32,8 @@ const ListCreateForm = (props: ListCreateFormProps) => {
 	})
 	const [information, setInformation] = useState('')
 	const [name, setName] = useState('')
+	const [imagePath, setImagePath] = useState('')
+	const [image, setImage] = useState<Blob>(undefined)
 
 	// Props
 	const electionId = props.electionId
@@ -37,10 +44,34 @@ const ListCreateForm = (props: ListCreateFormProps) => {
 
 	// Get service instance
 	const listRepository = ListRepository.getInstance()
+	const firebaseManager = FirebaseManager.getInstance()
 
 	// Functions
 	const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => setName(event.target.value)
 	const handleInformationChange = (event: ChangeEvent<HTMLTextAreaElement>) => setInformation(event.target.value)
+	const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+		if (event.target.files[0]) {
+			const file = event.target.files[0]
+
+			if (file.type != 'image/png' && file.type != 'image/jpeg' && file.type != 'image/jpg') {
+				event.target.value = null
+				setImage(undefined)
+				setImagePath(undefined)
+				showToast('Ocurrió un error!', 'El tipo de archivo seleccionado es incorrecto.', false, toast)
+				return
+			}
+
+			ImageResizer.imageFileResizer(file, 500, 500, "JPEG", 70, 0, (blob: Blob) => {
+				setImage(blob)
+				setImagePath(URL.createObjectURL(blob))
+			}, "blob")
+
+		} else {
+			setImage(undefined)
+			setImagePath(undefined)
+			event.target.value = null
+		}
+	}
 
 	function showError(msg: string) {
 		showToast(`Error!`, msg, false, toast)
@@ -79,32 +110,88 @@ const ListCreateForm = (props: ListCreateFormProps) => {
 			return
 		}
 
-		try {
-			setAppState({ loading: true, success: null })
+		// Set app state
+		setAppState({ loading: true, success: null })
 
-			const listRequest: CreateListRequestDto = {
-				name: name,
-				information: information,
-				electionId: Number(electionId)
+		// Create list request
+		const listRequest: CreateListRequestDto = {
+			name: name,
+			information: information,
+			electionId: Number(electionId),
+		}
+
+		if (image != undefined) {
+			const imageName = name.replace(new RegExp(' ', 'g'), '_')
+
+			const imageData: ImageUploadInterface = {
+				image: image,
+				name: `${imageName}.jpeg`,
+				path: `images/election${electionId}/lists`
 			}
 
-			const res = await listRepository.create(electionId, listRequest)
-			const responseSuccess = res != null ? res.success : false
+			const uploadTask = firebaseManager.storage.ref(
+				`${imageData.path}/${imageData.name}`
+			).put(imageData.image)
 
-			if (!responseSuccess) {
-				throw Error('Create new list fails')
+			uploadTask.on(
+				"state_changed",
+				/*observer*/() => { },
+				/*on error*/() => {
+					showToast('Ocurrió un error!', 'No se pudo subir la imagen.', false, toast)
+					setAppState({ loading: false, success: false })
+				},
+				/*on complete*/() => {
+					firebaseManager.storage.ref(
+						`${imageData.path}`
+					).child(imageData.name).getDownloadURL().then((url) => {
+						// Set the image url
+						listRequest.imageUrl = url
+
+						// Send creation request
+						listRepository.create(
+							electionId, listRequest
+						).then((value: CreateListResponseDto) => {
+							const responseSuccess = value != null ? value.success : false
+
+							if (!responseSuccess) {
+								throw Error('Create new list fails')
+							}
+
+							setAppState({ loading: false, success: responseSuccess })
+
+							showToast('Éxito', 'La lista fue creada correctamente',
+								true, toast)
+
+							router.back()
+						}).catch((reason) => {
+							console.log(reason)
+							showToast('Ocurrió un error!', reason, false, toast)
+							setAppState({ loading: false, success: false })
+						})
+					})
+				}
+			)
+		} else {
+			try {
+				const res: CreateListResponseDto = await listRepository.create(electionId, listRequest)
+
+				const responseSuccess = res != null ? res.success : false
+
+				if (!responseSuccess) {
+					throw Error('Create new list fails')
+				}
+
+				setAppState({ loading: false, success: responseSuccess })
+
+				showToast('Éxito', 'La lista fue creada correctamente',
+					true, toast)
+
+				router.back()
+			} catch (error) {
+				console.log(error)
+				showToast('Ocurrió un error!', error, false, toast)
+				setAppState({ loading: false, success: false })
 			}
-
-			setAppState({ loading: false, success: responseSuccess })
-
-			showToast('Éxito', 'La lista fue creada correctamente',
-				true, toast)
-
-			router.back()
-		} catch (error) {
-			console.log(error)
-			showToast('Ocurrió un error!', error, false, toast)
-			setAppState({ loading: false, success: false })
 		}
 	}
 
@@ -124,6 +211,20 @@ const ListCreateForm = (props: ListCreateFormProps) => {
 					value={information}
 					onChange={handleInformationChange}
 					placeholder="Información"
+				/>
+			</FormControl>
+			<FormControl mt={4}>
+				<FormLabel>Imagen (opcional)</FormLabel>
+				<input
+					type="file"
+					onChange={handleImageChange}
+					accept="image/png, image/jpeg"
+				/>
+			</FormControl>
+			<FormControl mt={4}>
+				<Image
+					src={imagePath}
+					maxWidth='300px'
 				/>
 			</FormControl>
 			<FormControl mt={4}>
