@@ -33,6 +33,7 @@
     "@hookform/resolvers": "^0.1.1",
     "axios": "0.20.0",
     "emotion-theming": "10.0.27",
+    "firebase": "8.2.7",
     "framer-motion": "2.9.4",
     "js-cookie": "2.2.1",
     "moment": "2.29.1",
