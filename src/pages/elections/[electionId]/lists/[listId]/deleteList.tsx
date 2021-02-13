@@ -13,6 +13,7 @@ import { ListRepository } from '@/data/list/repository/list.repository';
 import { showToast } from '../../../../../components/toast/custom.toast';
 import { useRouter } from 'next/router';
 import { List } from '@/data/list/model/list.model';
+import { FirebaseManager } from '@/data/firebase-cfg';
 
 interface DeleteListProps {
     list: List
@@ -34,12 +35,18 @@ function DeleteListAlertDialog(props: DeleteListProps) {
 
     // Get service instance
     const listRepository = ListRepository.getInstance()
+	const firebaseManager = FirebaseManager.getInstance()
 
     async function onConfirm() {
 
         try {
             // Delete request
             await listRepository.delete(list.id, list.electionId);
+
+            // Delete image if exists
+            if(list.imageUrl){
+                firebaseManager.storage.refFromURL(list.imageUrl).delete().catch(()=>{})
+            }
 
             // Close detail
             onClose();

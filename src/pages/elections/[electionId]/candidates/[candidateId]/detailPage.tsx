@@ -26,9 +26,11 @@ const CandidateDetail = (props: CandidateDetailProps) => {
         <Box>
             <PageTitle
                 title={`${candidate.firstName} ${candidate.lastName}`}
+                imageUrl={candidate.imageUrl}
                 description={candidate.information}
                 onBackClick={() => router.back()}
                 enableBackIcon
+                enableImage
             />
 
             <DeleteCandidateAlertDialog candidate={candidate} />

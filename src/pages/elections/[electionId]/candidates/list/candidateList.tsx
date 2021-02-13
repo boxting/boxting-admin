@@ -29,7 +29,7 @@ const CandidateList = (props: CandidateListProps) => {
                     <Card
                         key={item.id}
                         textHead={`${item.firstName} ${item.lastName}`}
-                        textBody={item.information}
+                        textBody={`Lista: ${item.list.name}`}
                         onEnter={() => router.push(
                             `/elections/[electionId]/candidates/[candidateId]`,
                             `/elections/${item.electionId}/candidates/${item.id}`

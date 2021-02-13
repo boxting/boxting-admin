@@ -1,4 +1,4 @@
-import { Box, Center, Flex, PinInput, SimpleGrid, Text } from '@chakra-ui/core';
+import { Box, Center, Flex, Image, PinInput, SimpleGrid, Text } from '@chakra-ui/core';
 import React from 'react';
 import { useRouter } from 'next/router';
 import PageTitle from '@/components/pageTitle';
@@ -27,8 +27,10 @@ const ListDetail = (props: ListDetailProps) => {
             <PageTitle
                 title={list.name}
                 description={list.information}
+                imageUrl={list.imageUrl}
                 onBackClick={() => router.back()}
                 enableBackIcon
+                enableImage
             />
 
             <DeleteListAlertDialog list={list} />
@@ -48,7 +50,6 @@ const ListDetail = (props: ListDetailProps) => {
                     )
                 }
             />
-
         </Box>
     );
 };

@@ -39,7 +39,7 @@ export class ListRepository {
         }
     }
 
-    async create( electionId: string | number, list: CreateListRequestDto): Promise<CreateListResponseDto> {
+    async create(electionId: string | number, list: CreateListRequestDto): Promise<CreateListResponseDto> {
         try {
             // Make request
             const res = await this._service.connection.post(`/list/election/${electionId}`, list);
