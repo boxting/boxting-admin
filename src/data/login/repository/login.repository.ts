@@ -30,4 +30,17 @@ export class LoginRepository {
             return Promise.reject(msg);
         }
     }
+
+    async logout(refreshToken: string): Promise<boolean> {
+        try {
+            await this._service.connection.delete(`/login/close/${refreshToken}`);
+
+            return Promise.resolve(true);
+        } catch (error) {
+
+            let msg = ErrorMapper[error.error.errorCode] || ErrorMapper[500];
+
+            return Promise.reject(msg);
+        }
+    }
 }
