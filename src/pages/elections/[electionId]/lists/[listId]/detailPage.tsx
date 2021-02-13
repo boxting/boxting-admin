@@ -27,8 +27,10 @@ const ListDetail = (props: ListDetailProps) => {
             <PageTitle
                 title={list.name}
                 description={list.information}
+                imageUrl={list.imageUrl}
                 onBackClick={() => router.back()}
                 enableBackIcon
+                enableImage
             />
 
             <DeleteListAlertDialog list={list} />
@@ -48,14 +50,6 @@ const ListDetail = (props: ListDetailProps) => {
                     )
                 }
             />
-
-            <Box width='100%'>
-                <Image
-                    mt="16px"
-                    src={(list.imageUrl) ? list.imageUrl : '/images/logo/boxting_logo.png'}
-                    maxWidth='300px'
-                />
-            </Box>
         </Box>
     );
 };

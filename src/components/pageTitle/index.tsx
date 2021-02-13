@@ -1,22 +1,26 @@
 import React from 'react';
-import { Box, Flex, Heading, Text } from '@chakra-ui/core';
+import { Box, Flex, Heading, Image, Text } from '@chakra-ui/core';
 import { InfoCircleIcon, LeftSmallIcon } from '@/components/icons';
 
 interface PageTitleProps {
     title?: string;
     description?: string;
+    imageUrl?: string;
     onBackClick?: () => void;
     enableBackIcon?: boolean;
     disableInfoIcon?: boolean;
+    enableImage?: boolean;
     pb?: number;
 }
 
 const PageTitle: React.FC<PageTitleProps> = ({
     title,
     description,
+    imageUrl,
     onBackClick,
     enableBackIcon = false,
     disableInfoIcon = false,
+    enableImage = false,
     pb = 10,
 }: PageTitleProps) => {
     return (
@@ -30,6 +34,14 @@ const PageTitle: React.FC<PageTitleProps> = ({
                         pr={2}
                     >
                         <LeftSmallIcon boxSize={6} color="#18191F" />
+                    </Box>
+                )}
+                {enableImage && (
+                    <Box transform="translateY(1px)" pr={2}>
+                        <Image
+                            src={(imageUrl) ? imageUrl : '/images/logo/boxting_logo.png'}
+                            maxHeight='50px'
+                        />
                     </Box>
                 )}
                 <Heading as="h1" textStyle="h1">
