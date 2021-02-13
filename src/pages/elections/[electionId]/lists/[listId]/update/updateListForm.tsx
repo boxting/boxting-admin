@@ -44,6 +44,7 @@ const ListUpdateForm = (props: ListUpdateFormProps) => {
     const [imageUrl, setImageUrl] = useState(
         list == undefined ? undefined : list.imageUrl
     );
+    const [imageExtension, setImageExtension] = useState('')
     const [image, setImage] = useState<Blob>(undefined)
 
     // Utils
@@ -73,24 +74,38 @@ const ListUpdateForm = (props: ListUpdateFormProps) => {
     const handleInformationChange = (event: ChangeEvent<HTMLTextAreaElement>) => setInformation(event.target.value)
     const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target.files[0]) {
+            // Get the image file from input event
             const file = event.target.files[0]
 
+            // Validate that file is a valid image
             if (file.type != 'image/png' && file.type != 'image/jpeg' && file.type != 'image/jpg') {
+                // File is invalid, remove file from event
                 event.target.value = null
+                // Set image file as undefined
                 setImage(undefined)
+                // Set image path as undefined
                 setImageUrl(list == undefined ? undefined : list.imageUrl)
+                // Show alert message
                 showToast('Ocurrió un error!', 'El tipo de archivo seleccionado es incorrecto.', false, toast)
                 return
             }
-
-            ImageResizer.imageFileResizer(file, 500, 500, "PNG", 70, 0, (blob: Blob) => {
+            const convertType = (file.type == 'image/png') ? "PNG" : "JPEG"
+            // File is valid, resize it to optimize resources
+            ImageResizer.imageFileResizer(file, 500, 500, convertType, 70, 0, (blob: Blob) => {
+                // Set the image with the resized result
                 setImage(blob)
+                // Set the new local image path
                 setImageUrl(URL.createObjectURL(blob))
+                // Set the image extension
+                setImageExtension(convertType)
             }, "blob")
 
         } else {
+            // No image received,set image file as undefined
             setImage(undefined)
+            // Set image path as undefined
             setImageUrl(list == undefined ? undefined : list.imageUrl)
+            // File is invalid, remove file from event
             event.target.value = null
         }
     }
@@ -129,7 +144,7 @@ const ListUpdateForm = (props: ListUpdateFormProps) => {
 
             const imageData: ImageUploadInterface = {
                 image: image,
-                name: `${imageName}_${new Date().getTime()}.png`,
+                name: `${imageName}_${new Date().getTime()}.${imageExtension}`,
                 path: `images/election-${list.electionId}/lists`
             }
 
@@ -163,7 +178,7 @@ const ListUpdateForm = (props: ListUpdateFormProps) => {
 
                             // Remove image with old name as the new image has been saved
                             if (list.imageUrl) {
-                                firebaseManager.storage.refFromURL(list.imageUrl).delete().catch(()=>{})
+                                firebaseManager.storage.refFromURL(list.imageUrl).delete().catch(() => { })
                             }
 
                             // Set state

@@ -44,6 +44,7 @@ const CandidateCreateForm = (props: CandidateCreateFormProps) => {
 	const [age, setAge] = useState<number>(18)
 	const [selectedList, setSelectedList] = useState('')
 	const [imagePath, setImagePath] = useState('')
+	const [imageExtension, setImageExtension] = useState('')
 	const [image, setImage] = useState<Blob>(undefined)
 
 	// Props
@@ -82,13 +83,15 @@ const CandidateCreateForm = (props: CandidateCreateFormProps) => {
 				showToast('Ocurrió un error!', 'El tipo de archivo seleccionado es incorrecto.', false, toast)
 				return
 			}
-
+			const convertType = (file.type == 'image/png') ? "PNG" : "JPEG"
 			// File is valid, resize it to optimize resources
-			ImageResizer.imageFileResizer(file, 500, 500, "PNG", 70, 0, (blob: Blob) => {
+			ImageResizer.imageFileResizer(file, 500, 500, convertType, 70, 0, (blob: Blob) => {
 				// Set the image with the resized result
 				setImage(blob)
 				// Set the new local image path
 				setImagePath(URL.createObjectURL(blob))
+				// Set the image extension
+				setImageExtension(convertType)
 			}, "blob")
 
 		} else {
@@ -157,7 +160,7 @@ const CandidateCreateForm = (props: CandidateCreateFormProps) => {
 
 			const imageData: ImageUploadInterface = {
 				image: image,
-				name: `${imageName}_${new Date().getTime()}.png`,
+				name: `${imageName}_${new Date().getTime()}.${imageExtension}`,
 				path: `images/election-${electionId}/candidates`
 			}
 
