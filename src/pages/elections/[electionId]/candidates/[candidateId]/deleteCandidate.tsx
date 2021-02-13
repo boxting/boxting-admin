@@ -13,6 +13,7 @@ import { CandidateRepository } from '@/data/candidate/repository/candidate.repos
 import { showToast } from '../../../../../components/toast/custom.toast';
 import { useRouter } from 'next/router';
 import { Candidate } from '@/data/candidate/model/candidate.model';
+import { FirebaseManager } from '@/data/firebase-cfg';
 
 interface DeleteCandidateProps {
     candidate: Candidate
@@ -34,12 +35,18 @@ function DeleteCandidateAlertDialog(props: DeleteCandidateProps) {
 
     // Get service instance
     const candidateRepository = CandidateRepository.getInstance()
+    const firebaseManager = FirebaseManager.getInstance()
 
     async function onConfirm() {
 
         try {
             // Delete request
             await candidateRepository.deleteByElection(candidate.id, candidate.electionId);
+
+            // Delete image if exists
+            if(candidate.imageUrl){
+                firebaseManager.storage.refFromURL(candidate.imageUrl).delete().catch(()=>{})
+            }
 
             // Close detail
             onClose();

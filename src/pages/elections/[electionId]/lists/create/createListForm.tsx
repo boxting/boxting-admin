@@ -52,24 +52,36 @@ const ListCreateForm = (props: ListCreateFormProps) => {
 	const handleInformationChange = (event: ChangeEvent<HTMLTextAreaElement>) => setInformation(event.target.value)
 	const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
 		if (event.target.files[0]) {
+			// Get the image file from input event
 			const file = event.target.files[0]
 
+			// Validate that file is a valid image
 			if (file.type != 'image/png' && file.type != 'image/jpeg' && file.type != 'image/jpg') {
+				// File is invalid, remove file from event
 				event.target.value = null
+				// Set image file as undefined
 				setImage(undefined)
+				// Set image path as undefined
 				setImagePath(undefined)
+				// Show alert message
 				showToast('Ocurrió un error!', 'El tipo de archivo seleccionado es incorrecto.', false, toast)
 				return
 			}
 
+			// File is valid, resize it to optimize resources
 			ImageResizer.imageFileResizer(file, 500, 500, "PNG", 70, 0, (blob: Blob) => {
+				// Set the image with the resized result
 				setImage(blob)
+				// Set the new local image path
 				setImagePath(URL.createObjectURL(blob))
 			}, "blob")
 
 		} else {
+			// No image received,set image file as undefined
 			setImage(undefined)
+			// Set image path as undefined
 			setImagePath(undefined)
+			// File is invalid, remove file from event
 			event.target.value = null
 		}
 	}
@@ -218,10 +230,10 @@ const ListCreateForm = (props: ListCreateFormProps) => {
 				<BoxtingButton
 					typeBtn={ButtonType.outline}
 					text="Subir imagen (opcional)"
-					onEnter={()=>{InputRef.current.click()}}
-				/> 				
+					onEnter={() => { InputRef.current.click() }}
+				/>
 				<input
-					style={{display:'none'}}
+					style={{ display: 'none' }}
 					ref={InputRef}
 					type="file"
 					onChange={handleImageChange}
