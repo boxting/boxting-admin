@@ -243,7 +243,7 @@ const CandidateUpdateForm = (props: CandidateUpdateFormProps) => {
                 <FormLabel>Lista</FormLabel>
                 <Select value={selectedList} onChange={handleListChange} placeholder="Lista del candidato">
                     {
-                        lists.map((item) => {
+                        lists && lists.map((item) => {
                             return <option key={item.id} value={item.id}>{item.name}</option>
                         })
                     }
