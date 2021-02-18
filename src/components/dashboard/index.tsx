@@ -93,7 +93,6 @@ const PlatformLayout: React.FC<LayoutProps> = ({ children }: LayoutProps) => {
                 flexDirection="column"
                 flex={1}
                 backgroundColor={BACKGROUND_COLOR}
-                overflowY="scroll"
             >
                 <Box
                     position="sticky"

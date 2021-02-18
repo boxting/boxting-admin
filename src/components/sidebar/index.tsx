@@ -73,7 +73,6 @@ const Sidebar: React.FC<SidebarProps> = ({
 				flexDirection: `column`,
 				backgroundColor: color,
 				boxShadow: `inset -7px 0 0 -6px ${LINE_COLOR}`,
-				overflowY: `scroll`,
 			}}
 		>
 			<Box>

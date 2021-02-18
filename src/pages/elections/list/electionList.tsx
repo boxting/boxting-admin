@@ -101,8 +101,7 @@ class ElectionList extends Component<ElectionListProps, ElectionListState> {
     render() {
         return (
             <Box>
-                <Flex>
-
+                <Flex pb={4}>
                     <Select placeholder="Selecciona un evento de votación" value={this.state.currentEvent} onChange={this.onSelectEvent}>
                         {this.state.events.map((item) => (
                             <option key={item.id} value={item.id}>{item.name}</option>
@@ -111,7 +110,7 @@ class ElectionList extends Component<ElectionListProps, ElectionListState> {
                 </Flex>
 
 
-                <Flex pb={6}>
+                <Flex pb={4}>
                     <BoxtingButton
                         text="Nuevo"
                         typeBtn={ButtonType.primary}
