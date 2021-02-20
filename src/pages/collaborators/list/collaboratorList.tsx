@@ -3,15 +3,11 @@ import React, { Component } from 'react';
 import Card from '@/components/card';
 import { Event } from '@/data/event/model/event.model';
 import * as UserMapper from '@/data/user/api/mapper/user.mapper'
-import BoxtingButton from '@/components/buttons/boxting_button';
-import { ButtonType } from '@/components/buttons/utils';
-import { AddSmallIcon } from '@/components/icons';
 import { NextRouter } from 'next/router';
 import { UserRepository } from '@/data/user/repository/users.repository';
 import { User } from '@/data/user/model/user.model';
 import CreateCollaboratorModal from '../createCollaborator';
 import AddExistingCollaboratorModal from '../addExistingCollaborator';
-
 
 interface CollaboratorListProps {
     events: Event[],
@@ -38,7 +34,6 @@ class CollaboratorList extends Component<CollaboratorListProps, CollaboratorList
         this.router = this.props.router
 
         this.onSelectEvent = this.onSelectEvent.bind(this)
-        this.onCreateCollaborator = this.onCreateCollaborator.bind(this)
         this.onAddCollaborator = this.onAddCollaborator.bind(this)
 
         this.state = {
@@ -100,17 +95,6 @@ class CollaboratorList extends Component<CollaboratorListProps, CollaboratorList
         }
     }
 
-    onCreateCollaborator = () => {
-        if (this.state.currentEvent != undefined && this.state.currentEvent != '') {
-            this.router.push(
-                `/events/[eventId]/elections/create/`,
-                `/events/${this.state.currentEvent}/elections/create/`
-            )
-        } else {
-            console.log('No event selected')
-        }
-    }
-
     render() {
         return (
             <Box>
@@ -156,7 +140,6 @@ class CollaboratorList extends Component<CollaboratorListProps, CollaboratorList
                             ))}
                         </Grid>
                 }
-
             </Box>
 
         );

@@ -31,7 +31,7 @@
     "@emotion/core": "10.0.35",
     "@emotion/styled": "10.0.27",
     "@hookform/resolvers": "^0.1.1",
-    "axios": "0.20.0",
+    "axios": "0.21.1",
     "dotenv": "8.2.0",
     "emotion-theming": "10.0.27",
     "firebase": "8.2.7",
@@ -45,7 +45,6 @@
     "react-datetime": "3.0.4",
     "react-dom": "16.13.1",
     "react-hook-form": "6.9.4",
-    "react-icons": "3.11.0",
     "react-image-file-resizer": "0.4.1",
     "styled-components": "5.2.0",
     "tslint": "6.1.3"
