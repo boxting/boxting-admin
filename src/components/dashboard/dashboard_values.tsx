@@ -74,6 +74,9 @@ export const breadcrumbItems = (routes: string[]): string[] => {
         if (routes[0] === 'collaborators') {
             return ['Colaboradores']
         }
+        if (routes[0] === 'voters') {
+            return ['Votantes']
+        }
     } else if (routes.length === 2) {
         if (routes[0] === 'events') {
             if (routes[1] === 'create') {

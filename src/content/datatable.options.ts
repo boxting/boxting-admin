@@ -8,3 +8,11 @@ export const CollaboratorsTableOptions: MUIDataTableOptions = {
     rowsPerPage: 5,
     rowsPerPageOptions: [5, 10, 15, 20]
 }
+
+export const VotersTableOptions: MUIDataTableOptions = {
+    enableNestedDataAccess: '.',
+    selectableRows: "none",
+    responsive: "standard",
+    rowsPerPage: 5,
+    rowsPerPageOptions: [5, 10, 15, 20]
+}
