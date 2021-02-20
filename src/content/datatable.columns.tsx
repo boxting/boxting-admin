@@ -6,8 +6,8 @@ import { Unsubscribe } from '@material-ui/icons';
 import { table } from 'console';
 import { MUIDataTableColumn } from 'mui-datatables';
 
-interface CollaboratorsTableColumnsParams{
-    eventId: string, 
+interface CollaboratorsTableColumnsParams {
+    eventId: string,
     onUnsubscribeCollaborator: (index: number) => void
 }
 
@@ -48,6 +48,69 @@ export const CollaboratorsTableColumns = (params: CollaboratorsTableColumnsParam
                         />
                     );
                 }
+            }
+        }
+    ];
+}
+
+
+export const VotersTableColumns = (): MUIDataTableColumn[] => {
+    return [
+        {
+            name: 'id',
+            label: 'Id',
+            options: {
+                display: 'excluded',
+                filter: false
+            }
+        },
+        {
+            name: 'voter.firstName',
+            label: 'Nombre',
+            options: {
+                filter: false
+            }
+        },
+        {
+            name: 'voter.lastName',
+            label: 'Apellidos',
+            options: {
+                filter: false
+            }
+        },
+        {
+            name: 'username',
+            label: 'Nombre de usuario',
+            options: {
+                filter: false
+            }
+        },
+        {
+            name: 'voter.dni',
+            label: 'DNI',
+            options: {
+                filter: false
+            }
+        },
+        {
+            name: 'voter.phone',
+            label: 'Teléfono',
+            options: {
+                filter: false
+            }
+        },
+        {
+            name: 'voter.age',
+            label: 'Edad',
+            options: {
+                filter: true
+            }
+        },
+        {
+            name: 'mail',
+            label: 'Correo',
+            options: {
+                filter: false
             }
         }
     ];
