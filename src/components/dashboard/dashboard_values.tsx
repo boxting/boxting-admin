@@ -2,7 +2,7 @@ import { Module, SidebarData } from '@/components/sidebar';
 import React from 'react';
 
 import { CheckIcon } from '@chakra-ui/icons';
-import { BookIcon } from '../icons';
+import { BookIcon, UserIcon } from '../icons';
 
 export const DEFAULT_SIDEBAR: SidebarData = {
     logo: {
@@ -28,6 +28,21 @@ export const DEFAULT_SIDEBAR: SidebarData = {
                     name: `Actividades de elección`,
                     route: `/elections`,
                 },
+            ] as Module[],
+        },
+        {
+            label: `Gestión de usuarios`,
+            modules: [
+                {
+                    icon: <UserIcon />,
+                    name: `Colaboradores`,
+                    route: `/collaborators`,
+                },
+                {
+                    icon: <UserIcon />,
+                    name: `Votantes`,
+                    route: `/voters`,
+                }
             ] as Module[],
         }
     ],
@@ -55,6 +70,9 @@ export const breadcrumbItems = (routes: string[]): string[] => {
         }
         if (routes[0] === 'elections') {
             return ['Elecciones']
+        }
+        if (routes[0] === 'collaborators') {
+            return ['Colaboradores']
         }
     } else if (routes.length === 2) {
         if (routes[0] === 'events') {

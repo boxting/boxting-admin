@@ -110,4 +110,22 @@ export class EventRepository {
             return Promise.reject(msg);
         }
     }
+
+    async unsubscribeUser(eventId:string, userId: string): Promise<boolean> {
+        try {
+            // Make request
+            const res = await this._service.connection.delete(`/event/${eventId}/unsubscribe/user/${userId}`);
+            // Assign data to response dto
+            const data: UpdateResponseDto = res.data
+            // Return data
+            return Promise.resolve(data.success);
+        } catch (error) {
+            // Log error for internal use
+            console.log(error)
+            // Set the message using the error mapper
+            let msg = ErrorMapper[error.error.errorCode] || ErrorMapper[500];
+            // Return the obtained message
+            return Promise.reject(msg);
+        }
+    }
 }
