@@ -8,6 +8,9 @@ import { UserRepository } from '@/data/user/repository/users.repository';
 import { User } from '@/data/user/model/user.model';
 import CreateCollaboratorModal from '../createCollaborator';
 import AddExistingCollaboratorModal from '../addExistingCollaborator';
+import MUIDataTable from 'mui-datatables';
+import { CollaboratorsTableOptions } from '@/content/datatable.options';
+import { CollaboratorsTableColumns } from '@/content/datatable.columns';
 
 interface CollaboratorListProps {
     events: Event[],
@@ -35,6 +38,7 @@ class CollaboratorList extends Component<CollaboratorListProps, CollaboratorList
 
         this.onSelectEvent = this.onSelectEvent.bind(this)
         this.onAddCollaborator = this.onAddCollaborator.bind(this)
+
 
         this.state = {
             collaborators: [],
@@ -126,19 +130,12 @@ class CollaboratorList extends Component<CollaboratorListProps, CollaboratorList
 
                 {
                     (this.state.collaborators.length == 0) ? <p>No se han agregado colaboradores para el evento.</p> :
-                        <Grid
-                            py={2}
-                            templateColumns="repeat(auto-fill, minmax(250px, 1fr))"
-                            gap={4}
-                        >
-                            {this.state.collaborators.map((item) => (
-                                <Card
-                                    key={item.id}
-                                    textHead={item.username}
-                                    textBody={item.organizer.name}
-                                />
-                            ))}
-                        </Grid>
+                        <MUIDataTable
+                            columns={CollaboratorsTableColumns}
+                            data={this.state.collaborators}
+                            title={'Listado de colaboradores'}
+                            options={CollaboratorsTableOptions}
+                        />
                 }
             </Box>
 
