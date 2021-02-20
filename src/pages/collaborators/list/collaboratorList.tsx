@@ -107,13 +107,9 @@ class CollaboratorList extends Component<CollaboratorListProps, CollaboratorList
     }
 
     onUnsubscribeCollaborator = (index: number) => {
-        console.log(index)
-
         if (index != undefined) {
             const list = this.state.collaborators
             list.splice(index, 1)
-            console.log(list)
-            console.log(list.length)
             this.setState({
                 collaborators: list
             })
