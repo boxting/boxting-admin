@@ -9,6 +9,9 @@ import { AddSmallIcon, MinusSmallIcon } from '@/components/icons';
 import { AccessCode } from '@/data/access_code/model/access.code.model';
 import { CreateCodesRequestDto } from '@/data/access_code/api/dto/request/create.request.dto';
 import * as AccessCodeMapper from '@/data/access_code/api/mapper/code.mapper'
+import { AddIcon } from '@chakra-ui/icons';
+import { ButtonType } from '@/components/buttons/utils';
+import BoxtingButton from '@/components/buttons/boxting_button';
 
 interface CreateCodesProps {
     eventId: string,
@@ -96,9 +99,13 @@ function CreateCodeModal(props: CreateCodesProps) {
 
     return (
         <>
-            <Button colorScheme="purple" onClick={() => setIsOpen(true)} mb={3}>
-                Crear códigos de acceso
-            </Button>
+            <BoxtingButton
+                style={{ marginRight: '12px', marginBottom: '12px' }}
+                text="Crear códigos de acceso"
+                typeBtn={ButtonType.primary}
+                leftIcon={<AddIcon boxSize={4} />}
+                onEnter={() => setIsOpen(true)}
+            />
 
             <Modal isOpen={isOpen} onClose={onClose}
                 motionPreset="slideInBottom" isCentered>

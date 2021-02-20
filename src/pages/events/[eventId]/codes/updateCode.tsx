@@ -15,9 +15,9 @@ import {
 } from '@chakra-ui/core';
 import { showToast } from '../../../../components/toast/custom.toast';
 import { CodeRepository } from '@/data/access_code/repository/codes.repository';
-import { AiFillEdit } from 'react-icons/ai'
 import { AccessCode } from '@/data/access_code/model/access.code.model';
 import { UpdateCodeRequestDto } from '@/data/access_code/api/dto/request/update.request.dto';
+import { EditIcon } from '@/components/icons';
 
 interface UpdateCodeProps {
     code: AccessCode,
@@ -98,7 +98,7 @@ function UpdateCodeModal(props: UpdateCodeProps) {
     return (
         <>
             <Button marginRight='12px' marginBottom='12px' colorScheme="blue" onClick={() => checkUsed()}>
-                <Icon as={AiFillEdit} />
+                <EditIcon/>
             </Button>
 
             <Modal
