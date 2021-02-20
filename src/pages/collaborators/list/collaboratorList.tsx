@@ -9,6 +9,7 @@ import { AddSmallIcon } from '@/components/icons';
 import { NextRouter } from 'next/router';
 import { UserRepository } from '@/data/user/repository/users.repository';
 import { User } from '@/data/user/model/user.model';
+import CreateCollaboratorModal from '../createCollaborator';
 
 
 interface CollaboratorListProps {
@@ -37,6 +38,7 @@ class CollaboratorList extends Component<CollaboratorListProps, CollaboratorList
 
         this.onSelectEvent = this.onSelectEvent.bind(this)
         this.onCreateCollaborator = this.onCreateCollaborator.bind(this)
+        this.onAddCollaborator = this.onAddCollaborator.bind(this)
 
         this.state = {
             collaborators: [],
@@ -87,6 +89,16 @@ class CollaboratorList extends Component<CollaboratorListProps, CollaboratorList
         })
     }
 
+    onAddCollaborator = (collaborator: User) => {
+        if (collaborator != undefined) {
+            const list = this.state.collaborators
+            list.push(collaborator)
+            this.setState({
+                collaborators: list
+            })
+        }
+    }
+
     onCreateCollaborator = () => {
         if (this.state.currentEvent != undefined && this.state.currentEvent != '') {
             this.router.push(
@@ -102,7 +114,11 @@ class CollaboratorList extends Component<CollaboratorListProps, CollaboratorList
         return (
             <Box>
                 <Flex pb={4}>
-                    <Select placeholder="Selecciona un evento de votación" value={this.state.currentEvent} onChange={this.onSelectEvent}>
+                    <Select
+                        placeholder="Selecciona un evento de votación"
+                        value={this.state.currentEvent}
+                        onChange={this.onSelectEvent}
+                    >
                         {this.state.events.map((item) => (
                             <option key={item.id} value={item.id}>{item.name}</option>
                         ))}
@@ -111,12 +127,10 @@ class CollaboratorList extends Component<CollaboratorListProps, CollaboratorList
 
 
                 <Flex pb={4}>
-                    <BoxtingButton
-                        style={{ marginRight: '12px', marginBottom: '12px' }}
-                        text="Crear nuevo"
-                        typeBtn={ButtonType.primary}
-                        leftIcon={<AddSmallIcon boxSize={4} />}
-                        onEnter={this.onCreateCollaborator}
+
+                    <CreateCollaboratorModal
+                        eventId={this.state.currentEvent}
+                        onAddCollaborator={this.onAddCollaborator}
                     />
 
                     <BoxtingButton
