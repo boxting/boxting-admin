@@ -56,7 +56,7 @@ export class UserRepository {
     async addCollaboratorByUsername(eventId: string, username: string): Promise<CreateUserResponseDto> {
         try {
             // Make request
-            const res = await this._service.connection.get(`/event/${eventId}/add/collaborator/${username}`)
+            const res = await this._service.connection.post(`/event/${eventId}/add/collaborator/${username}`)
             // Assign data to response dto
             const data: CreateUserResponseDto = res.data
             // Return data

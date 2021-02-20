@@ -10,6 +10,7 @@ import { NextRouter } from 'next/router';
 import { UserRepository } from '@/data/user/repository/users.repository';
 import { User } from '@/data/user/model/user.model';
 import CreateCollaboratorModal from '../createCollaborator';
+import AddExistingCollaboratorModal from '../addExistingCollaborator';
 
 
 interface CollaboratorListProps {
@@ -133,12 +134,9 @@ class CollaboratorList extends Component<CollaboratorListProps, CollaboratorList
                         onAddCollaborator={this.onAddCollaborator}
                     />
 
-                    <BoxtingButton
-                        style={{ marginRight: '12px', marginBottom: '12px' }}
-                        text="Agregar existente"
-                        typeBtn={ButtonType.primary}
-                        leftIcon={<AddSmallIcon boxSize={4} />}
-                        onEnter={this.onCreateCollaborator}
+                    <AddExistingCollaboratorModal
+                        eventId={this.state.currentEvent}
+                        onAddCollaborator={this.onAddCollaborator}
                     />
                 </Flex>
 
