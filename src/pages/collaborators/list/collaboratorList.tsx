@@ -29,6 +29,7 @@ class CollaboratorList extends Component<CollaboratorListProps, CollaboratorList
 
     userRepository: UserRepository
     router: NextRouter
+    _isMounted = false;
 
     constructor(props: CollaboratorListProps) {
         super(props)
@@ -38,7 +39,7 @@ class CollaboratorList extends Component<CollaboratorListProps, CollaboratorList
 
         this.onSelectEvent = this.onSelectEvent.bind(this)
         this.onAddCollaborator = this.onAddCollaborator.bind(this)
-
+        this.onUnsubscribeCollaborator = this.onUnsubscribeCollaborator.bind(this)
 
         this.state = {
             collaborators: [],
@@ -59,7 +60,7 @@ class CollaboratorList extends Component<CollaboratorListProps, CollaboratorList
     }
 
     async componentDidMount() {
-
+        this._isMounted = true
         let propEvents = this.props.events
         let propCurrentEvent = this.props.default
         let currentCollaborators = []
@@ -71,11 +72,17 @@ class CollaboratorList extends Component<CollaboratorListProps, CollaboratorList
             propCurrentEvent = propEvents[0].id.toString()
         }
 
-        this.setState({
-            collaborators: currentCollaborators,
-            events: propEvents,
-            currentEvent: propCurrentEvent
-        })
+        if (this._isMounted) {
+            this.setState({
+                collaborators: currentCollaborators,
+                events: propEvents,
+                currentEvent: propCurrentEvent
+            })
+        }
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false
     }
 
     onSelectEvent = async (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -99,7 +106,28 @@ class CollaboratorList extends Component<CollaboratorListProps, CollaboratorList
         }
     }
 
+    onUnsubscribeCollaborator = (index: number) => {
+        console.log(index)
+
+        if (index != undefined) {
+            const list = this.state.collaborators
+            list.splice(index, 1)
+            console.log(list)
+            console.log(list.length)
+            this.setState({
+                collaborators: list
+            })
+        }
+    }
+
     render() {
+
+        // Get table colums configuration
+        const tableColumns = CollaboratorsTableColumns({
+            eventId: this.state.currentEvent,
+            onUnsubscribeCollaborator: this.onUnsubscribeCollaborator
+        })
+
         return (
             <Box>
                 <Flex pb={4}>
@@ -131,7 +159,7 @@ class CollaboratorList extends Component<CollaboratorListProps, CollaboratorList
                 {
                     (this.state.collaborators.length == 0) ? <p>No se han agregado colaboradores para el evento.</p> :
                         <MUIDataTable
-                            columns={CollaboratorsTableColumns}
+                            columns={tableColumns}
                             data={this.state.collaborators}
                             title={'Listado de colaboradores'}
                             options={CollaboratorsTableOptions}
