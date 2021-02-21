@@ -16,14 +16,13 @@ import { AccessCode } from '@/data/access_code/model/access.code.model';
 
 interface DelteCodeProps {
     code: AccessCode,
-    index: number,
-    onDelete: (index: number) => void
+    onDelete: () => void
 }
 
 function DeleteCodeAlertDialog(props: DelteCodeProps) {
 
     // props
-    let { code, onDelete, index } = props;
+    let { code, onDelete } = props;
 
     // State variables
     const [isOpen, setIsOpen] = useState<boolean>();
@@ -48,7 +47,7 @@ function DeleteCodeAlertDialog(props: DelteCodeProps) {
                 true, toast);
 
             // Call delete function
-            onDelete(index)
+            onDelete()
         } catch (error) {
             // Show error toast
             showToast('Ocurrió un error', error, false, toast);
@@ -65,7 +64,7 @@ function DeleteCodeAlertDialog(props: DelteCodeProps) {
 
     return (
         <>
-            <Button colorScheme="red" marginBottom='12px' onClick={() => checkUsed()}>
+            <Button colorScheme="red" onClick={() => checkUsed()}>
                 <DeleteIcon />
             </Button>
             

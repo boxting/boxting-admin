@@ -16,3 +16,11 @@ export const VotersTableOptions: MUIDataTableOptions = {
     rowsPerPage: 5,
     rowsPerPageOptions: [5, 10, 15, 20]
 }
+
+export const CodesTableOptions: MUIDataTableOptions = {
+    selectableRows: "none",
+    responsive: "standard",
+    filter: "false",
+    rowsPerPage: 10,
+    rowsPerPageOptions: [10, 15, 20]
+}

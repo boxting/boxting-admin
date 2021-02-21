@@ -21,14 +21,13 @@ import { EditIcon } from '@/components/icons';
 
 interface UpdateCodeProps {
     code: AccessCode,
-    index: number,
-    onUpdate: (item: AccessCode, index: number) => void
+    onUpdate: () => void
 }
 
 function UpdateCodeModal(props: UpdateCodeProps) {
 
     // Props
-    let { code, onUpdate, index } = props;
+    let { code, onUpdate } = props;
 
     // State variables
     const [isOpen, setIsOpen] = useState<boolean>();
@@ -74,11 +73,11 @@ function UpdateCodeModal(props: UpdateCodeProps) {
                 true,
                 toast,
             );
-            
+
             // Assign new code to old code
             code.code = newCode
             // Call update function
-            onUpdate(code, index)
+            onUpdate()
             // Close modal
             setIsOpen(false)
         } catch (error) {
@@ -97,8 +96,8 @@ function UpdateCodeModal(props: UpdateCodeProps) {
 
     return (
         <>
-            <Button marginRight='12px' marginBottom='12px' colorScheme="blue" onClick={() => checkUsed()}>
-                <EditIcon/>
+            <Button marginRight='12px' colorScheme="blue" onClick={() => checkUsed()}>
+                <EditIcon />
             </Button>
 
             <Modal
@@ -113,7 +112,7 @@ function UpdateCodeModal(props: UpdateCodeProps) {
 
                     <ModalHeader fontSize="lg" fontWeight="bold">
                         Modificar código
-          </ModalHeader>
+                    </ModalHeader>
 
                     <ModalBody>
                         <FormControl>
@@ -125,10 +124,10 @@ function UpdateCodeModal(props: UpdateCodeProps) {
                     <ModalFooter>
                         <Button onClick={onClose}>
                             Cancelar
-            </Button>
+                        </Button>
                         <Button colorScheme="red" onClick={onConfirm} ml={3}>
                             Modificar
-            </Button>
+                        </Button>
                     </ModalFooter>
 
                 </ModalContent>

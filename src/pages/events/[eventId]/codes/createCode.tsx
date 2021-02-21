@@ -12,6 +12,7 @@ import * as AccessCodeMapper from '@/data/access_code/api/mapper/code.mapper'
 import { AddIcon } from '@chakra-ui/icons';
 import { ButtonType } from '@/components/buttons/utils';
 import BoxtingButton from '@/components/buttons/boxting_button';
+import { Box } from '@material-ui/core';
 
 interface CreateCodesProps {
     eventId: string,
@@ -117,7 +118,7 @@ function CreateCodeModal(props: CreateCodesProps) {
                         Crear código(s)
                     </ModalHeader>
                     <ModalBody>
-                        <form>
+                        <Box>
                             {insertedCodes.map((code, index) => (
                                 <HStack key={index} style={{ marginBottom: '20px' }}>
                                     <FormControl>
@@ -137,7 +138,7 @@ function CreateCodeModal(props: CreateCodesProps) {
                             <Button onClick={() => handleAddFields()} ml={1.5} mt={1.5}>
                                 <AddSmallIcon />
                             </Button>
-                        </form>
+                        </Box>
                     </ModalBody>
 
                     <ModalFooter>
