@@ -1,10 +1,10 @@
-import BoxtingButton from '@/components/buttons/boxting_button';
-import { ButtonType } from '@/components/buttons/utils';
+import { AccessCode } from '@/data/access_code/model/access.code.model';
 import UnsubscribeCollaboratorAlertDialog from '@/pages/collaborators/unsubscribeCollaborator';
-import { DeleteIcon } from '@chakra-ui/icons';
-import { Unsubscribe } from '@material-ui/icons';
-import { table } from 'console';
+import DeleteCodeAlertDialog from '@/pages/events/[eventId]/codes/deleteCode';
+import UpdateCodeModal from '@/pages/events/[eventId]/codes/updateCode';
 import { MUIDataTableColumn } from 'mui-datatables';
+
+/** Columns configuration for collaborators datatable **/
 
 interface CollaboratorsTableColumnsParams {
     eventId: string,
@@ -53,6 +53,7 @@ export const CollaboratorsTableColumns = (params: CollaboratorsTableColumnsParam
     ];
 }
 
+/** Columns configuration for voters datatable **/
 
 export const VotersTableColumns = (): MUIDataTableColumn[] => {
     return [
@@ -111,6 +112,75 @@ export const VotersTableColumns = (): MUIDataTableColumn[] => {
             label: 'Correo',
             options: {
                 filter: false
+            }
+        }
+    ];
+}
+
+
+/** Columns configuration for codes datatable **/
+
+interface CodesTableColumnsParams {
+    onUpdate: (item: AccessCode, index: number) => void,
+    onDelete: (index: number) => void
+}
+
+export const CodesTableColumns = (params: CodesTableColumnsParams): MUIDataTableColumn[] => {
+    return [
+        {
+            name: 'id',
+            label: 'Id',
+            options: {
+                display: 'excluded'
+            }
+        },
+        {
+            name: 'eventId',
+            label: 'Id de evento',
+            options: {
+                display: 'excluded'
+            }
+        },
+        {
+            name: 'code',
+            label: 'Código'
+        },
+        {
+            name: 'used',
+            label: 'Estado',
+            options: {
+                customBodyRender: (value) => {
+                    return (value) ? 'Usado' : 'Sin usar'
+                }
+            }
+        },
+        {
+            name: "Acciones",
+            options: {
+                print: false,
+                download: false,
+                empty: true,
+                customBodyRender: (value, tableMeta, updateValue) => {
+                    let data = tableMeta.rowData
+                    let currentCode: AccessCode = {
+                        id: data[0],
+                        eventId: data[1],
+                        code: data[2],
+                        used: data[3]
+                    }
+                    return (
+                        <>
+                            <UpdateCodeModal
+                                code={currentCode}
+                                onUpdate={() => { params.onUpdate(currentCode, tableMeta.rowIndex) }}
+                            />
+                            <DeleteCodeAlertDialog
+                                code={currentCode}
+                                onDelete={() => { params.onDelete(tableMeta.rowIndex) }}
+                            />
+                        </>
+                    );
+                }
             }
         }
     ];

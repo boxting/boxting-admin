@@ -4,6 +4,9 @@ import DeleteCodeAlertDialog from '../deleteCode';
 import UpdateCodeModal from '../updateCode';
 import CreateCodeModal from '../createCode';
 import { AccessCode } from '@/data/access_code/model/access.code.model';
+import MUIDataTable from 'mui-datatables';
+import { CodesTableColumns } from '@/content/datatable.columns';
+import { CodesTableOptions } from '@/content/datatable.options';
 
 interface CodeListProps {
     codes: AccessCode[],
@@ -39,7 +42,7 @@ class CodesList extends Component<CodeListProps, CodeListState>{
 
     deleteCode = (index: number) => {
         let list = this.state.codeList
-        delete list[index]
+        list.splice(index, 1)
 
         this.setState({
             codeList: list
@@ -75,26 +78,22 @@ class CodesList extends Component<CodeListProps, CodeListState>{
             )
         }
 
+        // Get table colums configuration
+        const tableColumns = CodesTableColumns({
+            onUpdate: this.updateCode,
+            onDelete: this.deleteCode
+        })
+
         return (
             <Box>
                 <CreateCodeModal eventId={this.props.eventId} onAddCodes={this.addCodes} />
-                {
-                    this.state.codeList.map((item, index) => (
 
-                        <Box key={item.id} marginY={4} padding={4} borderWidth='1px' borderRadius='lg'>
-                            <Box marginBottom={2}>
-                                <Heading as='h5' size='sm'>Código</Heading>
-                                <Text>{item.code}</Text>
-                            </Box>
-                            <Text marginBottom={2}>Usado: {(item.used) ? "Si" : "No"}</Text>
-                            <Box>
-                                <UpdateCodeModal code={item} index={index} onUpdate={this.updateCode} />
-                                <DeleteCodeAlertDialog code={item} index={index} onDelete={this.deleteCode} />
-                            </Box>
-                        </Box>
-
-                    ))
-                }
+                <MUIDataTable
+                    columns={tableColumns}
+                    data={this.state.codeList}
+                    title={'Listado de códigos'}
+                    options={CodesTableOptions}
+                />
             </Box>
         );
     }
