@@ -96,7 +96,7 @@ export default class AxiosService {
             }
 
             // Check if errro has expected format
-            const expectedError = error.response && error.response.status >= 400 && error.response.status < 500;
+            const expectedError = error.response && error.response.status >= 400 && error.response.status <= 500;
 
             if (expectedError) {
                 // Return error data
