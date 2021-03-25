@@ -52,7 +52,7 @@ const CreateCandidatePage: NextPage = () => {
     return (
         <Box>
             <PageTitle
-                title='Crear lista de candidatos'
+                title='Crear candidato'
                 description='En esta sección se podrá crear un nuevo candidato.'
                 onBackClick={() => router.back()}
                 enableBackIcon

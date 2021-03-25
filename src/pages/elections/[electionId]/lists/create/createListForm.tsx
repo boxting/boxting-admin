@@ -117,7 +117,7 @@ const ListCreateForm = (props: ListCreateFormProps) => {
 
 		if (name.length == 0 || information.length == 0) {
 			showError(
-				'Debes completar todos los campos para crear el evento de votación'
+				'Debes completar todos los campos para crear la lista.'
 			)
 			return
 		}

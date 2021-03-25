@@ -131,7 +131,7 @@ const CandidateUpdateForm = (props: CandidateUpdateFormProps) => {
         if (firstName.trim().length == 0 || lastName.trim().length == 0 || information.length == 0 ||
             selectedList.trim().length == 0 || age == NaN) {
             showError(
-                'Debes completar todos los campos para crear el candidato.'
+                'Debes completar todos los campos para actualizar el candidato.'
             )
             return
         }

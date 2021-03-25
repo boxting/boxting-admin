@@ -119,7 +119,7 @@ const ListUpdateForm = (props: ListUpdateFormProps) => {
         // Validate null data
         if (name.length == 0 || information.length == 0) {
             showError(
-                'Debes completar todos los campos para editar la lista de candidatos.'
+                'Debes completar todos los campos para actualizar la lista.'
             )
             return
         }
@@ -171,7 +171,7 @@ const ListUpdateForm = (props: ListUpdateFormProps) => {
                             // Show successful toast
                             showToast(
                                 `Éxito`,
-                                `El evento de votación fue modificado con correctamente.`,
+                                `La lista fue modificada correctamente.`,
                                 true,
                                 toast,
                             );
@@ -203,7 +203,7 @@ const ListUpdateForm = (props: ListUpdateFormProps) => {
                 // Show successful toast
                 showToast(
                     `Éxito`,
-                    `El evento de votación fue modificado con correctamente.`,
+                    `La lista fue modificada correctamente.`,
                     true,
                     toast,
                 );

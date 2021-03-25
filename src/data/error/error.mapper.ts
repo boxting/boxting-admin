@@ -13,5 +13,6 @@ export const ErrorMapper = {
     '5002': 'No pueden existir dos códigos de acceso iguales.',
     '5003': '123',
     '5004': '123',
+    '6003': 'No se puede modificar un evento que ya ha iniciado.',
 }
 

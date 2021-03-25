@@ -91,7 +91,7 @@ const ElectionUpdateForm = (props: ElectionUpdateFormProps) => {
         // Validate null data
         if (type < 1 || winners < 1 || name.length == 0 || information.length == 0) {
             showError(
-                'Debes completar todos los campos para editar la actividad de elección'
+                'Debes completar todos los campos para actualizar la actividad de elección.'
             )
             return
         }

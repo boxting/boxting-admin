@@ -55,7 +55,7 @@ function DeleteListAlertDialog(props: DeleteListProps) {
             router.back()
 
             // Show success toast
-            showToast('Éxito', 'La lista de candidatos fue eliminada correctamente.',
+            showToast('Éxito', 'La lista fue eliminada correctamente.',
                 true, toast);
 
         } catch (error) {
