@@ -3,6 +3,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import PageTitle from '@/components/pageTitle';
 import DeleteEventAlertDialog from './deleteEvent';
+import FinishEventUpdateAlertDialog from './finishUpdate';
 import BoxtingButton from '@/components/buttons/boxting_button';
 import { ButtonType } from '@/components/buttons/utils';
 import { EditIcon } from '../../../components/icons/index';
@@ -83,7 +84,7 @@ const EventDetail = (props: EventDetailProps) => {
             <Box width='100%'>
                 <Text mt="16px">
                     El código de votación para el evento es
-        </Text>
+                </Text>
                 <Flex>
                     <PinInput defaultValue={event.code}>
                         {
@@ -113,6 +114,8 @@ const EventDetail = (props: EventDetailProps) => {
                     </SimpleGrid>
                 </Flex>
             </Box>
+
+            { (!event.configCompleted) ? <FinishEventUpdateAlertDialog event={event} /> : ''}
         </Box>
     );
 };
