@@ -12,6 +12,7 @@ export async function getAllToEventList(response: GetAllResponseDto): Promise<Ev
             startDate: new Date(value.startDate),
             information: value.information,
             name: value.name,
+            configCompleted: value.configCompleted
         }
         return event
     })
@@ -27,7 +28,8 @@ export async function getOneToEvent(response: GetOneResponseDto): Promise<Event>
         endDate: new Date(response.data.endDate),
         startDate: new Date(response.data.startDate),
         information: response.data.information,
-        name: response.data.name
+        name: response.data.name,
+        configCompleted: response.data.configCompleted
     }
 
     return event
