@@ -20,7 +20,7 @@ export const buttonStyles: Map<ButtonType, ButtonStyle> = new Map([
         {
             backgroundColor: boxtingTheme.colors.primary,
             fontColor: boxtingTheme.colors.background,
-            onHover: '#4903ac',
+            onHover: boxtingTheme.colors.primaryHover,
             onHoverText: boxtingTheme.colors.background,
         },
     ],
