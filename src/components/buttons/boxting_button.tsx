@@ -42,6 +42,7 @@ const BoxtingButton: FC<ButtonProps> = ({
     return (
         <Button
             style={style}
+            _hover={{ bg: typeButton.onHover }}
             bg={typeButton.backgroundColor}
             border={typeBtn === ButtonType.outline && `2px`}
             borderColor={typeBtn === ButtonType.outline && typeButton.fontColor}
