@@ -1,8 +1,7 @@
 import { Module, SidebarData } from '@/components/sidebar';
 import React from 'react';
-
 import { CheckIcon } from '@chakra-ui/icons';
-import { BookIcon, UserIcon } from '../icons';
+import { EmojiEventsOutlined, EventOutlined, ListAltOutlined, PeopleAltOutlined, PersonOutlined } from '@material-ui/icons';
 
 export const DEFAULT_SIDEBAR: SidebarData = {
     logo: {
@@ -14,7 +13,7 @@ export const DEFAULT_SIDEBAR: SidebarData = {
             label: `Gestión de eventos`,
             modules: [
                 {
-                    icon: <CheckIcon />,
+                    icon: <EventOutlined />,
                     name: `Eventos de votación`,
                     route: `/events`,
                 },
@@ -24,7 +23,7 @@ export const DEFAULT_SIDEBAR: SidebarData = {
             label: `Gestión de elecciones`,
             modules: [
                 {
-                    icon: <BookIcon />,
+                    icon: <ListAltOutlined />,
                     name: `Actividades de elección`,
                     route: `/elections`,
                 },
@@ -34,14 +33,24 @@ export const DEFAULT_SIDEBAR: SidebarData = {
             label: `Gestión de usuarios`,
             modules: [
                 {
-                    icon: <UserIcon />,
+                    icon: <PersonOutlined />,
                     name: `Colaboradores`,
                     route: `/collaborators`,
                 },
                 {
-                    icon: <UserIcon />,
+                    icon: <PeopleAltOutlined/>,
                     name: `Votantes`,
                     route: `/voters`,
+                }
+            ] as Module[],
+        },
+        {
+            label: `Gestión de resultados`,
+            modules: [
+                {
+                    icon: <EmojiEventsOutlined />,
+                    name: `Resultados`,
+                    route: `/results`,
                 }
             ] as Module[],
         }
