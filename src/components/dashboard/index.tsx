@@ -48,7 +48,7 @@ const CustomBreadcumb: React.FC<CustomBreadcumbProps> = ({
 };
 
 const PlatformLayout: React.FC<LayoutProps> = ({ children }: LayoutProps) => {
-    const [isOpen, setOpen] = useState<boolean>(false);
+    const [isOpen, setOpen] = useState<boolean>(true);
     const router = useRouter();
     const toast = useToast();
 
