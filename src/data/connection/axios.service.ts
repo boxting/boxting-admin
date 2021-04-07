@@ -6,6 +6,7 @@ export default class AxiosService {
     private static _instance: AxiosService
     private _cookiesManager: CookiesManager
     private _baseUrl: string = 'https://boxting-rest-api.herokuapp.com'
+    //private _baseUrl: string = 'http://localhost:3000'
     connection: AxiosInstance
 
     constructor() {
@@ -90,7 +91,9 @@ export default class AxiosService {
                         originalRequest.headers['Authorization'] = `Bearer ${token}`;
                         // Make request with updated token
                         return this.connection(originalRequest);
-                    });
+                    }).catch((reason) => {
+                        this._cookiesManager._clearToken()
+                    })
                 // Resolve response from request with updated token
                 return Promise.resolve(res);
             }
