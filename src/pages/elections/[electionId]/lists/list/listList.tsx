@@ -25,6 +25,7 @@ const ListList = (props: ListListProps) => {
         >
             {lists.map((item) => (
                 <Card
+                    src={item.imageUrl}
                     key={item.id}
                     textHead={item.name}
                     textBody={item.information}

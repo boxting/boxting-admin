@@ -3,20 +3,21 @@ import React from 'react';
 import Card from '@/components/card';
 import { useRouter } from 'next/router';
 import { Event } from '@/data/event/model/event.model';
+import { getEventStatus } from '@/data/utils/event.status';
 
-interface EventListProps{
+interface EventListProps {
     events: Event[]
 }
 
 const EventList = (props: EventListProps) => {
-    
+
     const { events } = props;
     const router = useRouter();
 
-    if (events == null || events.length == 0){
+    if (events == null || events.length == 0) {
         return <p>No se han registrado eventos de votación.</p>;
     }
-        
+
     return (
         <Grid
             py={2}
@@ -29,6 +30,7 @@ const EventList = (props: EventListProps) => {
                     textHead={item.name}
                     textBody={item.information}
                     onEnter={() => router.push(`/events/[eventId]`, `/events/${item.id}`)}
+                    status={getEventStatus(item)}
                 />
             ))}
         </Grid>
