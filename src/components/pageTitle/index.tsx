@@ -39,8 +39,9 @@ const PageTitle: React.FC<PageTitleProps> = ({
                 {enableImage && (
                     <Box transform="translateY(1px)" pr={2}>
                         <Image
-                            src={(imageUrl) ? imageUrl : '/images/logo/boxting_logo.png'}
+                            src={imageUrl}
                             maxHeight='50px'
+                            fallbackSrc='/images/logo/boxting_logo.png'
                         />
                     </Box>
                 )}
