@@ -51,6 +51,7 @@ const boxtingTheme = merge(theme, {
 		placeholder: `#AAAAAA`,
 		background: `#fff`,
 		primary: `#6200EE`,
+		primaryHover: `#4903ac`,
 		secondary: `#03DAC5`,
 		lightBackground: {
 			900: `#D9DBE1`,

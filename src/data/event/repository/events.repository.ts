@@ -6,6 +6,7 @@ import { CreateResponseDto } from '../api/dto/response/create.response.dto';
 import { DeleteResponseDto } from '../api/dto/response/delete.response.dto';
 import { GetAllResponseDto } from '../api/dto/response/get.all.response.dto';
 import { GetOneResponseDto } from '../api/dto/response/get.one.response.dto';
+import { InitContractResponseDto } from '../api/dto/response/init.contract.response.dto';
 import { UpdateResponseDto } from '../api/dto/response/update.response.dto';
 
 export class EventRepository {
@@ -111,12 +112,30 @@ export class EventRepository {
         }
     }
 
-    async unsubscribeUser(eventId:string, userId: string): Promise<boolean> {
+    async unsubscribeUser(eventId: string, userId: string): Promise<boolean> {
         try {
             // Make request
             const res = await this._service.connection.delete(`/event/${eventId}/unsubscribe/user/${userId}`);
             // Assign data to response dto
             const data: UpdateResponseDto = res.data
+            // Return data
+            return Promise.resolve(data.success);
+        } catch (error) {
+            // Log error for internal use
+            console.log(error)
+            // Set the message using the error mapper
+            let msg = ErrorMapper[error.error.errorCode] || ErrorMapper[500];
+            // Return the obtained message
+            return Promise.reject(msg);
+        }
+    }
+
+    async initContract(eventId: string): Promise<boolean> {
+        try {
+            // Make request
+            const res = await this._service.connection.post(`/event/${eventId}/contract/init`);
+            // Assign data to response dto
+            const data: InitContractResponseDto = res.data
             // Return data
             return Promise.resolve(data.success);
         } catch (error) {

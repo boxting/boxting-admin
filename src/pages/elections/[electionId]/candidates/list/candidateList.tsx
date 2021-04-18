@@ -27,6 +27,7 @@ const CandidateList = (props: CandidateListProps) => {
                 candidates.map((item) => (
 
                     <Card
+                        src={item.imageUrl}
                         key={item.id}
                         textHead={`${item.firstName} ${item.lastName}`}
                         textBody={`Lista: ${item.list.name}`}

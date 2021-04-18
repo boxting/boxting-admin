@@ -4,6 +4,7 @@ import { Box, Flex, Heading, Image, Text } from '@chakra-ui/core';
 import BoxtingButton from '@/components/buttons/boxting_button';
 import { ButtonType } from '@/components/buttons/utils';
 import { ArrowRightIcon } from '@/components/icons';
+import { eventStatusColorMapper, eventStatusMapper } from '@/data/utils/event.status';
 
 interface CardProps {
     textHead: string;
@@ -11,6 +12,7 @@ interface CardProps {
     onEnter?: () => void;
     disabled?: boolean;
     src?: string;
+    status?: number;
 }
 
 const Card: React.FC<CardProps> = ({
@@ -19,6 +21,7 @@ const Card: React.FC<CardProps> = ({
     textBody,
     disabled,
     src,
+    status,
 }: CardProps) => (
     <Box
         overflow="hidden"
@@ -43,7 +46,7 @@ const Card: React.FC<CardProps> = ({
                         <Image
                             width="100%"
                             src={src}
-                            fallbackSrc="https://via.placeholder.com/150"
+                            fallbackSrc='/images/logo/boxting_logo.png'
                         />
                     </Flex>
                 )}
@@ -60,6 +63,13 @@ const Card: React.FC<CardProps> = ({
                             {textBody}
                         </Text>
                     </Box>
+                    {status && (
+                        <Box py={3}>
+                            <Text as="p" textStyle="p" fontWeight={700} fontSize="md" style={{ color: eventStatusColorMapper(status) }}>
+                                {"Estado: " + eventStatusMapper(status)}
+                            </Text>
+                        </Box>
+                    )}
                 </Flex>
                 <Flex mt={5}>
                     <BoxtingButton

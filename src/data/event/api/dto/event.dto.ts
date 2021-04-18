@@ -6,5 +6,6 @@ export interface EventDto {
     endDate: string,
     code: string,
     createdAt?: Date,
-    updatedAt?: Date
+    updatedAt?: Date,
+    configCompleted: boolean
 }

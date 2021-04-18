@@ -105,8 +105,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 										module.icon as React.ReactElement,
 										{
 											key: i,
-											boxSize: 4,
-											color: module.active ? `primary` : `lightText.200`,
+											color: module.active ? `primary` : `disabled`,
 										},
 									);
 									return (
@@ -156,6 +155,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 															borderBottomColor: SIDEBAR_COLOR,
 															alignItems: `flex-start`,
 															paddingLeft: 32,
+															paddingRight: 5,
 															marginLeft: `0.5rem`,
 															marginTop: `1rem`,
 															marginBottom: `1rem`,

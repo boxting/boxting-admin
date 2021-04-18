@@ -14,4 +14,5 @@ export class Event {
     users?: User[]
     accessCodes?: AccessCode[]
     elections?: Election[]
+    configCompleted: boolean
 }

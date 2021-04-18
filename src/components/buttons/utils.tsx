@@ -11,6 +11,7 @@ export enum ButtonType {
     primary,
     secondary,
     outline,
+    alert
 }
 
 export const buttonStyles: Map<ButtonType, ButtonStyle> = new Map([
@@ -19,7 +20,7 @@ export const buttonStyles: Map<ButtonType, ButtonStyle> = new Map([
         {
             backgroundColor: boxtingTheme.colors.primary,
             fontColor: boxtingTheme.colors.background,
-            onHover: boxtingTheme.colors.secondary,
+            onHover: boxtingTheme.colors.primaryHover,
             onHoverText: boxtingTheme.colors.background,
         },
     ],
@@ -39,6 +40,15 @@ export const buttonStyles: Map<ButtonType, ButtonStyle> = new Map([
             fontColor: boxtingTheme.colors.text,
             onHover: boxtingTheme.colors.lightBackground[200],
             onHoverText: boxtingTheme.colors.text,
+        },
+    ],
+    [
+        ButtonType.alert,
+        {
+            backgroundColor: boxtingTheme.colors.red[500],
+            fontColor: boxtingTheme.colors.background,
+            onHover: boxtingTheme.colors.red[600],
+            onHoverText: boxtingTheme.colors.background,
         },
     ],
 ]);
