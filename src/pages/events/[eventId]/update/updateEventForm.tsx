@@ -178,7 +178,7 @@ const EventUpdateForm = (props: EventUpdateFormProps) => {
                 <BoxtingButton
                     isLoading={appState.loading}
                     typeBtn={ButtonType.primary}
-                    text="Modificar"
+                    text="Editar"
                     onEnter={() => {
                         updateNewEvent();
                     }}
