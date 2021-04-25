@@ -6,6 +6,7 @@ import {
     Input,
     useToast,
     Textarea,
+    FormErrorMessage
 } from '@chakra-ui/core';
 import { ButtonType } from '@/components/buttons/utils';
 import React, { useState } from 'react';
@@ -40,6 +41,13 @@ const EventUpdateForm = (props: EventUpdateFormProps) => {
     const [information, setInformation] = useState(
         event == undefined ? '' : event.information,
     );
+
+    //Lo nuevo implementado//
+	const [errorNameLength, setErrorNameLength] = useState(false)
+	const [errorNameregEx, setErrorNameregEx] = useState(false)
+	const [errorInformationLength, setErrorInformationLength] = useState(false)
+	const [errorInformationregEx, setErrorInformationregEx] = useState(false)
+	/////////////////////////
 
     // Utils
     const router = useRouter();
@@ -140,25 +148,99 @@ const EventUpdateForm = (props: EventUpdateFormProps) => {
         }
     }
 
+    //Aquí está lo nuevo implementado//
+	function verififyRegex(value){
+		let regEx
+		let val = []
+		for(let x of value){
+			regEx = x.charCodeAt(0)
+			if ((regEx > 122 || (regEx < 97 && regEx > 90) || regEx < 65) && regEx != 32){
+				val.push(x)
+			}
+		}
+		if (val.length < 1){
+			return false
+		}
+		return true
+	}
+
+	function verifyInputName(){
+		if ((name.length < 5 || name.length > 100) && name.length != 0){
+			setErrorNameLength(true)
+		}
+		else{
+			setErrorNameLength(false)
+		}
+
+		if (verififyRegex(name)){
+			setErrorNameregEx(true)
+		}
+		else{
+			setErrorNameregEx(false)
+		}
+	}
+
+	function verifyInputInformation(){
+		if ((information.length < 10 || information.length > 500) && information.length != 0){
+			setErrorInformationLength(true)
+		}
+		else{
+			setErrorInformationLength(false)
+		}
+
+		if (verififyRegex(information)){
+			setErrorInformationregEx(true)
+		}
+		else{
+			setErrorInformationregEx(false)
+		}
+	}
+
+	function errorMessageName(){
+		if (errorNameLength){
+			return "Nombre incorrecto, no debe ser menor a 5 y mayor a 100 caracteres."
+		}
+
+		if (errorNameregEx){
+			return "Nombre incorrecto, no debe contener caracteres especiales."
+		}
+	}
+
+
+	function errorMessageInformation(){
+		if (errorInformationLength){
+			return "Información incorrecta, no debe ser menor a 5 y mayor a 100 caracteres."
+		}
+
+		if (errorInformationregEx){
+			return "Información incorrecta, no debe contener caracteres especiales."
+		}
+	}
+	//////////////////////////////////
+
     return (
         <Box>
-            <FormControl>
+            <FormControl isInvalid={errorNameregEx || errorNameLength}> 
                 <FormLabel>Nombre</FormLabel>
                 <Input
                     value={name}
                     onChange={handleNameChange}
                     placeholder="Nombre del evento"
+                    onBlur = {verifyInputName}
                 />
+                <FormErrorMessage>{errorMessageName()}</FormErrorMessage>
             </FormControl>
-            <FormControl mt={4}>
+            <FormControl mt={4} isInvalid={errorInformationregEx || errorInformationLength}>
                 <FormLabel>Descripción</FormLabel>
                 <Textarea
                     value={information}
                     onChange={handleInformationChange}
                     placeholder="Información"
+                    onBlur = {verifyInputInformation}
                 />
+                <FormErrorMessage>{errorMessageInformation()}</FormErrorMessage>
             </FormControl>
-            <FormControl mt={4}>
+            <FormControl mt={4} >
                 <FormLabel>Fecha inicio</FormLabel>
                 <DatePicker
                     selectedDate={startDate}
@@ -176,9 +258,10 @@ const EventUpdateForm = (props: EventUpdateFormProps) => {
             </FormControl>
             <FormControl mt={4}>
                 <BoxtingButton
+                    isUnabled = {errorNameregEx || errorNameLength || errorInformationregEx || errorInformationLength}
                     isLoading={appState.loading}
                     typeBtn={ButtonType.primary}
-                    text="Editar"
+                    text="Modificar"
                     onEnter={() => {
                         updateNewEvent();
                     }}
