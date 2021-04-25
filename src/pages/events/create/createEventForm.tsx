@@ -6,7 +6,7 @@ import {
 	Input,
 	useToast,
 	Textarea,
-	FormErrorMessage
+	FormErrorMessage,
 } from '@chakra-ui/core'
 import { ButtonType } from '@/components/buttons/utils'
 import React, { useEffect, useState, ChangeEvent } from 'react'
@@ -34,6 +34,12 @@ const EventCreateForm = () => {
 	const [errorNameregEx, setErrorNameregEx] = useState(false)
 	const [errorInformationLength, setErrorInformationLength] = useState(false)
 	const [errorInformationregEx, setErrorInformationregEx] = useState(false)
+
+	// Constants
+	const MIN_LENGTH_NAME = 5;
+	const MAX_LENGTH_NAME = 100;
+	const MIN_LENGTH_INFORMATION = 10;
+	const MAX_LENGTH_INFORMATION = 500;
 
 	// Utils
 	const router = useRouter()
@@ -127,7 +133,7 @@ const EventCreateForm = () => {
 			setAppState({ loading: false, success: false })
 		}
 	}
-    
+
 	function verififyRegex(value){
 		let regEx
 		let val = []
@@ -137,14 +143,11 @@ const EventCreateForm = () => {
 				val.push(x)
 			}
 		}
-		if (val.length < 1){
-			return false
-		}
-		return true
+		return val.length >= 1
 	}
 
 	function verifyInputName(){
-		if ((name.length < 5 || name.length > 100) && name.length != 0){
+		if ((name.length < MIN_LENGTH_NAME || name.length > MAX_LENGTH_NAME) && name.length != 0){
 			setErrorNameLength(true)
 		}
 		else{
@@ -160,7 +163,7 @@ const EventCreateForm = () => {
 	}
 
 	function verifyInputInformation(){
-		if ((information.length < 10 || information.length > 500) && information.length != 0){
+		if ((information.length < MIN_LENGTH_INFORMATION || information.length > MAX_LENGTH_INFORMATION) && information.length != 0){
 			setErrorInformationLength(true)
 		}
 		else{
@@ -188,7 +191,7 @@ const EventCreateForm = () => {
 
 	function errorMessageInformation(){
 		if (errorInformationLength){
-			return "Información incorrecta, no debe ser menor a 5 y mayor a 100 caracteres."
+			return "Información incorrecta, no debe ser menor a 10 y mayor a 500 caracteres."
 		}
 
 		if (errorInformationregEx){
