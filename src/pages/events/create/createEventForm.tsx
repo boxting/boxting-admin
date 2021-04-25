@@ -6,7 +6,7 @@ import {
 	Input,
 	useToast,
 	Textarea,
-	FormErrorMessage,
+	FormErrorMessage
 } from '@chakra-ui/core'
 import { ButtonType } from '@/components/buttons/utils'
 import React, { useEffect, useState, ChangeEvent } from 'react'
@@ -30,12 +30,10 @@ const EventCreateForm = () => {
 	const [information, setInformation] = useState('')
 	const [name, setName] = useState('')
 
-	//Lo nuevo implementado//
 	const [errorNameLength, setErrorNameLength] = useState(false)
 	const [errorNameregEx, setErrorNameregEx] = useState(false)
 	const [errorInformationLength, setErrorInformationLength] = useState(false)
 	const [errorInformationregEx, setErrorInformationregEx] = useState(false)
-	/////////////////////////
 
 	// Utils
 	const router = useRouter()
@@ -129,8 +127,7 @@ const EventCreateForm = () => {
 			setAppState({ loading: false, success: false })
 		}
 	}
-
-	//Aquí está lo nuevo implementado//
+    
 	function verififyRegex(value){
 		let regEx
 		let val = []
@@ -198,7 +195,6 @@ const EventCreateForm = () => {
 			return "Información incorrecta, no debe contener caracteres especiales."
 		}
 	}
-	//////////////////////////////////
 
 	return (
 		<Box>
@@ -240,7 +236,7 @@ const EventCreateForm = () => {
 			</FormControl>
 			<FormControl mt={4}>
 				<BoxtingButton
-					isUnabled = {errorNameregEx || errorNameLength || errorInformationregEx || errorInformationLength}
+					isDisabled = {errorNameregEx || errorNameLength || errorInformationregEx || errorInformationLength}
 					isLoading={appState.loading}
 					typeBtn={ButtonType.primary}
 					text="Guardar"
