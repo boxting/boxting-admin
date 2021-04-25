@@ -24,7 +24,7 @@ const BoxtingButton: FC<ButtonProps> = ({
     submit,
     isLoading,
     onEnter,
-    isUnabled,
+    isDisabled,
 }: ButtonProps) => {
     const typeButton = buttonStyles.get(typeBtn);
 
