@@ -6,7 +6,7 @@ import Title from '@/components/title';
 const Home: React.FC = () => (
 	<div className="container">
 		<Head>
-			<title>Create Next App</title>
+			<title>Boxting</title>
 			<link rel="icon" href="/favicon.ico" />
 		</Head>
 
