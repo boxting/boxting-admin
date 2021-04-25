@@ -12,7 +12,7 @@ interface ButtonProps {
     isLoading?: boolean;
     style?: React.CSSProperties;
     onEnter?: () => void;
-    isUnabled?: boolean;
+    isDisabled?: boolean;
 }
 
 const BoxtingButton: FC<ButtonProps> = ({
@@ -53,7 +53,7 @@ const BoxtingButton: FC<ButtonProps> = ({
             isLoading={isLoading}
             type={submit ? `submit` : `button`}
             onClick={onEnter}
-            isDisabled={isUnabled}
+            isDisabled={isDisabled}
             _focus={{ boxShadow: `0px 0px 1px 1px ${typeButton.fontColor}` }}
         >
             {text}
@@ -62,4 +62,3 @@ const BoxtingButton: FC<ButtonProps> = ({
 };
 
 export default BoxtingButton;
-
