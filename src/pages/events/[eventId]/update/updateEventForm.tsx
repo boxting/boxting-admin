@@ -151,33 +151,22 @@ const EventUpdateForm = (props: EventUpdateFormProps) => {
     }
 
 	function verifyInputName(){
-		if ((name.length < MIN_LENGTH_NAME || name.length > MAX_LENGTH_NAME) && name.length != 0){
-			setErrorNameLength(true)
-		}
-		else{
-			setErrorNameLength(false)
-		}
+		setErrorNameLength((name.length < MIN_LENGTH_NAME || name.length > MAX_LENGTH_NAME) && name.length != 0)
 	}
 
 	function verifyInputInformation(){
-		if ((information.length < MIN_LENGTH_INFORMATION || information.length > MAX_LENGTH_INFORMATION) && information.length != 0){
-			setErrorInformationLength(true)
-		}
-		else{
-			setErrorInformationLength(false)
-		}
-	}
-    
-	function errorMessageName(){
-		if (errorNameLength){
-			return "Nombre incorrecto, no debe ser menor a 5 y mayor a 100 caracteres."
-		}
+		setErrorInformationLength((information.length < MIN_LENGTH_INFORMATION || information.length > MAX_LENGTH_INFORMATION) && information.length != 0)
 	}
 
+	function errorMessageName(){
+		if (errorNameLength){
+			return `Nombre incorrecto, no debe ser menor a ${MIN_LENGTH_NAME} y mayor a ${MAX_LENGTH_NAME} caracteres.`
+		}
+	}
 
 	function errorMessageInformation(){
 		if (errorInformationLength){
-			return "Información incorrecta, no debe ser menor a 10 y mayor a 500 caracteres."
+			return `Información incorrecta, no debe ser menor a ${MIN_LENGTH_INFORMATION} y mayor a ${MAX_LENGTH_INFORMATION} caracteres.`
 		}
 	}
 
