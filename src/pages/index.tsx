@@ -97,7 +97,7 @@ const Home: React.FC = () => (
                     type="submit"
                     size="lg"
                     color="white"
-                    onClick = {() => window.location.href="login"}>
+                    onClick={() => window.location.href = "login"}>
                     Comenzar
                 </Button>
                 </FormControl>
@@ -259,8 +259,8 @@ const Home: React.FC = () => (
               size="lg"
               justifySelf="center"
               alignSelf="center"
-              onClick = {() => window.scrollTo(0, 0)}
-              >
+              onClick={() => window.scrollTo(0, 0)}
+            >
               Comenzar
               </Button>
           </FormControl>
