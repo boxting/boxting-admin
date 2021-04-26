@@ -6,7 +6,8 @@ import {
 	Input,
 	useToast,
 	Textarea,
-	Select
+	Select,
+	FormErrorMessage
 } from '@chakra-ui/core'
 import { ButtonType } from '@/components/buttons/utils'
 import React, { useState, ChangeEvent } from 'react'
@@ -34,6 +35,15 @@ const ElectionCreateForm = (props: ElectionCreateFormProps) => {
 	const [name, setName] = useState('')
 	const [type, setType] = useState<number>(0)
 	const [winners, setWinners] = useState<number>(0)
+
+	const [errorNameLength, setErrorNameLength] = useState(false)
+	const [errorInformationLength, setErrorInformationLength] = useState(false)
+
+	// Constants
+	const MIN_LENGTH_NAME = 5;
+	const MAX_LENGTH_NAME = 100;
+	const MIN_LENGTH_INFORMATION = 10;
+	const MAX_LENGTH_INFORMATION = 500;
 
 	// Props
 	const eventId = props.eventId
@@ -131,23 +141,47 @@ const ElectionCreateForm = (props: ElectionCreateFormProps) => {
 		}
 	}
 
+	function verifyInputName(){
+		setErrorNameLength((name.length < MIN_LENGTH_NAME || name.length > MAX_LENGTH_NAME) && name.length != 0)
+	}
+
+	function verifyInputInformation(){
+		setErrorInformationLength((information.length < MIN_LENGTH_INFORMATION || information.length > MAX_LENGTH_INFORMATION) && information.length != 0)
+	}
+
+	function errorMessageName(){
+		if (errorNameLength){
+			return `Nombre incorrecto, no debe ser menor a ${MIN_LENGTH_NAME} y mayor a ${MAX_LENGTH_NAME} caracteres.`
+		}
+	}
+
+
+	function errorMessageInformation(){
+		if (errorInformationLength){
+			return `Información incorrecta, no debe ser menor a ${MIN_LENGTH_INFORMATION} y mayor a ${MAX_LENGTH_INFORMATION} caracteres.`
+		}
+	}
+
 	return (
 		<Box>
-			<FormControl>
+			<FormControl isInvalid={errorNameLength}>
 				<FormLabel>Nombre</FormLabel>
 				<Input
 					value={name}
 					onChange={handleNameChange}
 					placeholder="Nombre de la actividad de elección"
+					onBlur = {verifyInputName}
 				/>
+				<FormErrorMessage>{errorMessageName()}</FormErrorMessage>
 			</FormControl>
-			<FormControl mt={4}>
+			<FormControl mt={4} isInvalid={errorInformationLength}>
 				<FormLabel>Descripción</FormLabel>
 				<Textarea
 					value={information}
 					onChange={handleInformationChange}
-
+					onBlur = {verifyInputInformation}
 				/>
+				<FormErrorMessage>{errorMessageInformation()}</FormErrorMessage>
 			</FormControl>
 			<FormControl mt={4}>
 				<FormLabel>Tipo de actividad</FormLabel>
@@ -175,6 +209,7 @@ const ElectionCreateForm = (props: ElectionCreateFormProps) => {
 			</FormControl>
 			<FormControl mt={4}>
 				<BoxtingButton
+					isDisabled = {errorNameLength || errorInformationLength}
 					isLoading={appState.loading}
 					typeBtn={ButtonType.primary}
 					text="Guardar"
