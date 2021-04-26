@@ -48,6 +48,8 @@ function DeleteCodeAlertDialog(props: DelteCodeProps) {
 
             // Call delete function
             onDelete()
+
+            setIsOpen(false)
         } catch (error) {
             // Show error toast
             showToast('Ocurrió un error', error, false, toast);
