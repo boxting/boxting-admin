@@ -6,6 +6,7 @@ import {
 	Input,
 	useToast,
 	Textarea,
+	FormErrorMessage,
 } from '@chakra-ui/core'
 import { ButtonType } from '@/components/buttons/utils'
 import React, { useEffect, useState, ChangeEvent } from 'react'
@@ -28,6 +29,15 @@ const EventCreateForm = () => {
 	const [endDate, setEndDate] = useState(today)
 	const [information, setInformation] = useState('')
 	const [name, setName] = useState('')
+
+	const [errorNameLength, setErrorNameLength] = useState(false)
+	const [errorInformationLength, setErrorInformationLength] = useState(false)
+
+	// Constants
+	const MIN_LENGTH_NAME = 5;
+	const MAX_LENGTH_NAME = 100;
+	const MIN_LENGTH_INFORMATION = 10;
+	const MAX_LENGTH_INFORMATION = 500;
 
 	// Utils
 	const router = useRouter()
@@ -122,23 +132,48 @@ const EventCreateForm = () => {
 		}
 	}
 
+	function verifyInputName(){
+		setErrorNameLength((name.length < MIN_LENGTH_NAME || name.length > MAX_LENGTH_NAME) && name.length != 0)
+	}
+
+	function verifyInputInformation(){
+		setErrorInformationLength((information.length < MIN_LENGTH_INFORMATION || information.length > MAX_LENGTH_INFORMATION) && information.length != 0)
+	}
+
+	function errorMessageName(){
+		if (errorNameLength){
+			return `Nombre incorrecto, no debe ser menor a ${MIN_LENGTH_NAME} y mayor a ${MAX_LENGTH_NAME} caracteres.`
+		}
+	}
+
+
+	function errorMessageInformation(){
+		if (errorInformationLength){
+			return `Información incorrecta, no debe ser menor a ${MIN_LENGTH_INFORMATION} y mayor a ${MAX_LENGTH_INFORMATION} caracteres.`
+		}
+	}
+
 	return (
 		<Box>
-			<FormControl>
+			<FormControl isInvalid={errorNameLength}>
 				<FormLabel>Nombre</FormLabel>
 				<Input
 					value={name}
 					onChange={handleNameChange}
 					placeholder="Nombre del evento"
+					onBlur = {verifyInputName}
 				/>
+				<FormErrorMessage>{errorMessageName()}</FormErrorMessage>
 			</FormControl>
-			<FormControl mt={4}>
+			<FormControl mt={4}  isInvalid={errorInformationLength}>
 				<FormLabel>Descripción</FormLabel>
 				<Textarea
 					value={information}
 					onChange={handleInformationChange}
 					placeholder="Información"
+					onBlur = {verifyInputInformation}
 				/>
+				<FormErrorMessage>{errorMessageInformation()}</FormErrorMessage>
 			</FormControl>
 			<FormControl mt={4}>
 				<FormLabel>Fecha inicio</FormLabel>
@@ -158,6 +193,7 @@ const EventCreateForm = () => {
 			</FormControl>
 			<FormControl mt={4}>
 				<BoxtingButton
+					isDisabled = {errorNameLength || errorInformationLength}
 					isLoading={appState.loading}
 					typeBtn={ButtonType.primary}
 					text="Guardar"
