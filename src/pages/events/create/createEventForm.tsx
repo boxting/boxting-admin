@@ -31,9 +31,7 @@ const EventCreateForm = () => {
 	const [name, setName] = useState('')
 
 	const [errorNameLength, setErrorNameLength] = useState(false)
-	const [errorNameregEx, setErrorNameregEx] = useState(false)
 	const [errorInformationLength, setErrorInformationLength] = useState(false)
-	const [errorInformationregEx, setErrorInformationregEx] = useState(false)
 
 	// Constants
 	const MIN_LENGTH_NAME = 5;
@@ -153,13 +151,6 @@ const EventCreateForm = () => {
 		else{
 			setErrorNameLength(false)
 		}
-
-		if (verififyRegex(name)){
-			setErrorNameregEx(true)
-		}
-		else{
-			setErrorNameregEx(false)
-		}
 	}
 
 	function verifyInputInformation(){
@@ -169,22 +160,11 @@ const EventCreateForm = () => {
 		else{
 			setErrorInformationLength(false)
 		}
-
-		if (verififyRegex(information)){
-			setErrorInformationregEx(true)
-		}
-		else{
-			setErrorInformationregEx(false)
-		}
 	}
 
 	function errorMessageName(){
 		if (errorNameLength){
 			return "Nombre incorrecto, no debe ser menor a 5 y mayor a 100 caracteres."
-		}
-
-		if (errorNameregEx){
-			return "Nombre incorrecto, no debe contener caracteres especiales."
 		}
 	}
 
@@ -193,15 +173,11 @@ const EventCreateForm = () => {
 		if (errorInformationLength){
 			return "Información incorrecta, no debe ser menor a 10 y mayor a 500 caracteres."
 		}
-
-		if (errorInformationregEx){
-			return "Información incorrecta, no debe contener caracteres especiales."
-		}
 	}
 
 	return (
 		<Box>
-			<FormControl isInvalid={errorNameregEx || errorNameLength}>
+			<FormControl isInvalid={errorNameLength}>
 				<FormLabel>Nombre</FormLabel>
 				<Input
 					value={name}
@@ -211,7 +187,7 @@ const EventCreateForm = () => {
 				/>
 				<FormErrorMessage>{errorMessageName()}</FormErrorMessage>
 			</FormControl>
-			<FormControl mt={4}  isInvalid={errorInformationregEx || errorInformationLength}>
+			<FormControl mt={4}  isInvalid={errorInformationLength}>
 				<FormLabel>Descripción</FormLabel>
 				<Textarea
 					value={information}
@@ -239,7 +215,7 @@ const EventCreateForm = () => {
 			</FormControl>
 			<FormControl mt={4}>
 				<BoxtingButton
-					isDisabled = {errorNameregEx || errorNameLength || errorInformationregEx || errorInformationLength}
+					isDisabled = {errorNameLength || errorInformationLength}
 					isLoading={appState.loading}
 					typeBtn={ButtonType.primary}
 					text="Guardar"
