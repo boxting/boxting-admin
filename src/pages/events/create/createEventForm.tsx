@@ -132,18 +132,6 @@ const EventCreateForm = () => {
 		}
 	}
 
-	function verififyRegex(value){
-		let regEx
-		let val = []
-		for(let x of value){
-			regEx = x.charCodeAt(0)
-			if ((regEx > 122 || (regEx < 97 && regEx > 90) || regEx < 65) && regEx != 32){
-				val.push(x)
-			}
-		}
-		return val.length >= 1
-	}
-
 	function verifyInputName(){
 		if ((name.length < MIN_LENGTH_NAME || name.length > MAX_LENGTH_NAME) && name.length != 0){
 			setErrorNameLength(true)
