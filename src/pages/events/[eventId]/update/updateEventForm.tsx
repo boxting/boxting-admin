@@ -43,9 +43,7 @@ const EventUpdateForm = (props: EventUpdateFormProps) => {
     );
 
 	const [errorNameLength, setErrorNameLength] = useState(false)
-	const [errorNameregEx, setErrorNameregEx] = useState(false)
 	const [errorInformationLength, setErrorInformationLength] = useState(false)
-	const [errorInformationregEx, setErrorInformationregEx] = useState(false)
 
 	// Constants
 	const MIN_LENGTH_NAME = 5;
@@ -152,31 +150,12 @@ const EventUpdateForm = (props: EventUpdateFormProps) => {
         }
     }
 
-	function verififyRegex(value){
-		let regEx
-		let val = []
-		for(let x of value){
-			regEx = x.charCodeAt(0)
-			if ((regEx > 122 || (regEx < 97 && regEx > 90) || regEx < 65) && regEx != 32){
-				val.push(x)
-			}
-		}
-		return val.length >= 1
-	}
-
 	function verifyInputName(){
 		if ((name.length < MIN_LENGTH_NAME || name.length > MAX_LENGTH_NAME) && name.length != 0){
 			setErrorNameLength(true)
 		}
 		else{
 			setErrorNameLength(false)
-		}
-
-		if (verififyRegex(name)){
-			setErrorNameregEx(true)
-		}
-		else{
-			setErrorNameregEx(false)
 		}
 	}
 
@@ -187,22 +166,11 @@ const EventUpdateForm = (props: EventUpdateFormProps) => {
 		else{
 			setErrorInformationLength(false)
 		}
-
-		if (verififyRegex(information)){
-			setErrorInformationregEx(true)
-		}
-		else{
-			setErrorInformationregEx(false)
-		}
 	}
     
 	function errorMessageName(){
 		if (errorNameLength){
 			return "Nombre incorrecto, no debe ser menor a 5 y mayor a 100 caracteres."
-		}
-
-		if (errorNameregEx){
-			return "Nombre incorrecto, no debe contener caracteres especiales."
 		}
 	}
 
@@ -211,15 +179,11 @@ const EventUpdateForm = (props: EventUpdateFormProps) => {
 		if (errorInformationLength){
 			return "Información incorrecta, no debe ser menor a 10 y mayor a 500 caracteres."
 		}
-
-		if (errorInformationregEx){
-			return "Información incorrecta, no debe contener caracteres especiales."
-		}
 	}
 
     return (
         <Box>
-            <FormControl isInvalid={errorNameregEx || errorNameLength}> 
+            <FormControl isInvalid={errorNameLength}> 
                 <FormLabel>Nombre</FormLabel>
                 <Input
                     value={name}
@@ -229,7 +193,7 @@ const EventUpdateForm = (props: EventUpdateFormProps) => {
                 />
                 <FormErrorMessage>{errorMessageName()}</FormErrorMessage>
             </FormControl>
-            <FormControl mt={4} isInvalid={errorInformationregEx || errorInformationLength}>
+            <FormControl mt={4} isInvalid={errorInformationLength}>
                 <FormLabel>Descripción</FormLabel>
                 <Textarea
                     value={information}
@@ -257,7 +221,7 @@ const EventUpdateForm = (props: EventUpdateFormProps) => {
             </FormControl>
             <FormControl mt={4}>
                 <BoxtingButton
-                    isDisabled = {errorNameregEx || errorNameLength || errorInformationregEx || errorInformationLength}
+                    isDisabled = {errorNameLength || errorInformationLength}
                     isLoading={appState.loading}
                     typeBtn={ButtonType.primary}
                     text="Modificar"
