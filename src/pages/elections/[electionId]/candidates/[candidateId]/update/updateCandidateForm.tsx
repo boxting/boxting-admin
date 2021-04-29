@@ -266,7 +266,7 @@ const CandidateUpdateForm = (props: CandidateUpdateFormProps) => {
                 />
             </FormControl>
             <FormControl mt={4}>
-                <FormLabel>Descripción</FormLabel>
+                <FormLabel>Información</FormLabel>
                 <Textarea
                     value={information}
                     onChange={handleInformationChange}

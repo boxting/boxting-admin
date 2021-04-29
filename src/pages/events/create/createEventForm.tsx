@@ -166,7 +166,7 @@ const EventCreateForm = () => {
 				<FormErrorMessage>{errorMessageName()}</FormErrorMessage>
 			</FormControl>
 			<FormControl mt={4}  isInvalid={errorInformationLength}>
-				<FormLabel>Descripción</FormLabel>
+				<FormLabel>Información</FormLabel>
 				<Textarea
 					value={information}
 					onChange={handleInformationChange}

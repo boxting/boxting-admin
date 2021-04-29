@@ -222,11 +222,11 @@ const ListCreateForm = (props: ListCreateFormProps) => {
 				/>
 			</FormControl>
 			<FormControl mt={4}>
-				<FormLabel>Descripción</FormLabel>
+				<FormLabel>Información</FormLabel>
 				<Textarea
 					value={information}
 					onChange={handleInformationChange}
-					placeholder="Información"
+					placeholder="Información de la lista"
 				/>
 			</FormControl>
 			<FormControl mt={4}>

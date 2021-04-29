@@ -161,15 +161,6 @@ const PlatformLayout: React.FC<LayoutProps> = ({ children }: LayoutProps) => {
                         </MenuList>
                     </Menu>
                 </Box>
-                <Box
-                    marginBottom="35px"
-                    display="flex"
-                    flexDirection="column"
-                    gridRowGap={6}
-                    alignItems="center"
-                >
-                    <BellIcon boxSize={5} color="#bbbbbb" />
-                </Box>
             </Box>
         </Box>
     );

@@ -233,11 +233,11 @@ const ListUpdateForm = (props: ListUpdateFormProps) => {
                 />
             </FormControl>
             <FormControl mt={4}>
-                <FormLabel>Descripción</FormLabel>
+                <FormLabel>Información</FormLabel>
                 <Textarea
                     value={information}
                     onChange={handleInformationChange}
-                    placeholder="Información"
+                    placeholder="Información del evento"
                 />
             </FormControl>
             <FormControl mt={4}>
