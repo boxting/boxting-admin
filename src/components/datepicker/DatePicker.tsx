@@ -24,7 +24,7 @@ const DatePicker = ({
 			onChange={onChange}
 			isClearable={isClearable}
 			showPopperArrow={showPopperArrow}
-			dateFormat="MM/dd/yyyy h:mm aa"
+			dateFormat="dd/MM/yyyy HH:mm"
 			showTimeInput
 			{...props}
 		/>
