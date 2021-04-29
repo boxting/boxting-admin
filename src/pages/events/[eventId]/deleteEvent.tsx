@@ -14,9 +14,13 @@ import { showToast } from '../../../components/toast/custom.toast';
 import { useRouter } from 'next/router';
 import moment from 'moment';
 import { Event } from '@/data/event/model/event.model';
+import BoxtingButton from '@/components/buttons/boxting_button';
+import { ButtonType } from '@/components/buttons/utils';
+import { DeleteIcon } from '@chakra-ui/icons';
 
 interface DeleteEventProps {
     event: Event
+    disabled: boolean
 }
 
 function DeleteEventAlertDialog(props: DeleteEventProps) {
@@ -26,7 +30,7 @@ function DeleteEventAlertDialog(props: DeleteEventProps) {
     const onClose = () => setIsOpen(false);
 
     // Props
-    const { event } = props;
+    const { event, disabled } = props;
 
     // Utils
     const cancelRef = useRef();
@@ -76,9 +80,15 @@ function DeleteEventAlertDialog(props: DeleteEventProps) {
 
     return (
         <>
-            <Button style={{ marginRight: '12px', marginBottom: '12px' }} colorScheme="red" onClick={() => setIsOpen(true)}>
-                Eliminar evento
-      </Button>
+            <BoxtingButton
+                style={{ marginRight: '12px', marginBottom: '12px' }}
+                text="Eliminar evento"
+                typeBtn={ButtonType.alert}
+                leftIcon={<DeleteIcon boxSize={4} />}
+                onEnter={() => setIsOpen(true)}
+                isDisabled={disabled}
+            />
+
             <AlertDialog
                 isOpen={isOpen}
                 leastDestructiveRef={cancelRef}

@@ -38,7 +38,7 @@ const CandidateDetail = (props: CandidateDetailProps) => {
 
             <BoxtingButton
                 style={{ marginRight: '12px', marginBottom: '12px' }}
-                text="Guardar"
+                text="Editar"
                 typeBtn={ButtonType.primary}
                 leftIcon={<EditIcon boxSize={4} />}
                 onEnter={() =>

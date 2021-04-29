@@ -9,6 +9,8 @@ import BoxtingButton from '@/components/buttons/boxting_button';
 import { ButtonType } from '@/components/buttons/utils';
 import { AddSmallIcon } from '@/components/icons';
 import { NextRouter } from 'next/router';
+import { getEventStatus } from '@/data/utils/event.status';
+import { EventStatusEnum } from '@/data/utils/event.status.enum';
 
 
 interface ElectionListProps {
@@ -79,7 +81,13 @@ class ElectionList extends Component<ElectionListProps, ElectionListState> {
     onSelectEvent = async (event: React.ChangeEvent<HTMLSelectElement>) => {
 
         let selectedEvent = event.target.value
-        let currentElections = await this.getElections(selectedEvent)
+        let currentElections = []
+
+        if (selectedEvent == undefined || selectedEvent == '') {
+            selectedEvent = undefined
+        } else {
+            currentElections = await this.getElections(selectedEvent)
+        }
 
         this.setState({
             currentEvent: selectedEvent,
@@ -99,10 +107,15 @@ class ElectionList extends Component<ElectionListProps, ElectionListState> {
     }
 
     render() {
+
         return (
             <Box>
                 <Flex pb={4}>
-                    <Select placeholder="Selecciona un evento de votación" value={this.state.currentEvent} onChange={this.onSelectEvent}>
+                    <Select
+                        placeholder="Selecciona un evento de votación"
+                        value={this.state.currentEvent}
+                        onChange={this.onSelectEvent}
+                    >
                         {this.state.events.map((item) => (
                             <option key={item.id} value={item.id}>{item.name}</option>
                         ))}
@@ -116,10 +129,12 @@ class ElectionList extends Component<ElectionListProps, ElectionListState> {
                         typeBtn={ButtonType.primary}
                         leftIcon={<AddSmallIcon boxSize={4} />}
                         onEnter={this.onCreateElection}
+                        isDisabled={this.state.currentEvent == undefined}
                     />
                 </Flex>
 
                 {
+                    (this.state.currentEvent == undefined) ? <p>Debes seleccionar un evento del listado.</p> :
                     (this.state.elections.length == 0) ? <p>No se han creado actividades de elección para el evento.</p> :
                         <Grid
                             py={2}

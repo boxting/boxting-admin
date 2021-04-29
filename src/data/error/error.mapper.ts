@@ -14,5 +14,6 @@ export const ErrorMapper = {
     '5003': '123',
     '5004': '123',
     '6003': 'No se puede modificar un evento que ya ha iniciado.',
+    '9015': 'Aún no se ha configurado un contrato para el evento.'
 }
 

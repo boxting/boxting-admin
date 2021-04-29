@@ -10,6 +10,9 @@ import { EditIcon } from '../../../components/icons/index';
 import { LockIcon } from '@chakra-ui/icons';
 import DatePicker from '@/components/datepicker/DatePicker';
 import { Event } from '@/data/event/model/event.model';
+import { ListAltOutlined } from '@material-ui/icons';
+import { getEventStatus } from '@/data/utils/event.status';
+import { EventStatusEnum } from '@/data/utils/event.status.enum';
 
 interface EventDetailProps {
     event: Event
@@ -33,10 +36,15 @@ const EventDetail = (props: EventDetailProps) => {
                 enableBackIcon
                 disableInfoIcon
             />
-            <DeleteEventAlertDialog event={event} />
+
+            <DeleteEventAlertDialog event={event}
+                disabled={getEventStatus(event) != EventStatusEnum.NOT_STARTED
+                    && getEventStatus(event) != EventStatusEnum.ENDED}
+            />
+
             <BoxtingButton
                 style={{ marginRight: '12px', marginBottom: '12px' }}
-                text="Guardar"
+                text="Editar"
                 typeBtn={ButtonType.primary}
                 leftIcon={<EditIcon boxSize={4} />}
                 onEnter={() =>
@@ -48,11 +56,12 @@ const EventDetail = (props: EventDetailProps) => {
                         `/events/${event.id}/update`,
                     )
                 }
+                isDisabled={getEventStatus(event) != EventStatusEnum.NOT_STARTED}
             />
 
             <BoxtingButton
                 style={{ marginRight: '12px', marginBottom: '12px' }}
-                text="Configurar códigos de acceso"
+                text="Gestionar códigos de acceso"
                 typeBtn={ButtonType.primary}
                 leftIcon={<LockIcon boxSize={4} />}
                 onEnter={() =>
@@ -68,9 +77,9 @@ const EventDetail = (props: EventDetailProps) => {
 
             <BoxtingButton
                 style={{ marginRight: '12px', marginBottom: '12px' }}
-                text="Configurar actividades de elección"
+                text="Gestionar actividades de elección"
                 typeBtn={ButtonType.primary}
-                leftIcon={<LockIcon boxSize={4} />}
+                leftIcon={<ListAltOutlined />}
                 onEnter={() =>
                     router.push(
                         {
