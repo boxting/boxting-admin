@@ -119,7 +119,7 @@ const AddExistingCollaboratorModal = (props: AddExistingCollaboratorProps) => {
                             Cancelar
                         </Button>
                         <Button colorScheme="red" onClick={onConfirm} ml={3}>
-                            Guardar
+                            Agregar
                         </Button>
                     </ModalFooter>
                 </ModalContent>
