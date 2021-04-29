@@ -176,7 +176,7 @@ const EventCreateForm = () => {
 				<FormErrorMessage>{errorMessageInformation()}</FormErrorMessage>
 			</FormControl>
 			<FormControl mt={4}>
-				<FormLabel>Fecha inicio</FormLabel>
+				<FormLabel>Fecha de inicio</FormLabel>
 				<DatePicker
 					selectedDate={startDate}
 					onChange={onChangeStartDate}
