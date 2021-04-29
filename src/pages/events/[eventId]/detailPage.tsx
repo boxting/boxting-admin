@@ -36,7 +36,7 @@ const EventDetail = (props: EventDetailProps) => {
             <DeleteEventAlertDialog event={event} />
             <BoxtingButton
                 style={{ marginRight: '12px', marginBottom: '12px' }}
-                text="Editar"
+                text="Guardar"
                 typeBtn={ButtonType.primary}
                 leftIcon={<EditIcon boxSize={4} />}
                 onEnter={() =>

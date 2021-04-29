@@ -264,7 +264,7 @@ const ListUpdateForm = (props: ListUpdateFormProps) => {
                 <BoxtingButton
                     isLoading={appState.loading}
                     typeBtn={ButtonType.primary}
-                    text="Editar"
+                    text="Guardar"
                     onEnter={() => {
                         updateList();
                     }}

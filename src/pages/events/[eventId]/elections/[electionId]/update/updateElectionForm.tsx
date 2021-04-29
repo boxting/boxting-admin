@@ -187,7 +187,7 @@ const ElectionUpdateForm = (props: ElectionUpdateFormProps) => {
                 <BoxtingButton
                     isLoading={appState.loading}
                     typeBtn={ButtonType.primary}
-                    text="Editar"
+                    text="Guardar"
                     onEnter={() => {
                         updateNewEvent();
                     }}

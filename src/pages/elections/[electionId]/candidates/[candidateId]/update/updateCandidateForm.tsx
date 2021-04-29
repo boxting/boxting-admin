@@ -312,7 +312,7 @@ const CandidateUpdateForm = (props: CandidateUpdateFormProps) => {
                 <BoxtingButton
                     isLoading={appState.loading}
                     typeBtn={ButtonType.primary}
-                    text="Editar"
+                    text="Guardar"
                     onEnter={updateCandidate}
                 />
             </FormControl>
