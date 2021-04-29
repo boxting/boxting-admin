@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import WithLoadingComponent from '../../../components/loading/withComponentLoading';
-import VoterList from './collaboratorList'
+import VoterList from './voterList'
 import * as EventMapper from '@/data/event/api/mapper/event.mapper'
 import { EventRepository } from '@/data/event/repository/events.repository';
 import { useRouter } from 'next/router';
