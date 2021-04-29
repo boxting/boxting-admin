@@ -15,6 +15,7 @@ const CollaboratorPage: NextPage = () => {
     return (
         <Box>
             <PageTitle
+                disableInfoIcon
                 title="Colaboradores"
                 description="En esta sección podrás gestionar los colaboradores de apoyo según cada evento."
             />

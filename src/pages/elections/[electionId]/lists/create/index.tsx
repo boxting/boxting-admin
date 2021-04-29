@@ -21,6 +21,7 @@ const CreateListPage: NextPage = () => {
 				description='En esta sección se podrá crear una nueva lista de candidatos.'
 				onBackClick={() => router.back()}
 				enableBackIcon
+				disableInfoIcon
 			/>
 
 			<ListCreateForm electionId={electionId as string}/>

@@ -24,6 +24,7 @@ const CreateEventPage: NextPage = () => {
 					}, '/elections/'
 				)}
 				enableBackIcon
+				disableInfoIcon
 			/>
 
 			<ElectionCreateForm eventId={eventId} />

@@ -31,6 +31,7 @@ const ListDetail = (props: ListDetailProps) => {
                 onBackClick={() => router.back()}
                 enableBackIcon
                 enableImage
+                disableInfoIcon
             />
 
             <DeleteListAlertDialog list={list} />

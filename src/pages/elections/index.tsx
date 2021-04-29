@@ -15,6 +15,7 @@ const ElectionPage: NextPage = () => {
     return (
         <Box>
             <PageTitle
+                disableInfoIcon
                 title="Elecciones"
                 description="En esta sección podrás ver, crear, editar y eliminar las diferentes actividades de elección creadas según cada evento."
             />

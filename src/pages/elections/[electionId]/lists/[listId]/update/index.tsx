@@ -22,6 +22,7 @@ const UpdateListPage: NextPage = () => {
                     () => router.back()
                 }
                 enableBackIcon
+                disableInfoIcon
             />
 
             <ListUpdateForm list={list} />

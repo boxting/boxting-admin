@@ -22,6 +22,7 @@ const ListPage: NextPage = () => {
                 description="En esta sección podrás ver, crear, editar y eliminar las diferentes listas de candidatos para tus actividades de elección."
                 onBackClick={() => router.back()}
                 enableBackIcon
+                disableInfoIcon
             />
 
             <Flex pb={6}>

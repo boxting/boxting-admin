@@ -75,9 +75,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
     };
 
     return (
-        <Box as="form">
+        <Box>
             {error && (
-                <Box mb={80}>
+                <Box mb={20}>
                     <ErrorMessage message={error} onClose={closeError} />
                 </Box>
             )}
@@ -178,9 +178,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
                 </Box>
                 <Box mt={8}>
                     <Flex justifyContent="space-between" align="center">
-                        <Text fontSize="xs" color="text" as="u">
+                        <Text fontSize="xs" color="text" as="u" mr="60px">
                             ¿Olvidaste tu contraseña?
-            </Text>
+                        </Text>
                         <BoxtingButton
                             isLoading={loading}
                             text="Iniciar sesión"

@@ -56,6 +56,7 @@ const CreateCandidatePage: NextPage = () => {
                 description='En esta sección se podrá crear un nuevo candidato.'
                 onBackClick={() => router.back()}
                 enableBackIcon
+                disableInfoIcon
             />
 
             <CandidateCreateForm electionId={electionId as string} lists={appState.lists} />

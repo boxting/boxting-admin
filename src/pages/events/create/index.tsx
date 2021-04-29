@@ -20,6 +20,7 @@ const CreateEventPage: NextPage = () => {
 				description='En esta sección se podrá crear un evento.'
 				onBackClick={() => router.push('/events/')}
 				enableBackIcon
+				disableInfoIcon
 			/>
 
 			<EventCreateForm />

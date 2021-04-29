@@ -25,6 +25,7 @@ const UpdateElectionPage: NextPage = () => {
                     )
                 }
                 enableBackIcon
+                disableInfoIcon
             />
 
             <ElectionUpdateForm election={election} />

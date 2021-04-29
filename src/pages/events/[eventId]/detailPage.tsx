@@ -31,6 +31,7 @@ const EventDetail = (props: EventDetailProps) => {
                 description={event.information}
                 onBackClick={() => router.push(`/events/`)}
                 enableBackIcon
+                disableInfoIcon
             />
             <DeleteEventAlertDialog event={event} />
             <BoxtingButton

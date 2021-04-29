@@ -6,7 +6,7 @@ export default function ErrorMessage({ message, onClose }) {
         <Box my={4}>
             <Alert status="error" borderRadius={4}>
                 <AlertIcon />
-                <AlertDescription>{message}</AlertDescription>
+                <AlertDescription mr="25px">{message}</AlertDescription>
                 <CloseButton onClick={onClose} position="absolute" right="8px" top="8px" />
             </Alert>
         </Box>

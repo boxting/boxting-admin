@@ -21,6 +21,7 @@ const CodesEventPage: NextPage = () => {
                 description="En esta sección se podrá gestionar los códigos de acceso de votación individuales para los usuarios votantes."
                 onBackClick={() => router.back()}
                 enableBackIcon
+                disableInfoIcon
             />
 
             <ListCodesComponent eventId={eventId} />

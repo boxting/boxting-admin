@@ -22,6 +22,7 @@ const CandidatePage: NextPage = () => {
                 description="En esta sección podrás ver, crear, editar y eliminar candidatos para tus actividades de elección."
                 onBackClick={() => router.back()}
                 enableBackIcon
+                disableInfoIcon
             />
 
             <Flex pb={6}>

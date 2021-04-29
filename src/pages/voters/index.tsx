@@ -15,6 +15,7 @@ const VoterPage: NextPage = () => {
     return (
         <Box>
             <PageTitle
+                disableInfoIcon
                 title="Usuarios votantes"
                 description="En esta sección podrás gestionar los usuarios votantes suscritos según cada evento."
             />

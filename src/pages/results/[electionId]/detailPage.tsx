@@ -31,6 +31,7 @@ const ElectionResult = (props: ElectionResultProps) => {
                     `/results/`,
                 )}
                 enableBackIcon
+                disableInfoIcon
             />
 
             <Center>No hay resultados de la actividad disponibles.</Center>;

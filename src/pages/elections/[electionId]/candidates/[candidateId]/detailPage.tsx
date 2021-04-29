@@ -31,6 +31,7 @@ const CandidateDetail = (props: CandidateDetailProps) => {
                 onBackClick={() => router.back()}
                 enableBackIcon
                 enableImage
+                disableInfoIcon
             />
 
             <DeleteCandidateAlertDialog candidate={candidate} />

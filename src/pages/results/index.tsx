@@ -15,6 +15,7 @@ const ElectionPage: NextPage = () => {
     return (
         <Box>
             <PageTitle
+                disableInfoIcon
                 title="Resultados"
                 description="En esta sección podrás ver los resultados de los eventos de votación finalizados."
             />

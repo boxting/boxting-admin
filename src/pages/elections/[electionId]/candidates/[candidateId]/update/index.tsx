@@ -50,6 +50,7 @@ const UpdateCandidatePage: NextPage = () => {
                     () => router.back()
                 }
                 enableBackIcon
+                disableInfoIcon
             />
 
             <CandidateUpdateForm candidate={candidate} lists={appState.lists} />

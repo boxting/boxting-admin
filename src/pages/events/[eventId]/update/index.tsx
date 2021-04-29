@@ -22,6 +22,7 @@ const UpdateEventPage: NextPage = () => {
                     () => router.push(`/events/[eventId]`, `/events/${event.id}`)
                 }
                 enableBackIcon
+                disableInfoIcon
             />
 
             <EventUpdateForm event={event} />

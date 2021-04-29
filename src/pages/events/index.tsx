@@ -16,6 +16,7 @@ const EventPage: NextPage = () => {
     return (
         <Box>
             <PageTitle
+                disableInfoIcon
                 title="Votaciones"
                 description="En esta sección se deberá poder ver, crear, editar y eliminar las diferentes listas y datos que sirven de base para los demás módulos de la plataforma."
             />

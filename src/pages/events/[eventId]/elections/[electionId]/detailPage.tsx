@@ -35,6 +35,7 @@ const ElectionDetail = (props: ElectionDetailProps) => {
                     `/elections/`,
                 )}
                 enableBackIcon
+                disableInfoIcon
             />
 
             <DeleteElectionAlertDialog election={election} />
