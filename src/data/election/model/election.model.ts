@@ -1,3 +1,4 @@
+import { EventStatusEnum } from "@/data/utils/event.status.enum"
 import { List } from "../../list/model/list.model"
 import { Type } from "../../type/model/type.model"
 
@@ -13,4 +14,5 @@ export class Election {
     typeId: number
     type?: Type
     lists?: List[]
+    eventStatus?: EventStatusEnum
 }

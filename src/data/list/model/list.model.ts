@@ -1,3 +1,4 @@
+import { EventStatusEnum } from "@/data/utils/event.status.enum"
 import { Candidate } from "../../candidate/model/candidate.model"
 import { Election } from "../../election/model/election.model"
 
@@ -11,4 +12,5 @@ export class List {
     electionId: number
     election?: Election
     candidates?: Candidate[]
+    eventStatus?: EventStatusEnum
 }

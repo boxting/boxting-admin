@@ -1,6 +1,7 @@
 import { AccessCode } from "../../access_code/model/access.code.model"
 import { Election } from "../../election/model/election.model"
 import { User } from "../../user/model/user.model"
+import { EventStatusEnum } from "../../utils/event.status.enum"
 
 export class Event {
     id: number
@@ -15,4 +16,5 @@ export class Event {
     accessCodes?: AccessCode[]
     elections?: Election[]
     configCompleted: boolean
+    eventStatus: EventStatusEnum
 }

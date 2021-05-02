@@ -1,3 +1,5 @@
+import { EventStatusEnum } from "@/data/utils/event.status.enum";
+
 export interface EventDto {
     id: number,
     name: string,
@@ -8,4 +10,5 @@ export interface EventDto {
     createdAt?: Date,
     updatedAt?: Date,
     configCompleted: boolean
+    eventStatus: EventStatusEnum
 }

@@ -1,3 +1,5 @@
+import { EventStatusEnum } from "@/data/utils/event.status.enum";
+
 export interface ElectionDto {
     id: number,
     name: string,
@@ -7,4 +9,5 @@ export interface ElectionDto {
     typeId: number,
     createdAt?: Date,
     updatedAt?: Date
+    eventStatus?: EventStatusEnum
 }

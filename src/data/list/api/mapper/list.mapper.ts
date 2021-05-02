@@ -4,7 +4,7 @@ import { GetOneListResponseDto } from "../dto/response/get.one.response.dto";
 
 export async function getAllToListList(response: GetAllListsResponseDto): Promise<List[]> {
 
-    const listList: List[] = response.data.map((value) => {
+    const listList: List[] = response.data.elements.map((value) => {
         let list: List = {
             id: value.id,
             information: value.information,
@@ -25,7 +25,8 @@ export async function getOneToList(response: GetOneListResponseDto): Promise<Lis
         information: response.data.information,
         name: response.data.name,
         electionId: response.data.electionId,
-        imageUrl: response.data.imageUrl
+        imageUrl: response.data.imageUrl,
+        eventStatus: response.data.eventStatus
     }
 
     return list

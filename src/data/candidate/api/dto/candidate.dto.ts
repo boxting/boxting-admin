@@ -1,4 +1,5 @@
 import { List } from "@/data/list/model/list.model";
+import { EventStatusEnum } from "@/data/utils/event.status.enum";
 
 export interface CandidateDto {
     id: number,
@@ -12,5 +13,6 @@ export interface CandidateDto {
     electionId: number,
     createdAt?: Date,
     updatedAt?: Date,
-    list?: List
+    list?: List,
+    eventStatus?: EventStatusEnum
 }

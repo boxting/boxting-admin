@@ -1,6 +1,10 @@
+import { EventStatusEnum } from "@/data/utils/event.status.enum";
 import { ListDto } from "../list.dto";
 
 export interface GetAllListsResponseDto {
     success: boolean,
-    data: ListDto[]
+    data: {
+        eventStatus: EventStatusEnum,
+        elements: ListDto[]
+    }
 }

@@ -4,7 +4,7 @@ import { GetOneCandidateResponseDto } from "../dto/response/get.one.response.dto
 
 export async function getAllToCandidateList(response: GetAllCandidatesResponseDto): Promise<Candidate[]> {
 
-    const candidateList: Candidate[] = response.data.map((value) => {
+    const candidateList: Candidate[] = response.data.elements.map((value) => {
         let candidate: Candidate = {
             id: value.id,
             information: value.information,
@@ -35,7 +35,8 @@ export async function getOneToCandidate(response: GetOneCandidateResponseDto): P
         electionId: response.data.electionId,
         imageUrl: response.data.imageUrl,
         listId: response.data.listId,
-        list: response.data.list
+        list: response.data.list,
+        eventStatus: response.data.eventStatus
     }
 
     return candidate

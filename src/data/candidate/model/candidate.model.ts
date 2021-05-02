@@ -1,4 +1,5 @@
 import { List } from "@/data/list/model/list.model"
+import { EventStatusEnum } from "@/data/utils/event.status.enum"
 
 export class Candidate {
     id: number
@@ -13,4 +14,5 @@ export class Candidate {
     listId?: number
     electionId?: number
     list?: List
+    eventStatus?: EventStatusEnum
 }
