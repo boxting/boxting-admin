@@ -9,7 +9,7 @@ import {
     FormErrorMessage
 } from '@chakra-ui/core';
 import { ButtonType } from '@/components/buttons/utils';
-import React, { useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { showToast } from '@/components/toast/custom.toast';
 import 'react-datetime/css/react-datetime.css';
@@ -42,14 +42,17 @@ const EventUpdateForm = (props: EventUpdateFormProps) => {
         event == undefined ? '' : event.information,
     );
 
-	const [errorNameLength, setErrorNameLength] = useState(false)
-	const [errorInformationLength, setErrorInformationLength] = useState(false)
+    // Error state vars
+    const [nameError, setNameError] = useState<string | undefined>(undefined)
+    const [informationError, setInformationError] = useState<string | undefined>(undefined)
+    const [startDateError, setStartDateError] = useState<string | undefined>(undefined)
+    const [endDateError, setEndDateError] = useState<string | undefined>(undefined)
 
-	// Constants
-	const MIN_LENGTH_NAME = 5;
-	const MAX_LENGTH_NAME = 100;
-	const MIN_LENGTH_INFORMATION = 10;
-	const MAX_LENGTH_INFORMATION = 500;
+    // Constants
+    const MIN_LENGTH_NAME = 5;
+    const MAX_LENGTH_NAME = 100;
+    const MIN_LENGTH_INFORMATION = 10;
+    const MAX_LENGTH_INFORMATION = 500;
 
     // Utils
     const router = useRouter();
@@ -58,47 +61,75 @@ const EventUpdateForm = (props: EventUpdateFormProps) => {
     // Get service instance
     const eventRepository = EventRepository.getInstance()
 
-    // Validators
-    function validateLength(value: string, minLen: number, maxLen: number, fieldName: string) {
-        let errors = false
-        if (value.length > maxLen) {
-            showError(`La longitud del campo ${fieldName} debe ser menor a la máxima establecida: ${maxLen}.`)
-            errors = true;
-        } if (value.length < minLen) {
-            showError(`La longitud del campo ${fieldName} debe ser mayor a la mínima establecida: ${minLen}.`)
-            errors = true;
-        }
-        return errors
+    // Functions
+    const handleInformationChange = (event: ChangeEvent<HTMLTextAreaElement>) => setInformation(event.target.value);
+    const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => setName(event.target.value);
+
+    function onChangeStartDate(date: Date) {
+        setStartDate(date)
+        validateStartDate(date)
     }
 
-    // Functions
-    const handleInformationChange = (event) => setInformation(event.target.value);
-    const handleNameChange = (event) => setName(event.target.value);
+    function onChangeEndDate(date: Date) {
+        setEndDate(date)
+        validateEndDate(date)
+    }
 
-    function onChangeStartDate (date: Date) {
-		setStartDate(date)
-	}
+    // State listeners
+    useEffect(() => {
+        if (endDate < startDate) {
+            setEndDate(startDate)
+        }
+    }, [startDate])
 
-	function onChangeEndDate (date: Date) {
-		setEndDate(date)
-	}
+    // Validators
+    function validateName() {
+        let value = name.trim()
+        if (value.length == 0) {
+            setNameError('Debes completar el campo nombre.')
+        } else if (value.length < MIN_LENGTH_NAME) {
+            setNameError(`La longitud del campo nombre debe ser mayor a ${MIN_LENGTH_NAME}.`)
+        } else if (value.length > MAX_LENGTH_NAME) {
+            setNameError(`La longitud del campo nombre debe ser menor a ${MAX_LENGTH_NAME}.`)
+        } else {
+            setNameError(undefined)
+        }
+    }
 
-    function showError(msg) {
-        showToast('Error!', msg, false, toast);
+    function validateInformation() {
+        let value = information.trim()
+        if (value.length == 0) {
+            setInformationError('Debes completar el campo información.')
+        } else if (value.length < MIN_LENGTH_INFORMATION) {
+            setInformationError(`La longitud del campo información debe ser mayor a ${MIN_LENGTH_INFORMATION}.`)
+        } else if (value.length > MAX_LENGTH_INFORMATION) {
+            setInformationError(`La longitud del campo información debe ser menor a ${MAX_LENGTH_INFORMATION}.`)
+        } else {
+            setInformationError(undefined)
+        }
+    }
+
+    function validateStartDate(value: Date) {
+        if (value == null) {
+            setStartDateError('Debes completar el campo fecha de inicio.')
+        } else if (value.getTime() < Date.now()) {
+            setStartDateError(`La fecha y hora de inicio debe ser posterior a la fecha y hora actual.`)
+        } else {
+            setStartDateError(undefined)
+        }
+    }
+
+    function validateEndDate(value: Date) {
+        if (value == null) {
+            setEndDateError('Debes completar el campo fecha de fin.')
+        } else if (value.getTime() <= startDate.getTime()) {
+            setEndDateError(`La fecha y hora de fin debe ser posterior a la fecha y hora de inicio.`)
+        } else {
+            setEndDateError(undefined)
+        }
     }
 
     const updateNewEvent = async () => {
-        // Validate null data
-        if (startDate == null || endDate == null ||
-            name.length == 0 || information.length == 0) {
-            showError('Debes completar todos los campos para editar el evento de votación')
-            return;
-        }
-
-        // Validate if fields are correct
-        if (validateLength(name, 5, 100, "nombre") || validateLength(information, 10, 500, "información")) {
-            return;
-        }
 
         // Validate if event has not started
         const startDateMoment = moment(event.startDate, 'DD/MM/YYYY HH:mm:SS');
@@ -150,70 +181,57 @@ const EventUpdateForm = (props: EventUpdateFormProps) => {
         }
     }
 
-	function verifyInputName(){
-		setErrorNameLength((name.length < MIN_LENGTH_NAME || name.length > MAX_LENGTH_NAME) && name.length != 0)
-	}
-
-	function verifyInputInformation(){
-		setErrorInformationLength((information.length < MIN_LENGTH_INFORMATION || information.length > MAX_LENGTH_INFORMATION) && information.length != 0)
-	}
-
-	function errorMessageName(){
-		if (errorNameLength){
-			return `Nombre incorrecto, no debe ser menor a ${MIN_LENGTH_NAME} y mayor a ${MAX_LENGTH_NAME} caracteres.`
-		}
-	}
-
-	function errorMessageInformation(){
-		if (errorInformationLength){
-			return `Información incorrecta, no debe ser menor a ${MIN_LENGTH_INFORMATION} y mayor a ${MAX_LENGTH_INFORMATION} caracteres.`
-		}
-	}
-
     return (
         <Box>
-            <FormControl isInvalid={errorNameLength}> 
+            <FormControl isInvalid={nameError != undefined} isRequired>
                 <FormLabel>Nombre</FormLabel>
                 <Input
                     value={name}
                     onChange={handleNameChange}
                     placeholder="Nombre del evento"
-                    onBlur = {verifyInputName}
+                    onBlur={validateName}
                 />
-                <FormErrorMessage>{errorMessageName()}</FormErrorMessage>
+                <FormErrorMessage>{nameError}</FormErrorMessage>
             </FormControl>
-            <FormControl mt={4} isInvalid={errorInformationLength}>
+            <FormControl mt={4} isInvalid={informationError != undefined} isRequired>
                 <FormLabel>Información</FormLabel>
                 <Textarea
                     value={information}
                     onChange={handleInformationChange}
                     placeholder="Información"
-                    onBlur = {verifyInputInformation}
+                    onBlur={validateInformation}
                 />
-                <FormErrorMessage>{errorMessageInformation()}</FormErrorMessage>
+                <FormErrorMessage>{informationError}</FormErrorMessage>
             </FormControl>
-            <FormControl mt={4} >
+            <FormControl mt={4} isInvalid={startDateError != undefined} isRequired>
                 <FormLabel>Fecha de inicio</FormLabel>
                 <DatePicker
                     selectedDate={startDate}
                     onChange={onChangeStartDate}
                     minDate={today}
                 />
+                <FormErrorMessage>{startDateError}</FormErrorMessage>
+
             </FormControl>
-            <FormControl mt={4}>
+            <FormControl mt={4} isInvalid={endDateError != undefined} isRequired>
                 <FormLabel>Fecha de fin</FormLabel>
                 <DatePicker
                     selectedDate={endDate}
                     onChange={onChangeEndDate}
                     minDate={startDate}
                 />
+                <FormErrorMessage>{endDateError}</FormErrorMessage>
+
             </FormControl>
             <FormControl mt={4}>
                 <BoxtingButton
-                    isDisabled = {errorNameLength || errorInformationLength}
+                    isDisabled={
+                        nameError != undefined || informationError != undefined ||
+                        startDateError != undefined || endDateError != undefined
+                    }
                     isLoading={appState.loading}
                     typeBtn={ButtonType.primary}
-                    text="Modificar"
+                    text="Guardar"
                     onEnter={() => {
                         updateNewEvent();
                     }}

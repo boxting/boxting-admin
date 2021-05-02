@@ -70,6 +70,53 @@ const EventCreateForm = () => {
 		validateEndDate(date)
 	}
 
+	// Validators
+	function validateName() {
+		let value = name.trim()
+		if (value.length == 0) {
+			setNameError('Debes completar el campo nombre.')
+		} else if (value.length < MIN_LENGTH_NAME) {
+			setNameError(`La longitud del campo nombre debe ser mayor a ${MIN_LENGTH_NAME}.`)
+		} else if (value.length > MAX_LENGTH_NAME) {
+			setNameError(`La longitud del campo nombre debe ser menor a ${MAX_LENGTH_NAME}.`)
+		} else {
+			setNameError(undefined)
+		}
+	}
+
+	function validateInformation() {
+		let value = information.trim()
+		if (value.length == 0) {
+			setInformationError('Debes completar el campo información.')
+		} else if (value.length < MIN_LENGTH_INFORMATION) {
+			setInformationError(`La longitud del campo información debe ser mayor a ${MIN_LENGTH_INFORMATION}.`)
+		} else if (value.length > MAX_LENGTH_INFORMATION) {
+			setInformationError(`La longitud del campo información debe ser menor a ${MAX_LENGTH_INFORMATION}.`)
+		} else {
+			setInformationError(undefined)
+		}
+	}
+
+	function validateStartDate(value: Date) {
+		if (value == null) {
+			setStartDateError('Debes completar el campo fecha de inicio.')
+		} else if (value.getTime() < Date.now()) {
+			setStartDateError(`La fecha y hora de inicio debe ser posterior a la fecha y hora actual.`)
+		} else {
+			setStartDateError(undefined)
+		}
+	}
+
+	function validateEndDate(value: Date) {
+		if (value == null) {
+			setEndDateError('Debes completar el campo fecha de fin.')
+		} else if (value.getTime() <= startDate.getTime()) {
+			setEndDateError(`La fecha y hora de fin debe ser posterior a la fecha y hora de inicio.`)
+		} else {
+			setEndDateError(undefined)
+		}
+	}
+
 	const createNewEvent = async () => {
 
 		try {
@@ -101,55 +148,6 @@ const EventCreateForm = () => {
 			setAppState({ loading: false, success: false })
 		}
 	}
-
-	function validateName() {
-		let value = name.trim()
-		if (value.length == 0) {
-			setNameError('Debes completar el campo nombre.')
-		} else if (value.length < MIN_LENGTH_NAME) {
-			setNameError(`La longitud del campo nombre debe ser mayor a ${MIN_LENGTH_NAME}.`)
-		} else if (value.length > MAX_LENGTH_NAME) {
-			setNameError(`La longitud del campo nombre debe ser menor a ${MAX_LENGTH_NAME}.`)
-		} else {
-			setNameError(undefined)
-		}
-	}
-
-	function validateInformation() {
-		let value = information.trim()
-		if (value.length == 0) {
-			setInformationError('Debes completar el campo información.')
-		} else if (value.length < MIN_LENGTH_INFORMATION) {
-			setInformationError(`La longitud del campo información debe ser mayor a ${MIN_LENGTH_INFORMATION}.`)
-		} else if (value.length > MAX_LENGTH_INFORMATION) {
-			setInformationError(`La longitud del campo información debe ser menor a ${MAX_LENGTH_INFORMATION}.`)
-		} else {
-			setInformationError(undefined)
-		}
-	}
-
-	function validateStartDate(value: Date) {
-
-		if (value == null) {
-			setStartDateError('Debes completar el campo fecha de inicio.')
-		} else if (value.getTime() < Date.now()) {
-			setStartDateError(`La fecha y hora de inicio debe ser posterior a la fecha y hora actual.`)
-		} else {
-			setStartDateError(undefined)
-		}
-	}
-
-	function validateEndDate(value: Date) {
-
-		if (value == null) {
-			setEndDateError('Debes completar el campo fecha de fin.')
-		} else if (value.getTime() <= startDate.getTime()) {
-			setEndDateError(`La fecha y hora de fin debe ser posterior a la fecha y hora de inicio.`)
-		} else {
-			setEndDateError(undefined)
-		}
-	}
-
 
 	return (
 		<Box>
@@ -193,7 +191,10 @@ const EventCreateForm = () => {
 			</FormControl>
 			<FormControl mt={4}>
 				<BoxtingButton
-					isDisabled={nameError != undefined || informationError != undefined}
+					isDisabled={
+						nameError != undefined || informationError != undefined ||
+						startDateError != undefined || endDateError != undefined
+					}
 					isLoading={appState.loading}
 					typeBtn={ButtonType.primary}
 					text="Guardar"
