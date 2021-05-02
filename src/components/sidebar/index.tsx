@@ -76,7 +76,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 			}}
 		>
 			<Box>
-				<Flex height={75} width="100%" alignItems="center"
+				<Flex height={75} width="100%" alignItems="center" justifyContent="center"
 					mt={5} mb={open ? 10 : 16} position="sticky">
 					<Center>
 						<img
