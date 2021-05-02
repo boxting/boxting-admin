@@ -11,7 +11,6 @@ import { LockIcon } from '@chakra-ui/icons';
 import DatePicker from '@/components/datepicker/DatePicker';
 import { Event } from '@/data/event/model/event.model';
 import { ListAltOutlined } from '@material-ui/icons';
-import { getEventStatus } from '@/data/utils/event.status';
 import { EventStatusEnum } from '@/data/utils/event.status.enum';
 
 interface EventDetailProps {
@@ -38,8 +37,8 @@ const EventDetail = (props: EventDetailProps) => {
             />
 
             <DeleteEventAlertDialog event={event}
-                disabled={getEventStatus(event) != EventStatusEnum.NOT_STARTED
-                    && getEventStatus(event) != EventStatusEnum.ENDED}
+                disabled={event.eventStatus != EventStatusEnum.NOT_STARTED
+                    && event.eventStatus != EventStatusEnum.ENDED}
             />
 
             <BoxtingButton
@@ -56,7 +55,7 @@ const EventDetail = (props: EventDetailProps) => {
                         `/events/${event.id}/update`,
                     )
                 }
-                isDisabled={getEventStatus(event) != EventStatusEnum.NOT_STARTED}
+                isDisabled={event.eventStatus != EventStatusEnum.NOT_STARTED}
             />
 
             <BoxtingButton

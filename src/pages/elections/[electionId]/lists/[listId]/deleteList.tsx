@@ -14,9 +14,13 @@ import { showToast } from '../../../../../components/toast/custom.toast';
 import { useRouter } from 'next/router';
 import { List } from '@/data/list/model/list.model';
 import { FirebaseManager } from '@/data/firebase-cfg';
+import BoxtingButton from '@/components/buttons/boxting_button';
+import { ButtonType } from '@/components/buttons/utils';
+import { DeleteIcon } from '@chakra-ui/icons';
 
 interface DeleteListProps {
-    list: List
+    list: List,
+    disabled: boolean
 }
 
 function DeleteListAlertDialog(props: DeleteListProps) {
@@ -26,7 +30,7 @@ function DeleteListAlertDialog(props: DeleteListProps) {
     const onClose = () => setIsOpen(false);
 
     // Props
-    const { list } = props;
+    const { list, disabled } = props;
 
     // Utils
     const cancelRef = useRef();
@@ -35,7 +39,7 @@ function DeleteListAlertDialog(props: DeleteListProps) {
 
     // Get service instance
     const listRepository = ListRepository.getInstance()
-	const firebaseManager = FirebaseManager.getInstance()
+    const firebaseManager = FirebaseManager.getInstance()
 
     async function onConfirm() {
 
@@ -44,8 +48,8 @@ function DeleteListAlertDialog(props: DeleteListProps) {
             await listRepository.delete(list.id, list.electionId);
 
             // Delete image if exists
-            if(list.imageUrl){
-                firebaseManager.storage.refFromURL(list.imageUrl).delete().catch(()=>{})
+            if (list.imageUrl) {
+                firebaseManager.storage.refFromURL(list.imageUrl).delete().catch(() => { })
             }
 
             // Close detail
@@ -66,9 +70,15 @@ function DeleteListAlertDialog(props: DeleteListProps) {
 
     return (
         <>
-            <Button style={{ marginRight: '12px', marginBottom: '12px' }} colorScheme="red" onClick={() => setIsOpen(true)}>
-                Eliminar lista de candidatos
-      </Button>
+            <BoxtingButton
+                style={{ marginRight: '12px', marginBottom: '12px' }}
+                text="Eliminar"
+                typeBtn={ButtonType.alert}
+                leftIcon={<DeleteIcon boxSize={4} />}
+                onEnter={() => setIsOpen(true)}
+                isDisabled={disabled}
+            />
+            
             <AlertDialog
                 isOpen={isOpen}
                 leastDestructiveRef={cancelRef}

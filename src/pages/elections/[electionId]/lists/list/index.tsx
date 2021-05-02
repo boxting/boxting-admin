@@ -18,20 +18,21 @@ function ListListsComponent(props: ListListsComponentProps) {
 
     const [appState, setAppState] = useState({
         loading: false,
-        lists: null,
+        lists: undefined,
+        eventStatus: undefined,
     });
 
     useEffect(() => {
-        setAppState({ loading: true, lists: null });
+        setAppState({ loading: true, lists: undefined, eventStatus: undefined });
 
         const fetchData = async () => {
 
             try {
                 const res = await listRepository.getAll(electionId)
                 const lists = await ListMapper.getAllToListList(res)
-                setAppState({ loading: false, lists: lists })
+                setAppState({ loading: false, lists: lists, eventStatus: res.data.eventStatus })
             } catch (error) {
-                setAppState({ loading: false, lists: [] })
+                setAppState({ loading: false, lists: undefined, eventStatus: undefined })
             }
         }
 
@@ -40,7 +41,12 @@ function ListListsComponent(props: ListListsComponentProps) {
     }, [setAppState])
 
     return (
-        <ListListLoading isLoading={appState.loading} lists={appState.lists} />
+        <ListListLoading
+            isLoading={appState.loading}
+            lists={appState.lists}
+            eventStatus={appState.eventStatus}
+            electionId={electionId}
+        />
     );
 }
 

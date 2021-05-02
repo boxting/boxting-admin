@@ -7,6 +7,7 @@ import { ButtonType } from '@/components/buttons/utils';
 import { EditIcon } from '../../../../../components/icons/index';
 import { List } from '@/data/list/model/list.model';
 import DeleteListAlertDialog from './deleteList';
+import { EventStatusEnum } from '@/data/utils/event.status.enum';
 
 interface ListDetailProps {
     list: List
@@ -34,7 +35,7 @@ const ListDetail = (props: ListDetailProps) => {
                 disableInfoIcon
             />
 
-            <DeleteListAlertDialog list={list} />
+            <DeleteListAlertDialog list={list} disabled={list.eventStatus != EventStatusEnum.NOT_STARTED} />
 
             <BoxtingButton
                 style={{ marginRight: '12px', marginBottom: '12px' }}
@@ -50,6 +51,7 @@ const ListDetail = (props: ListDetailProps) => {
                         `/elections/${list.electionId}/lists/${list.id}/update`,
                     )
                 }
+                isDisabled={list.eventStatus != EventStatusEnum.NOT_STARTED}
             />
         </Box>
     );

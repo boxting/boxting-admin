@@ -82,7 +82,7 @@ function DeleteEventAlertDialog(props: DeleteEventProps) {
         <>
             <BoxtingButton
                 style={{ marginRight: '12px', marginBottom: '12px' }}
-                text="Eliminar evento"
+                text="Eliminar"
                 typeBtn={ButtonType.alert}
                 leftIcon={<DeleteIcon boxSize={4} />}
                 onEnter={() => setIsOpen(true)}

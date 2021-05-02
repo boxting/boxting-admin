@@ -7,6 +7,7 @@ import { ButtonType } from '@/components/buttons/utils';
 import { EditIcon } from '../../../../../components/icons/index';
 import { Candidate } from '@/data/candidate/model/candidate.model';
 import DeleteCandidateAlertDialog from './deleteCandidate';
+import { EventStatusEnum } from '@/data/utils/event.status.enum';
 
 interface CandidateDetailProps {
     candidate: Candidate
@@ -34,7 +35,7 @@ const CandidateDetail = (props: CandidateDetailProps) => {
                 disableInfoIcon
             />
 
-            <DeleteCandidateAlertDialog candidate={candidate} />
+            <DeleteCandidateAlertDialog candidate={candidate} disabled={candidate.eventStatus != EventStatusEnum.NOT_STARTED} />
 
             <BoxtingButton
                 style={{ marginRight: '12px', marginBottom: '12px' }}
@@ -50,6 +51,7 @@ const CandidateDetail = (props: CandidateDetailProps) => {
                         `/elections/${candidate.electionId}/candidates/${candidate.id}/update`,
                     )
                 }
+                isDisabled={candidate.eventStatus != EventStatusEnum.NOT_STARTED}
             />
 
             <Box width='100%'>

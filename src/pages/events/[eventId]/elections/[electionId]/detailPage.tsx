@@ -7,6 +7,8 @@ import { ButtonType } from '@/components/buttons/utils';
 import { EditIcon } from '../../../../../components/icons/index';
 import { Election } from '@/data/election/model/election.model';
 import DeleteElectionAlertDialog from './deleteElection';
+import { EventStatusEnum } from '@/data/utils/event.status.enum';
+import { eventStatusColorMapper, eventStatusMapper } from '@/data/utils/event.status';
 
 interface ElectionDetailProps {
     election: Election
@@ -38,7 +40,9 @@ const ElectionDetail = (props: ElectionDetailProps) => {
                 disableInfoIcon
             />
 
-            <DeleteElectionAlertDialog election={election} />
+            <DeleteElectionAlertDialog election={election}
+                disabled={election.eventStatus != EventStatusEnum.NOT_STARTED}
+            />
 
             <BoxtingButton
                 style={{ marginRight: '12px', marginBottom: '12px' }}
@@ -54,6 +58,7 @@ const ElectionDetail = (props: ElectionDetailProps) => {
                         `/events/${election.eventId}/elections/${election.id}/update`,
                     )
                 }
+                isDisabled={election.eventStatus != EventStatusEnum.NOT_STARTED}
             />
 
             <BoxtingButton
@@ -89,6 +94,12 @@ const ElectionDetail = (props: ElectionDetailProps) => {
                 </Text>
                 <Text mt="16px">
                     <b>Cantidad de ganadores:</b> {election.winners}
+                </Text>
+                <Text mt="16px">
+                    <b>Estado: </b>
+                    <span style={{ color: eventStatusColorMapper(election.eventStatus) }}>
+                        {eventStatusMapper(election.eventStatus)}
+                    </span>
                 </Text>
             </Box>
 

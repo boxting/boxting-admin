@@ -3,7 +3,6 @@ import React from 'react';
 import Card from '@/components/card';
 import { useRouter } from 'next/router';
 import { Event } from '@/data/event/model/event.model';
-import { getEventStatus } from '@/data/utils/event.status';
 
 interface EventListProps {
     events: Event[]
@@ -30,7 +29,7 @@ const EventList = (props: EventListProps) => {
                     textHead={item.name}
                     textBody={item.information}
                     onEnter={() => router.push(`/events/[eventId]`, `/events/${item.id}`)}
-                    status={getEventStatus(item)}
+                    status={item.eventStatus}
                 />
             ))}
         </Grid>

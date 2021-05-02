@@ -5,9 +5,6 @@ import dashboardWrapper from '@/utils/dashboard-wrapper';
 import withAuthServerSideProps from '@/utils/auth-middleware';
 import { useRouter } from 'next/router';
 import PageTitle from '@/components/pageTitle';
-import BoxtingButton from '@/components/buttons/boxting_button';
-import { ButtonType } from '@/components/buttons/utils';
-import { AddSmallIcon } from '@/components/icons';
 import ListListsComponent from './list/index';
 
 const ListPage: NextPage = () => {
@@ -24,18 +21,6 @@ const ListPage: NextPage = () => {
                 enableBackIcon
                 disableInfoIcon
             />
-
-            <Flex pb={6}>
-                <BoxtingButton
-                    text="Nuevo"
-                    typeBtn={ButtonType.primary}
-                    leftIcon={<AddSmallIcon boxSize={4} />}
-                    onEnter={() => router.push(
-                        `/elections/[electionId]/lists/create`,
-                        `/elections/${electionId}/lists/create`
-                    )}
-                />
-            </Flex>
 
             <ListListsComponent electionId={electionId as string} />
         </Box>

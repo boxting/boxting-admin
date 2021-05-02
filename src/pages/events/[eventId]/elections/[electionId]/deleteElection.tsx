@@ -13,9 +13,13 @@ import { ElectionRepository } from '@/data/election/repository/elections.reposit
 import { showToast } from '../../../../../components/toast/custom.toast';
 import { useRouter } from 'next/router';
 import { Election } from '@/data/election/model/election.model';
+import BoxtingButton from '@/components/buttons/boxting_button';
+import { ButtonType } from '@/components/buttons/utils';
+import { DeleteIcon } from '@chakra-ui/icons';
 
 interface DeleteElectionProps {
-    election: Election
+    election: Election,
+    disabled: boolean
 }
 
 function DeleteElectionAlertDialog(props: DeleteElectionProps) {
@@ -25,7 +29,7 @@ function DeleteElectionAlertDialog(props: DeleteElectionProps) {
     const onClose = () => setIsOpen(false);
 
     // Props
-    const { election } = props;
+    const { election, disabled } = props;
 
     // Utils
     const cancelRef = useRef();
@@ -65,9 +69,15 @@ function DeleteElectionAlertDialog(props: DeleteElectionProps) {
 
     return (
         <>
-            <Button style={{ marginRight: '12px', marginBottom: '12px' }} colorScheme="red" onClick={() => setIsOpen(true)}>
-                Eliminar actividad de elección
-      </Button>
+            <BoxtingButton
+                style={{ marginRight: '12px', marginBottom: '12px' }}
+                text="Eliminar"
+                typeBtn={ButtonType.alert}
+                leftIcon={<DeleteIcon boxSize={4} />}
+                onEnter={() => setIsOpen(true)}
+                isDisabled={disabled}
+            />
+
             <AlertDialog
                 isOpen={isOpen}
                 leastDestructiveRef={cancelRef}

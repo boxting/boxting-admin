@@ -18,20 +18,21 @@ function ListCandidatesComponent(props: ListCandidatesComponentProps) {
 
     const [appState, setAppState] = useState({
         loading: false,
-        candidates: null,
+        candidates: undefined,
+        eventStatus: undefined
     });
 
     useEffect(() => {
-        setAppState({ loading: true, candidates: null });
+        setAppState({ loading: true, candidates: undefined, eventStatus: undefined });
 
         const fetchData = async () => {
 
             try {
                 const res = await candidateRepository.getAllByElection(electionId)
                 const candidates = await CandidateMapper.getAllToCandidateList(res)
-                setAppState({ loading: false, candidates: candidates })
+                setAppState({ loading: false, candidates: candidates, eventStatus: res.data.eventStatus })
             } catch (error) {
-                setAppState({ loading: false, candidates: [] })
+                setAppState({ loading: false, candidates: undefined, eventStatus: undefined })
             }
         }
 
@@ -40,7 +41,12 @@ function ListCandidatesComponent(props: ListCandidatesComponentProps) {
     }, [setAppState])
 
     return (
-        <ListCandidatesLoading isLoading={appState.loading} candidates={appState.candidates} />
+        <ListCandidatesLoading
+            isLoading={appState.loading}
+            candidates={appState.candidates}
+            eventStatus={appState.eventStatus}
+            electionId={electionId}
+        />
     );
 }
 

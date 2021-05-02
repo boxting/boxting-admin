@@ -14,9 +14,13 @@ import { showToast } from '../../../../../components/toast/custom.toast';
 import { useRouter } from 'next/router';
 import { Candidate } from '@/data/candidate/model/candidate.model';
 import { FirebaseManager } from '@/data/firebase-cfg';
+import BoxtingButton from '@/components/buttons/boxting_button';
+import { ButtonType } from '@/components/buttons/utils';
+import { DeleteIcon } from '@chakra-ui/icons';
 
 interface DeleteCandidateProps {
-    candidate: Candidate
+    candidate: Candidate,
+    disabled: boolean
 }
 
 function DeleteCandidateAlertDialog(props: DeleteCandidateProps) {
@@ -26,7 +30,7 @@ function DeleteCandidateAlertDialog(props: DeleteCandidateProps) {
     const onClose = () => setIsOpen(false);
 
     // Props
-    const { candidate } = props;
+    const { candidate, disabled } = props;
 
     // Utils
     const cancelRef = useRef();
@@ -44,8 +48,8 @@ function DeleteCandidateAlertDialog(props: DeleteCandidateProps) {
             await candidateRepository.deleteByElection(candidate.id, candidate.electionId);
 
             // Delete image if exists
-            if(candidate.imageUrl){
-                firebaseManager.storage.refFromURL(candidate.imageUrl).delete().catch(()=>{})
+            if (candidate.imageUrl) {
+                firebaseManager.storage.refFromURL(candidate.imageUrl).delete().catch(() => { })
             }
 
             // Close detail
@@ -66,9 +70,15 @@ function DeleteCandidateAlertDialog(props: DeleteCandidateProps) {
 
     return (
         <>
-            <Button style={{ marginRight: '12px', marginBottom: '12px' }} colorScheme="red" onClick={() => setIsOpen(true)}>
-                Eliminar candidato
-      </Button>
+            <BoxtingButton
+                style={{ marginRight: '12px', marginBottom: '12px' }}
+                text="Eliminar"
+                typeBtn={ButtonType.alert}
+                leftIcon={<DeleteIcon boxSize={4} />}
+                onEnter={() => setIsOpen(true)}
+                isDisabled={disabled}
+            />
+
             <AlertDialog
                 isOpen={isOpen}
                 leastDestructiveRef={cancelRef}
