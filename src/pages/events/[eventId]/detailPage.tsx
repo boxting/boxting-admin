@@ -12,6 +12,7 @@ import DatePicker from '@/components/datepicker/DatePicker';
 import { Event } from '@/data/event/model/event.model';
 import { ListAltOutlined } from '@material-ui/icons';
 import { EventStatusEnum } from '@/data/utils/event.status.enum';
+import { eventStatusColorMapper, eventStatusMapper } from '@/data/utils/event.status';
 
 interface EventDetailProps {
     event: Event
@@ -91,6 +92,12 @@ const EventDetail = (props: EventDetailProps) => {
             />
 
             <Box width='100%'>
+                <Text mt="16px">
+                    <b>Estado: </b>
+                    <span style={{ color: eventStatusColorMapper(event.eventStatus) }}>
+                        {eventStatusMapper(event.eventStatus)}
+                    </span>
+                </Text>
                 <Text mt="16px">
                     El código de votación para el evento es
                 </Text>
