@@ -12,7 +12,8 @@ import {
     NumberInputStepper,
     NumberIncrementStepper,
     NumberDecrementStepper,
-    Image
+    Image,
+    FormErrorMessage
 } from '@chakra-ui/core';
 import { ButtonType } from '@/components/buttons/utils';
 import React, { ChangeEvent, createRef, useState } from 'react';
@@ -56,6 +57,20 @@ const CandidateUpdateForm = (props: CandidateUpdateFormProps) => {
     const [imageExtension, setImageExtension] = useState('')
     const [image, setImage] = useState<Blob>(undefined)
 
+    // Error state vars
+    const [firstNameError, setFirstNameError] = useState<string | undefined>(undefined)
+    const [lastNameError, setLastNameError] = useState<string | undefined>(undefined)
+    const [informationError, setInformationError] = useState<string | undefined>(undefined)
+    const [listError, setListError] = useState<string | undefined>(undefined)
+
+    // Constants
+    const MIN_LENGTH_NAME = 2;
+    const MAX_LENGTH_NAME = 25;
+    const MIN_LENGTH_INFORMATION = 10;
+    const MAX_LENGTH_INFORMATION = 500;
+    const MIN_AGE = 0;
+    const MAX_AGE = 100;
+
     // Utils
     const router = useRouter();
     const toast = useToast();
@@ -66,16 +81,53 @@ const CandidateUpdateForm = (props: CandidateUpdateFormProps) => {
     const firebaseManager = FirebaseManager.getInstance()
 
     // Validators
-    function validateLength(value: string, minLen: number, maxLen: number, fieldName: string) {
-        let errors = false
-        if (value.length > maxLen) {
-            showError(`La longitud del campo ${fieldName} debe ser menor a la máxima establecida: ${maxLen}.`)
-            errors = true;
-        } if (value.length < minLen) {
-            showError(`La longitud del campo ${fieldName} debe ser mayor a la mínima establecida: ${minLen}.`)
-            errors = true;
+    function validateFirstName() {
+        let value = firstName.trim()
+        if (value.length == 0) {
+            setFirstNameError('Debes completar el campo nombre.')
+        } else if (value.length < MIN_LENGTH_NAME) {
+            setFirstNameError(`La longitud del campo nombre debe ser mayor a ${MIN_LENGTH_NAME}.`)
+        } else if (value.length > MAX_LENGTH_NAME) {
+            setFirstNameError(`La longitud del campo nombre debe ser menor a ${MAX_LENGTH_NAME}.`)
+        } else {
+            setFirstNameError(undefined)
         }
-        return errors
+    }
+
+    function validateLastName() {
+        let value = lastName.trim()
+        if (value.length == 0) {
+            setLastNameError('Debes completar el campo apellido.')
+        } else if (value.length < MIN_LENGTH_NAME) {
+            setLastNameError(`La longitud del campo apellido debe ser mayor a ${MIN_LENGTH_NAME}.`)
+        } else if (value.length > MAX_LENGTH_NAME) {
+            setLastNameError(`La longitud del campo apellido debe ser menor a ${MAX_LENGTH_NAME}.`)
+        } else {
+            setLastNameError(undefined)
+        }
+    }
+
+    function validateInformation() {
+        let value = information.trim()
+        if (value.length == 0) {
+            setInformationError('Debes completar el campo información.')
+        } else if (value.length < MIN_LENGTH_INFORMATION) {
+            setInformationError(`La longitud del campo información debe ser mayor a ${MIN_LENGTH_INFORMATION}.`)
+        } else if (value.length > MAX_LENGTH_INFORMATION) {
+            setInformationError(`La longitud del campo información debe ser menor a ${MAX_LENGTH_INFORMATION}.`)
+        } else {
+            setInformationError(undefined)
+        }
+    }
+
+    function validateList() {
+        let value = selectedList.trim()
+
+        if (value.length == 0) {
+            setListError('Debes seleccionar una lista para el candidato.')
+        } else {
+            setListError(undefined)
+        }
     }
 
     // Functions
@@ -122,22 +174,15 @@ const CandidateUpdateForm = (props: CandidateUpdateFormProps) => {
         }
     }
 
-    function showError(msg: string) {
-        showToast('Error!', msg, false, toast);
-    }
-
     const updateCandidate = async () => {
 
         if (firstName.trim().length == 0 || lastName.trim().length == 0 || information.length == 0 ||
             selectedList.trim().length == 0 || age == NaN) {
-            showError(
-                'Debes completar todos los campos para actualizar el candidato.'
-            )
-            return
-        }
+            validateFirstName()
+            validateInformation()
+            validateLastName()
+            validateList()
 
-        if (validateLength(firstName, 2, 100, 'nombre') || validateLength(lastName, 2, 100, 'apellidos') ||
-            validateLength(information, 10, 500, 'información')) {
             return
         }
 
@@ -239,45 +284,56 @@ const CandidateUpdateForm = (props: CandidateUpdateFormProps) => {
 
     return (
         <Box>
-            <FormControl mt={4}>
+            <FormControl mt={4} isInvalid={listError != undefined} isRequired>
                 <FormLabel>Lista</FormLabel>
-                <Select value={selectedList} onChange={handleListChange} placeholder="Lista del candidato">
+                <Select value={selectedList} onChange={handleListChange} placeholder="Lista del candidato" onBlur={validateList}>
                     {
                         lists && lists.map((item) => {
                             return <option key={item.id} value={item.id}>{item.name}</option>
                         })
                     }
                 </Select>
+                <FormErrorMessage>{listError}</FormErrorMessage>
             </FormControl>
-            <FormControl mt={4}>
+
+            <FormControl mt={4} isInvalid={firstNameError != undefined} isRequired>
                 <FormLabel>Nombre</FormLabel>
                 <Input
                     value={firstName}
                     onChange={handleFirstNameChange}
                     placeholder="Nombre del candidato"
+                    onBlur={validateFirstName}
                 />
+                <FormErrorMessage>{firstNameError}</FormErrorMessage>
             </FormControl>
-            <FormControl mt={4}>
+
+            <FormControl mt={4} isInvalid={lastNameError != undefined} isRequired>
                 <FormLabel>Apellidos</FormLabel>
                 <Input
                     value={lastName}
                     onChange={handlLastNameChange}
                     placeholder="Apellidos del candidato"
+                    onBlur={validateLastName}
                 />
+                <FormErrorMessage>{lastNameError}</FormErrorMessage>
             </FormControl>
-            <FormControl mt={4}>
+
+            <FormControl mt={4} isInvalid={informationError != undefined} isRequired>
                 <FormLabel>Información</FormLabel>
                 <Textarea
                     value={information}
                     onChange={handleInformationChange}
                     placeholder="Información del candidato"
+                    onBlur={validateInformation}
                 />
+                <FormErrorMessage>{informationError}</FormErrorMessage>
             </FormControl>
-            <FormControl mt={4}>
+
+            <FormControl mt={4} isRequired>
                 <FormLabel>Edad</FormLabel>
                 <NumberInput
-                    min={1}
-                    max={80}
+                    min={MIN_AGE}
+                    max={MAX_AGE}
                     value={age}
                     onChange={handleAgeChange}
                     placeholder='Edad del candidato'>
@@ -288,6 +344,7 @@ const CandidateUpdateForm = (props: CandidateUpdateFormProps) => {
                     </NumberInputStepper>
                 </NumberInput>
             </FormControl>
+
             <FormControl mt={4}>
                 <BoxtingButton
                     typeBtn={ButtonType.outline}
@@ -302,14 +359,18 @@ const CandidateUpdateForm = (props: CandidateUpdateFormProps) => {
                     accept="image/png, image/jpeg"
                 />
             </FormControl>
+
             <FormControl mt={4}>
                 <Image
                     src={imageUrl}
                     maxWidth='300px'
                 />
             </FormControl>
+
             <FormControl mt={4}>
                 <BoxtingButton
+                    isDisabled={informationError != undefined || firstNameError != undefined ||
+                        lastNameError != undefined || listError != undefined}
                     isLoading={appState.loading}
                     typeBtn={ButtonType.primary}
                     text="Guardar"
