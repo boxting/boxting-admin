@@ -58,7 +58,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
                 true,
                 toast,
             );
-                console.log(loginResponse.data)
+
             // Store received tokens on cookies
             onSignIn(loginResponse.data.token, loginResponse.data.refreshToken, loginResponse.data.role.name);
 

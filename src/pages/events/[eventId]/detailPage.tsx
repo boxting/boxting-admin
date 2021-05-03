@@ -13,16 +13,15 @@ import { Event } from '@/data/event/model/event.model';
 import { ListAltOutlined } from '@material-ui/icons';
 import { EventStatusEnum } from '@/data/utils/event.status.enum';
 import { eventStatusColorMapper, eventStatusMapper } from '@/data/utils/event.status';
-import CookiesManager from '@/data/utils/cookies.manager';
 
 interface EventDetailProps {
-    event: Event
+    event: Event,
+    userRole: string
 }
 
 const EventDetail = (props: EventDetailProps) => {
-    const { event } = props;
+    const { event, userRole } = props;
 
-    const userRole = CookiesManager.getInstance()._getRole()
     const router = useRouter();
 
     if (event == null) {

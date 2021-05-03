@@ -9,17 +9,15 @@ import { Election } from '@/data/election/model/election.model';
 import DeleteElectionAlertDialog from './deleteElection';
 import { EventStatusEnum } from '@/data/utils/event.status.enum';
 import { eventStatusColorMapper, eventStatusMapper } from '@/data/utils/event.status';
-import CookiesManager from '@/data/utils/cookies.manager';
 
 interface ElectionDetailProps {
-    election: Election
+    election: Election,
+    userRole: string
 }
 
 const ElectionDetail = (props: ElectionDetailProps) => {
 
-    const { election } = props;
-
-    const userRole = CookiesManager.getInstance()._getRole()
+    const { election, userRole } = props;
 
     const router = useRouter();
 

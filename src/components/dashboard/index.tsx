@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Button, Icon, Menu, MenuButton, MenuItem, MenuList, useToast } from '@chakra-ui/core';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
@@ -11,8 +11,10 @@ import { breadcrumbItems, COLLAB_SIDEBAR, DEFAULT_SIDEBAR } from './dashboard_va
 import { showToast } from '../toast/custom.toast';
 import { LoginRepository } from '@/data/login/repository/login.repository';
 import CookiesManager from '@/data/utils/cookies.manager';
+import { CryptoManager } from '@/data/utils/crypto.manager';
+import boxtingTheme from '@/theme/theme';
 
-const BACKGROUND_COLOR = `#fff`;
+const BACKGROUND_COLOR = boxtingTheme.colors.background;
 
 const Content = motion.custom(Box);
 
@@ -56,6 +58,16 @@ const PlatformLayout: React.FC<LayoutProps> = ({ children }: LayoutProps) => {
     const loginRepository = LoginRepository.getInstance()
     const cookiesManager = CookiesManager.getInstance()
 
+    const [userRole, setUserRole] = useState<string | undefined>('')
+
+    useEffect(() => {
+        if(userRole == ''){
+            let value = CookiesManager.getInstance()._getRole()
+            value = CryptoManager.getInstance().decrypt(value)
+            setUserRole(value)
+        }
+    }, [])
+
     const onLogout = async () => {
         try {
 
@@ -86,7 +98,7 @@ const PlatformLayout: React.FC<LayoutProps> = ({ children }: LayoutProps) => {
             backgroundColor={BACKGROUND_COLOR}
             overflowY="hidden"
         >
-            <Sidebar isOpen={isOpen} data={(CookiesManager.getInstance()._getRole() == "COLLABORATOR") ? COLLAB_SIDEBAR : DEFAULT_SIDEBAR} />
+            <Sidebar isOpen={isOpen} data={(userRole == "COLLABORATOR") ? COLLAB_SIDEBAR : DEFAULT_SIDEBAR} />
             <Content
                 position="relative"
                 display="flex"

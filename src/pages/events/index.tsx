@@ -1,6 +1,6 @@
 import { Box, Flex } from '@chakra-ui/core';
 import { NextPage } from 'next';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import dashboardWrapper from '@/utils/dashboard-wrapper';
 import withAuthServerSideProps from '@/utils/auth-middleware';
 import { useRouter } from 'next/router';
@@ -10,10 +10,19 @@ import { ButtonType } from '@/components/buttons/utils';
 import { AddSmallIcon } from '@/components/icons';
 import ListEventsComponent from './list/index';
 import CookiesManager from '@/data/utils/cookies.manager';
+import { CryptoManager } from '@/data/utils/crypto.manager';
 
 const EventPage: NextPage = () => {
     const router = useRouter();
-    const userRole = CookiesManager.getInstance()._getRole()
+    const [userRole, setUserRole] = useState<string | undefined>('')
+
+    useEffect(() => {
+        if(userRole == ''){
+            let value = CookiesManager.getInstance()._getRole()
+            value = CryptoManager.getInstance().decrypt(value)
+            setUserRole(value)
+        }
+    }, [])
 
     return (
         <Box>

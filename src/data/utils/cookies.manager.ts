@@ -10,14 +10,11 @@ export default class CookiesManager {
     }
 
     _setRole(role: string) {
-        let encValue = CryptoManager.getInstance().encrypt(role)
-        Cookies.set('role', encValue);
+        Cookies.set('role', role);
     }
 
     _getRole() {
-        let role = Cookies.get('role')
-        let value = CryptoManager.getInstance().decrypt(role)
-        return value
+        return Cookies.get('role')
     }
 
     _setToken(token: string, refreshToken: string) {
@@ -36,6 +33,5 @@ export default class CookiesManager {
     _clearToken() {
         Cookies.remove('token')
         Cookies.remove('refresh_token')
-        Cookies.remove('role')
     }
 }

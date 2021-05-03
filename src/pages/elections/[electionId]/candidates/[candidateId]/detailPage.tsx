@@ -8,17 +8,15 @@ import { EditIcon } from '../../../../../components/icons/index';
 import { Candidate } from '@/data/candidate/model/candidate.model';
 import DeleteCandidateAlertDialog from './deleteCandidate';
 import { EventStatusEnum } from '@/data/utils/event.status.enum';
-import CookiesManager from '@/data/utils/cookies.manager';
 
 interface CandidateDetailProps {
     candidate: Candidate
+    userRole: string
 }
 
 const CandidateDetail = (props: CandidateDetailProps) => {
 
-    const { candidate } = props;
-
-    const userRole = CookiesManager.getInstance()._getRole()
+    const { candidate, userRole } = props;
 
     const router = useRouter();
 

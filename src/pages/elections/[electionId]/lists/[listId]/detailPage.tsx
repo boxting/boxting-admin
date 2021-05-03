@@ -11,14 +11,13 @@ import { EventStatusEnum } from '@/data/utils/event.status.enum';
 import CookiesManager from '@/data/utils/cookies.manager';
 
 interface ListDetailProps {
-    list: List
+    list: List,
+    userRole: string
 }
 
 const ListDetail = (props: ListDetailProps) => {
 
-    const { list } = props;
-
-    const userRole = CookiesManager.getInstance()._getRole()
+    const { list, userRole } = props;
 
     const router = useRouter();
 

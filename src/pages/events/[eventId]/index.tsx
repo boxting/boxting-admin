@@ -7,6 +7,8 @@ import EventDetail from './detailPage';
 import { useEffect, useState } from 'react';
 import { EventRepository } from '@/data/event/repository/events.repository';
 import * as EventMapper from '@/data/event/api/mapper/event.mapper'
+import CookiesManager from '@/data/utils/cookies.manager';
+import { CryptoManager } from '@/data/utils/crypto.manager';
 
 const EventDetailPage: NextPage = () => {
 
@@ -21,22 +23,27 @@ const EventDetailPage: NextPage = () => {
     const [appState, setAppState] = useState({
         loading: false,
         event: null,
+        userRole: ''
     });
 
     // Get service instance
     const eventRepository = EventRepository.getInstance()
 
     useEffect(() => {
-        setAppState({ loading: true, event: null });
+        setAppState({ loading: true, event: null, userRole: '' });
 
         const fetchData = async () => {
 
             try {
                 const res = await eventRepository.getOne(eventId as string)
                 const event = await EventMapper.getOneToEvent(res)
-                setAppState({ loading: false, event: event })
+                
+                let userRole = CookiesManager.getInstance()._getRole()
+                userRole = CryptoManager.getInstance().decrypt(userRole)
+
+                setAppState({ loading: false, event: event, userRole: userRole })
             } catch (error) {
-                setAppState({ loading: false, event: null });
+                setAppState({ loading: false, event: null, userRole: '' });
             }
         }
 
@@ -44,7 +51,7 @@ const EventDetailPage: NextPage = () => {
     }, [setAppState]);
 
     return (
-        <EventDetailLoading isLoading={appState.loading} event={appState.event} />
+        <EventDetailLoading isLoading={appState.loading} event={appState.event} userRole={appState.userRole}/>
     );
 };
 

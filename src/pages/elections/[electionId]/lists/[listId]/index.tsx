@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react';
 import * as ListMapper from '@/data/list/api/mapper/list.mapper'
 import ListDetail from './detailPage';
 import { ListRepository } from '@/data/list/repository/list.repository';
+import CookiesManager from '@/data/utils/cookies.manager';
+import { CryptoManager } from '@/data/utils/crypto.manager';
 
 const ListDetailPage: NextPage = () => {
 
@@ -21,22 +23,27 @@ const ListDetailPage: NextPage = () => {
     const [appState, setAppState] = useState({
         loading: false,
         list: null,
+        userRole: ''
     });
 
     // Get service instance
     const listRepository = ListRepository.getInstance()
 
     useEffect(() => {
-        setAppState({ loading: true, list: null });
+        setAppState({ loading: true, list: null, userRole: '' });
 
         const fetchData = async () => {
 
             try {
                 const res = await listRepository.getOne(listId as string, electionId as string)
                 const list = await ListMapper.getOneToList(res)
-                setAppState({ loading: false, list: list })
+                
+                let userRole = CookiesManager.getInstance()._getRole()
+                userRole = CryptoManager.getInstance().decrypt(userRole)
+
+                setAppState({ loading: false, list: list, userRole: userRole })
             } catch (error) {
-                setAppState({ loading: false, list: null });
+                setAppState({ loading: false, list: null, userRole: '' });
             }
         }
 
@@ -44,7 +51,7 @@ const ListDetailPage: NextPage = () => {
     }, [setAppState]);
 
     return (
-        <ElectionDetailLoading isLoading={appState.loading} list={appState.list} />
+        <ElectionDetailLoading isLoading={appState.loading} list={appState.list} userRole={appState.userRole}/>
     );
 };
 

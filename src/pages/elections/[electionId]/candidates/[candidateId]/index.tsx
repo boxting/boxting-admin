@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react';
 import * as CandidateMapper from '@/data/candidate/api/mapper/candidate.mapper'
 import CandidateDetail from './detailPage';
 import { CandidateRepository } from '@/data/candidate/repository/candidate.repository';
+import { CryptoManager } from '@/data/utils/crypto.manager';
+import CookiesManager from '@/data/utils/cookies.manager';
 
 const CandidateDetailPage: NextPage = () => {
 
@@ -22,22 +24,27 @@ const CandidateDetailPage: NextPage = () => {
     const [appState, setAppState] = useState({
         loading: false,
         candidate: null,
+        userRole: ''
     });
 
     // Get service instance
     const candidateRepository = CandidateRepository.getInstance()
 
     useEffect(() => {
-        setAppState({ loading: true, candidate: null });
+        setAppState({ loading: true, candidate: null, userRole: ''});
 
         const fetchData = async () => {
 
             try {
                 const res = await candidateRepository.getOneByElection(candidateId as string, electionId as string)
                 const candidate = await CandidateMapper.getOneToCandidate(res)
-                setAppState({ loading: false, candidate: candidate })
+                
+                let userRole = CookiesManager.getInstance()._getRole()
+                userRole = CryptoManager.getInstance().decrypt(userRole)
+
+                setAppState({ loading: false, candidate: candidate, userRole: userRole })
             } catch (error) {
-                setAppState({ loading: false, candidate: null });
+                setAppState({ loading: false, candidate: null, userRole: ''});
             }
         }
 
@@ -45,7 +52,7 @@ const CandidateDetailPage: NextPage = () => {
     }, [setAppState]);
 
     return (
-        <CandidateDetailLoading isLoading={appState.loading} candidate={appState.candidate} />
+        <CandidateDetailLoading isLoading={appState.loading} candidate={appState.candidate} userRole={appState.userRole}/>
     );
 };
 
