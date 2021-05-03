@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie';
+import { CryptoManager } from './crypto.manager';
 
 export default class CookiesManager {
 
@@ -6,6 +7,17 @@ export default class CookiesManager {
 
     public static getInstance() {
         return this._instance || (this._instance = new this())
+    }
+
+    _setRole(role: string) {
+        let encValue = CryptoManager.getInstance().encrypt(role)
+        Cookies.set('role', encValue);
+    }
+
+    _getRole() {
+        let role = Cookies.get('role')
+        let value = CryptoManager.getInstance().decrypt(role)
+        return value
     }
 
     _setToken(token: string, refreshToken: string) {
@@ -24,5 +36,6 @@ export default class CookiesManager {
     _clearToken() {
         Cookies.remove('token')
         Cookies.remove('refresh_token')
+        Cookies.remove('role')
     }
 }

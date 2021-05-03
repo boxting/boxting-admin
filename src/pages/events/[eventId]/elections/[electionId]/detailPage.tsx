@@ -1,4 +1,4 @@
-import { Box, Center, Flex, PinInput, SimpleGrid, Text } from '@chakra-ui/core';
+import { Box, Center, Text } from '@chakra-ui/core';
 import React from 'react';
 import { useRouter } from 'next/router';
 import PageTitle from '@/components/pageTitle';
@@ -9,6 +9,7 @@ import { Election } from '@/data/election/model/election.model';
 import DeleteElectionAlertDialog from './deleteElection';
 import { EventStatusEnum } from '@/data/utils/event.status.enum';
 import { eventStatusColorMapper, eventStatusMapper } from '@/data/utils/event.status';
+import CookiesManager from '@/data/utils/cookies.manager';
 
 interface ElectionDetailProps {
     election: Election
@@ -17,6 +18,8 @@ interface ElectionDetailProps {
 const ElectionDetail = (props: ElectionDetailProps) => {
 
     const { election } = props;
+
+    const userRole = CookiesManager.getInstance()._getRole()
 
     const router = useRouter();
 
@@ -41,7 +44,7 @@ const ElectionDetail = (props: ElectionDetailProps) => {
             />
 
             <DeleteElectionAlertDialog election={election}
-                disabled={election.eventStatus != EventStatusEnum.NOT_STARTED}
+                disabled={election.eventStatus != EventStatusEnum.NOT_STARTED || userRole == "COLLABORATOR"}
             />
 
             <BoxtingButton

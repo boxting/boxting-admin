@@ -7,7 +7,7 @@ import HamburguerButton from '@/components/buttons/hamburguer';
 import { Sidebar } from '../sidebar';
 
 import { UserCircleIcon, BellIcon } from '../icons';
-import { breadcrumbItems, DEFAULT_SIDEBAR } from './dashboard_values';
+import { breadcrumbItems, COLLAB_SIDEBAR, DEFAULT_SIDEBAR } from './dashboard_values';
 import { showToast } from '../toast/custom.toast';
 import { LoginRepository } from '@/data/login/repository/login.repository';
 import CookiesManager from '@/data/utils/cookies.manager';
@@ -86,7 +86,7 @@ const PlatformLayout: React.FC<LayoutProps> = ({ children }: LayoutProps) => {
             backgroundColor={BACKGROUND_COLOR}
             overflowY="hidden"
         >
-            <Sidebar isOpen={isOpen} data={DEFAULT_SIDEBAR} />
+            <Sidebar isOpen={isOpen} data={(CookiesManager.getInstance()._getRole() == "COLLABORATOR") ? COLLAB_SIDEBAR : DEFAULT_SIDEBAR} />
             <Content
                 position="relative"
                 display="flex"

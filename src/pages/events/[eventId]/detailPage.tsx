@@ -13,6 +13,7 @@ import { Event } from '@/data/event/model/event.model';
 import { ListAltOutlined } from '@material-ui/icons';
 import { EventStatusEnum } from '@/data/utils/event.status.enum';
 import { eventStatusColorMapper, eventStatusMapper } from '@/data/utils/event.status';
+import CookiesManager from '@/data/utils/cookies.manager';
 
 interface EventDetailProps {
     event: Event
@@ -21,6 +22,7 @@ interface EventDetailProps {
 const EventDetail = (props: EventDetailProps) => {
     const { event } = props;
 
+    const userRole = CookiesManager.getInstance()._getRole()
     const router = useRouter();
 
     if (event == null) {
@@ -38,8 +40,8 @@ const EventDetail = (props: EventDetailProps) => {
             />
 
             <DeleteEventAlertDialog event={event}
-                disabled={event.eventStatus != EventStatusEnum.NOT_STARTED
-                    && event.eventStatus != EventStatusEnum.ENDED}
+                disabled={(event.eventStatus != EventStatusEnum.NOT_STARTED
+                    && event.eventStatus != EventStatusEnum.ENDED) || userRole == "COLLABORATOR"}
             />
 
             <BoxtingButton
@@ -131,7 +133,7 @@ const EventDetail = (props: EventDetailProps) => {
                 </Flex>
             </Box>
 
-            { (!event.configCompleted) ? <FinishEventUpdateAlertDialog event={event} /> : ''}
+            { (!event.configCompleted && userRole != "COLLABORATOR") ? <FinishEventUpdateAlertDialog event={event} /> : ''}
         </Box>
     );
 };

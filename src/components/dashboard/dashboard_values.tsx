@@ -1,6 +1,5 @@
 import { Module, SidebarData } from '@/components/sidebar';
 import React from 'react';
-import { CheckIcon } from '@chakra-ui/icons';
 import { EmojiEventsOutlined, EventOutlined, ListAltOutlined, PeopleAltOutlined, PersonOutlined } from '@material-ui/icons';
 
 export const DEFAULT_SIDEBAR: SidebarData = {
@@ -57,18 +56,53 @@ export const DEFAULT_SIDEBAR: SidebarData = {
     ],
 };
 
-export const DEFAULT_BREADCRUMBS = {
-    organization: `Organización`,
-    workers: `Trabajadores`,
-    jobdescription: `Descripción de Puestos`,
-    assessment: `Valoración`,
-    equity: `Equidad`,
-    broadbanding: `Broadbanding`,
-    matricial: `Matricial`,
-    salarypolicies: `Políticas`,
-    structure: `Estructura organizacional y puestos`,
-    fundamentals: `Fundamentos`,
-    position: `Puesto`,
+export const COLLAB_SIDEBAR: SidebarData = {
+    logo: {
+        expanded: `/images/logo/rsz_boxting_logo.png`,
+        collapsed: `/images/logo/boxting_icon_white.png`,
+    },
+    content: [
+        {
+            label: `Gestión de eventos`,
+            modules: [
+                {
+                    icon: <EventOutlined />,
+                    name: `Eventos de votación`,
+                    route: `/events`,
+                },
+            ] as Module[],
+        },
+        {
+            label: `Gestión de elecciones`,
+            modules: [
+                {
+                    icon: <ListAltOutlined />,
+                    name: `Actividades de elección`,
+                    route: `/elections`,
+                },
+            ] as Module[],
+        },
+        {
+            label: `Gestión de usuarios`,
+            modules: [
+                {
+                    icon: <PeopleAltOutlined/>,
+                    name: `Votantes`,
+                    route: `/voters`,
+                }
+            ] as Module[],
+        },
+        {
+            label: `Gestión de resultados`,
+            modules: [
+                {
+                    icon: <EmojiEventsOutlined />,
+                    name: `Resultados`,
+                    route: `/results`,
+                }
+            ] as Module[],
+        }
+    ],
 };
 
 export const breadcrumbItems = (routes: string[]): string[] => {

@@ -9,9 +9,11 @@ import BoxtingButton from '@/components/buttons/boxting_button';
 import { ButtonType } from '@/components/buttons/utils';
 import { AddSmallIcon } from '@/components/icons';
 import ListEventsComponent from './list/index';
+import CookiesManager from '@/data/utils/cookies.manager';
 
 const EventPage: NextPage = () => {
     const router = useRouter();
+    const userRole = CookiesManager.getInstance()._getRole()
 
     return (
         <Box>
@@ -27,6 +29,7 @@ const EventPage: NextPage = () => {
                     typeBtn={ButtonType.primary}
                     leftIcon={<AddSmallIcon boxSize={4} />}
                     onEnter={() => router.push(`/events/create/`)}
+                    isDisabled={userRole == "COLLABORATOR"}
                 />
             </Flex>
 

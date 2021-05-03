@@ -8,6 +8,7 @@ import { EditIcon } from '../../../../../components/icons/index';
 import { List } from '@/data/list/model/list.model';
 import DeleteListAlertDialog from './deleteList';
 import { EventStatusEnum } from '@/data/utils/event.status.enum';
+import CookiesManager from '@/data/utils/cookies.manager';
 
 interface ListDetailProps {
     list: List
@@ -16,6 +17,8 @@ interface ListDetailProps {
 const ListDetail = (props: ListDetailProps) => {
 
     const { list } = props;
+
+    const userRole = CookiesManager.getInstance()._getRole()
 
     const router = useRouter();
 
@@ -35,7 +38,8 @@ const ListDetail = (props: ListDetailProps) => {
                 disableInfoIcon
             />
 
-            <DeleteListAlertDialog list={list} disabled={list.eventStatus != EventStatusEnum.NOT_STARTED} />
+            <DeleteListAlertDialog list={list} 
+            disabled={list.eventStatus != EventStatusEnum.NOT_STARTED || userRole == "COLLABORATOR"} />
 
             <BoxtingButton
                 style={{ marginRight: '12px', marginBottom: '12px' }}

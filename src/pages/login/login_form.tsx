@@ -20,7 +20,7 @@ import { showToast } from '@/components/toast/custom.toast';
 import { LoginRequestDto } from '@/data/login/api/dto/request/login.request.dto';
 
 interface LoginFormProps {
-    onSignIn: (token: string, refreshToken: string) => void;
+    onSignIn: (token: string, refreshToken: string, role: string) => void;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
@@ -58,9 +58,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
                 true,
                 toast,
             );
-
+                console.log(loginResponse.data)
             // Store received tokens on cookies
-            onSignIn(loginResponse.data.token, loginResponse.data.refreshToken);
+            onSignIn(loginResponse.data.token, loginResponse.data.refreshToken, loginResponse.data.role.name);
 
             // Stop loading state
             setLoading(false);

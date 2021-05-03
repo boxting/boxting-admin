@@ -8,6 +8,7 @@ import { EditIcon } from '../../../../../components/icons/index';
 import { Candidate } from '@/data/candidate/model/candidate.model';
 import DeleteCandidateAlertDialog from './deleteCandidate';
 import { EventStatusEnum } from '@/data/utils/event.status.enum';
+import CookiesManager from '@/data/utils/cookies.manager';
 
 interface CandidateDetailProps {
     candidate: Candidate
@@ -16,6 +17,8 @@ interface CandidateDetailProps {
 const CandidateDetail = (props: CandidateDetailProps) => {
 
     const { candidate } = props;
+
+    const userRole = CookiesManager.getInstance()._getRole()
 
     const router = useRouter();
 
@@ -35,7 +38,8 @@ const CandidateDetail = (props: CandidateDetailProps) => {
                 disableInfoIcon
             />
 
-            <DeleteCandidateAlertDialog candidate={candidate} disabled={candidate.eventStatus != EventStatusEnum.NOT_STARTED} />
+            <DeleteCandidateAlertDialog candidate={candidate} 
+            disabled={candidate.eventStatus != EventStatusEnum.NOT_STARTED || userRole == "COLLABORATOR"} />
 
             <BoxtingButton
                 style={{ marginRight: '12px', marginBottom: '12px' }}
