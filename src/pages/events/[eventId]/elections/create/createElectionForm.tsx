@@ -16,6 +16,7 @@ import { showToast } from '@/components/toast/custom.toast'
 import { ElectionTypeEnum } from '@/data/utils/type.enum'
 import { CreateElectionRequestDto } from '@/data/election/api/dto/request/create.request.dto'
 import { ElectionRepository } from '@/data/election/repository/elections.repository'
+import { FormHelperText } from '@material-ui/core'
 
 const today = new Date()
 
@@ -36,8 +37,11 @@ const ElectionCreateForm = (props: ElectionCreateFormProps) => {
 	const [type, setType] = useState<number>(0)
 	const [winners, setWinners] = useState<number>(0)
 
-	const [errorNameLength, setErrorNameLength] = useState(false)
-	const [errorInformationLength, setErrorInformationLength] = useState(false)
+	// Error state vars
+	const [nameError, setNameError] = useState<string | undefined>(undefined)
+	const [informationError, setInformationError] = useState<string | undefined>(undefined)
+	const [typeError, setTypeError] = useState<string | undefined>(undefined)
+	const [winnersError, setWinnersError] = useState<string | undefined>(undefined)
 
 	// Constants
 	const MIN_LENGTH_NAME = 5;
@@ -62,6 +66,7 @@ const ElectionCreateForm = (props: ElectionCreateFormProps) => {
 		if (Number(event.target.value) == 1) {
 			setType(1)
 			setWinners(1)
+			setWinnersError(undefined)
 		} else {
 			setWinners(0)
 			setType(Number(event.target.value))
@@ -69,40 +74,58 @@ const ElectionCreateForm = (props: ElectionCreateFormProps) => {
 	}
 	const handleWinnersChange = (event: ChangeEvent<HTMLSelectElement>) => setWinners(Number(event.target.value))
 
-	function showError(msg: string) {
-		showToast(`Error!`, msg, false, toast)
+	// Validators
+	function validateName() {
+		let value = name.trim()
+		if (value.length == 0) {
+			setNameError('Debes completar el campo nombre.')
+		} else if (value.length < MIN_LENGTH_NAME) {
+			setNameError(`La longitud del campo nombre debe ser mayor a ${MIN_LENGTH_NAME}.`)
+		} else if (value.length > MAX_LENGTH_NAME) {
+			setNameError(`La longitud del campo nombre debe ser menor a ${MAX_LENGTH_NAME}.`)
+		} else {
+			setNameError(undefined)
+		}
 	}
 
-	// Validators
-	function validateLength(value: string, minLen: number, maxLen: number, fieldName: string) {
-		let errors = false
-
-		if (value.length > maxLen) {
-			showError(
-				`La longitud del campo ${fieldName} debe ser menor a la máxima establecida: ${maxLen}.`
-			)
-			errors = true
+	function validateInformation() {
+		let value = information.trim()
+		if (value.length == 0) {
+			setInformationError('Debes completar el campo información.')
+		} else if (value.length < MIN_LENGTH_INFORMATION) {
+			setInformationError(`La longitud del campo información debe ser mayor a ${MIN_LENGTH_INFORMATION}.`)
+		} else if (value.length > MAX_LENGTH_INFORMATION) {
+			setInformationError(`La longitud del campo información debe ser menor a ${MAX_LENGTH_INFORMATION}.`)
+		} else {
+			setInformationError(undefined)
 		}
-		if (value.length < minLen) {
-			showError(
-				`La longitud del campo ${fieldName} debe ser mayor a la mínima establecida: ${minLen}.`
-			)
-			errors = true
-		}
+	}
 
-		return errors
+	function validateType() {
+		if (type == 0) {
+			setTypeError('Debes seleccionar un tipo de actividad.')
+		} else {
+			setTypeError(undefined)
+		}
+	}
+
+	function validateWinners() {
+		if (winners == 0) {
+			setWinnersError('Debes seleccionar la cantidad de ganadores de la actividad.')
+		} else {
+			setWinnersError(undefined)
+		}
 	}
 
 	const createNewElection = async () => {
 
+		// Validate null data
 		if (type < 1 || winners < 1 || name.length == 0 || information.length == 0) {
-			showError(
-				'Debes completar todos los campos para crear la actividad de elección'
-			)
-			return
-		}
+			validateName()
+			validateInformation()
+			validateWinners()
+			validateType()
 
-		if (validateLength(name, 5, 100, 'nombre') || validateLength(information, 10, 500, 'información')) {
 			return
 		}
 
@@ -141,57 +164,45 @@ const ElectionCreateForm = (props: ElectionCreateFormProps) => {
 		}
 	}
 
-	function verifyInputName(){
-		setErrorNameLength((name.length < MIN_LENGTH_NAME || name.length > MAX_LENGTH_NAME) && name.length != 0)
-	}
-
-	function verifyInputInformation(){
-		setErrorInformationLength((information.length < MIN_LENGTH_INFORMATION || information.length > MAX_LENGTH_INFORMATION) && information.length != 0)
-	}
-
-	function errorMessageName(){
-		if (errorNameLength){
-			return `Nombre incorrecto, no debe ser menor a ${MIN_LENGTH_NAME} y mayor a ${MAX_LENGTH_NAME} caracteres.`
-		}
-	}
-
-
-	function errorMessageInformation(){
-		if (errorInformationLength){
-			return `Información incorrecta, no debe ser menor a ${MIN_LENGTH_INFORMATION} y mayor a ${MAX_LENGTH_INFORMATION} caracteres.`
-		}
-	}
-
 	return (
 		<Box>
-			<FormControl isInvalid={errorNameLength}>
+			<FormControl isInvalid={nameError != undefined} isRequired>
 				<FormLabel>Nombre</FormLabel>
 				<Input
 					value={name}
 					onChange={handleNameChange}
 					placeholder="Nombre de la actividad de elección"
-					onBlur = {verifyInputName}
+					onBlur={validateName}
 				/>
-				<FormErrorMessage>{errorMessageName()}</FormErrorMessage>
+				<FormErrorMessage>{nameError}</FormErrorMessage>
 			</FormControl>
-			<FormControl mt={4} isInvalid={errorInformationLength}>
+
+			<FormControl mt={4} isInvalid={informationError != undefined} isRequired>
 				<FormLabel>Información</FormLabel>
 				<Textarea
 					value={information}
 					onChange={handleInformationChange}
-					onBlur = {verifyInputInformation}
+					onBlur={validateInformation}
 				/>
-				<FormErrorMessage>{errorMessageInformation()}</FormErrorMessage>
+				<FormErrorMessage>{informationError}</FormErrorMessage>
 			</FormControl>
-			<FormControl mt={4}>
+
+			<FormControl mt={4} isInvalid={typeError != undefined} isRequired>
 				<FormLabel>Tipo de actividad</FormLabel>
-				<Select value={type} onChange={handleTypeChange} placeholder="Tipo de actividad">
-					<option key={ElectionTypeEnum.SINGLE} value={ElectionTypeEnum.SINGLE}>Actividad de elección única</option>
-					<option key={ElectionTypeEnum.MULTIPLE} value={ElectionTypeEnum.MULTIPLE}>Actividad de elección múltiple</option>
+				<Select value={type} onChange={handleTypeChange} placeholder="Tipo de actividad" onBlur={validateType}>
+					<option key={ElectionTypeEnum.SINGLE} value={ElectionTypeEnum.SINGLE}>
+						Actividad de elección única
+					</option>
+					<option key={ElectionTypeEnum.MULTIPLE} value={ElectionTypeEnum.MULTIPLE}>
+						Actividad de elección múltiple
+					</option>
 				</Select>
+				<FormErrorMessage>{typeError}</FormErrorMessage>
 			</FormControl>
-			<FormControl mt={4}>
+
+			<FormControl mt={4} isInvalid={winnersError != undefined} isRequired>
 				<FormLabel>Cantidad de ganadores</FormLabel>
+				<FormHelperText>Esta es la cantidad de candidatos que un votante deberá elegir al momento de emitir un voto.</FormHelperText>
 				{
 					(type == ElectionTypeEnum.SINGLE) ?
 						<Input
@@ -199,17 +210,22 @@ const ElectionCreateForm = (props: ElectionCreateFormProps) => {
 							disabled
 						/>
 						:
-						<Select value={winners} onChange={handleWinnersChange} placeholder="Cantidad de ganadores">
+						<Select value={winners} onChange={handleWinnersChange} placeholder="Cantidad de ganadores" onBlur={validateWinners}>
 							<option key={2} value={2}>2</option>
 							<option key={3} value={3}>3</option>
 							<option key={4} value={4}>4</option>
 							<option key={5} value={5}>5</option>
 						</Select>
 				}
+				<FormErrorMessage>{winnersError}</FormErrorMessage>
 			</FormControl>
+
 			<FormControl mt={4}>
 				<BoxtingButton
-					isDisabled = {errorNameLength || errorInformationLength}
+					isDisabled={
+						nameError != undefined || informationError != undefined ||
+						winnersError != undefined || typeError != undefined
+					}
 					isLoading={appState.loading}
 					typeBtn={ButtonType.primary}
 					text="Guardar"

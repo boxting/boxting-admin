@@ -119,6 +119,16 @@ const EventCreateForm = () => {
 
 	const createNewEvent = async () => {
 
+		// Validate null data
+		if (startDate == null || endDate == null || name.length == 0 || information.length == 0) {
+			validateName()
+			validateInformation()
+			validateStartDate(startDate)
+			validateEndDate(endDate)
+
+			return
+		}
+
 		try {
 			setAppState({ loading: true, success: null })
 

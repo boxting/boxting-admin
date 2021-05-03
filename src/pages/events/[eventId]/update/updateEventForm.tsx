@@ -131,6 +131,16 @@ const EventUpdateForm = (props: EventUpdateFormProps) => {
 
     const updateNewEvent = async () => {
 
+        // Validate null data
+        if (startDate == null || endDate == null || name.length == 0 || information.length == 0) {
+            validateName()
+            validateInformation()
+            validateStartDate(startDate)
+            validateEndDate(endDate)
+
+            return
+        }
+
         // Validate if event has not started
         const startDateMoment = moment(event.startDate, 'DD/MM/YYYY HH:mm:SS');
         const endDateMoment = moment(event.endDate, 'DD/MM/YYYY HH:mm:SS');
