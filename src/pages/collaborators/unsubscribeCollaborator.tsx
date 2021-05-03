@@ -80,7 +80,7 @@ function UnsubscribeCollaboratorAlertDialog(props: UnsubscribeCollaboratorProps)
                     </AlertDialogHeader>
 
                     <AlertDialogBody>
-                        ¿Estas seguro que deseas eliminar a {username} como colaborador del evento?
+                        ¿Estás seguro que deseas eliminar a {username} como colaborador del evento?
                     </AlertDialogBody>
 
                     <AlertDialogFooter>

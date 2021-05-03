@@ -82,7 +82,7 @@ function FinishEventUpdateAlertDialog(props: FinishEventUpdateProps) {
                     </AlertDialogHeader>
 
                     <AlertDialogBody>
-                        ¿Estas seguro que deseas finalizar la edición del evento? No se
+                        ¿Estás seguro que deseas finalizar la edición del evento? No se
                         podrá volver a modificar el evento ni su contenido.
                     </AlertDialogBody>
 

@@ -92,7 +92,7 @@ function DeleteElectionAlertDialog(props: DeleteElectionProps) {
                     </AlertDialogHeader>
 
                     <AlertDialogBody>
-                        ¿Estas seguro que deseas eliminar esta actividad de elección? No se
+                        ¿Estás seguro que deseas eliminar esta actividad de elección? No se
                         podrá recuperar la información de esta actividad.
                     </AlertDialogBody>
 

@@ -93,7 +93,7 @@ function DeleteListAlertDialog(props: DeleteListProps) {
                     </AlertDialogHeader>
 
                     <AlertDialogBody>
-                        ¿Estas seguro que deseas eliminar esta lista de candidatos? No se
+                        ¿Estás seguro que deseas eliminar esta lista de candidatos? No se
                         podrá recuperar la información es esta lista ni los candidatos registrados.
                     </AlertDialogBody>
 

@@ -103,7 +103,7 @@ function DeleteEventAlertDialog(props: DeleteEventProps) {
                     </AlertDialogHeader>
 
                     <AlertDialogBody>
-                        ¿Estas seguro que deseas eliminar este evento de votación? No se
+                        ¿Estás seguro que deseas eliminar este evento de votación? No se
                         podrá recuperar la información de este evento.
                     </AlertDialogBody>
 

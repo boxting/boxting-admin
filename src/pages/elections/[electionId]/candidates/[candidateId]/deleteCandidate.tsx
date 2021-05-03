@@ -93,7 +93,7 @@ function DeleteCandidateAlertDialog(props: DeleteCandidateProps) {
                     </AlertDialogHeader>
 
                     <AlertDialogBody>
-                        ¿Estas seguro que deseas eliminar este candidato? No se
+                        ¿Estás seguro que deseas eliminar este candidato? No se
                         podrá recuperar la información del candidato.
                     </AlertDialogBody>
 
