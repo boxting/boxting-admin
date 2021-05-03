@@ -1,4 +1,4 @@
-import { Box, Flex, Grid, Select } from '@chakra-ui/core';
+import { Box, Flex, FormControl, FormLabel, Grid, Select } from '@chakra-ui/core';
 import React, { Component } from 'react';
 import Card from '@/components/card';
 import { Election } from '@/data/election/model/election.model';
@@ -148,7 +148,8 @@ class ElectionList extends Component<ElectionListProps, ElectionListState> {
 
         return (
             <Box>
-                <Flex pb={4}>
+                <FormControl pb={4}>
+                    <FormLabel>Evento de votación:</FormLabel>
                     <Select
                         placeholder="Selecciona un evento de votación"
                         value={this.state.currentEvent}
@@ -158,7 +159,7 @@ class ElectionList extends Component<ElectionListProps, ElectionListState> {
                             <option key={item.id} value={item.id}>{item.name}</option>
                         ))}
                     </Select>
-                </Flex>
+                </FormControl>
 
 
                 <Flex pb={4}>
