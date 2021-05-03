@@ -11,6 +11,7 @@ import AddExistingCollaboratorModal from '../addExistingCollaborator';
 import MUIDataTable from 'mui-datatables';
 import { CollaboratorsTableOptions } from '@/content/datatable.options';
 import { CollaboratorsTableColumns } from '@/content/datatable.columns';
+import { CircularProgress } from '@material-ui/core';
 
 interface CollaboratorListProps {
     events: Event[],
@@ -22,6 +23,8 @@ interface CollaboratorListState {
     collaborators: User[],
     events: Event[],
     currentEvent: string | undefined
+    error: boolean
+    loading: boolean
 }
 
 // Needs to be a React Component because screen updates on create/delete/update
@@ -44,39 +47,52 @@ class CollaboratorList extends Component<CollaboratorListProps, CollaboratorList
         this.state = {
             collaborators: [],
             events: [],
-            currentEvent: undefined
+            currentEvent: undefined,
+            error: false,
+            loading: false
         }
     }
 
-    async getCollaborators(eventId: string) {
+    async getCollaborators(eventId: string): Promise<User[]> {
         try {
             const res = await this.userRepository.getAll(eventId, 'collaborators')
             const collaborators = UserMapper.getAllToUserList(res)
-            return collaborators
+            return Promise.resolve(collaborators)
         } catch (error) {
             console.log(error)
-            return []
+            return Promise.reject(error)
         }
     }
 
     async componentDidMount() {
-        this._isMounted = true
-        let propEvents = this.props.events
-        let propCurrentEvent = this.props.default
-        let currentCollaborators = []
+        this.setState({ loading: true })
 
-        if (propCurrentEvent != undefined && propEvents.length != 0) {
-            currentCollaborators = await this.getCollaborators(propCurrentEvent)
-        } else if (propEvents.length != 0) {
-            currentCollaborators = await this.getCollaborators(propEvents[0].id.toString())
-            propCurrentEvent = propEvents[0].id.toString()
-        }
+        try {
+            this._isMounted = true
+            let propEvents = this.props.events
+            let propCurrentEvent = this.props.default
+            let currentCollaborators = []
 
-        if (this._isMounted) {
+            if (propCurrentEvent != undefined && propEvents.length != 0) {
+                currentCollaborators = await this.getCollaborators(propCurrentEvent)
+            } else if (propEvents.length != 0) {
+                currentCollaborators = await this.getCollaborators(propEvents[0].id.toString())
+                propCurrentEvent = propEvents[0].id.toString()
+            }
+
+            if (this._isMounted) {
+                this.setState({
+                    collaborators: currentCollaborators,
+                    events: propEvents,
+                    currentEvent: propCurrentEvent,
+                    error: false,
+                    loading: false
+                })
+            }
+        } catch (error) {
             this.setState({
-                collaborators: currentCollaborators,
-                events: propEvents,
-                currentEvent: propCurrentEvent
+                error: true,
+                loading: false
             })
         }
     }
@@ -87,13 +103,30 @@ class CollaboratorList extends Component<CollaboratorListProps, CollaboratorList
 
     onSelectEvent = async (event: React.ChangeEvent<HTMLSelectElement>) => {
 
-        let selectedEvent = event.target.value
-        let currentCollaborators = await this.getCollaborators(selectedEvent)
+        this.setState({ loading: true })
 
-        this.setState({
-            currentEvent: selectedEvent,
-            collaborators: currentCollaborators
-        })
+        try {
+            let selectedEvent = event.target.value
+            let currentCollaborators = []
+
+            if (selectedEvent == undefined || selectedEvent == '') {
+                selectedEvent = undefined
+            } else {
+                currentCollaborators = await this.getCollaborators(selectedEvent)
+            }
+
+            this.setState({
+                currentEvent: selectedEvent,
+                collaborators: currentCollaborators,
+                error: false,
+                loading: false
+            })
+        } catch (error) {
+            this.setState({
+                error: true,
+                loading: false
+            })
+        }
     }
 
     onAddCollaborator = (collaborator: User) => {
@@ -144,22 +177,27 @@ class CollaboratorList extends Component<CollaboratorListProps, CollaboratorList
                     <CreateCollaboratorModal
                         eventId={this.state.currentEvent}
                         onAddCollaborator={this.onAddCollaborator}
+                        disabled={this.state.currentEvent == undefined}
                     />
 
                     <AddExistingCollaboratorModal
                         eventId={this.state.currentEvent}
                         onAddCollaborator={this.onAddCollaborator}
+                        disabled={this.state.currentEvent == undefined}
                     />
                 </Flex>
 
                 {
-                    (this.state.collaborators.length == 0) ? <p>No se han agregado colaboradores para el evento.</p> :
-                        <MUIDataTable
-                            columns={tableColumns}
-                            data={this.state.collaborators}
-                            title={'Listado de colaboradores'}
-                            options={CollaboratorsTableOptions}
-                        />
+                    (this.state.loading) ? <CircularProgress /> :
+                        (this.state.error) ? <p>Ocurrió un error al cargar los colaboradores del evento.</p> :
+                            (this.state.currentEvent == undefined) ? <p>Debes seleccionar un evento del listado.</p> :
+                                (this.state.collaborators.length == 0) ? <p>No se han agregado colaboradores para el evento.</p> :
+                                    <MUIDataTable
+                                        columns={tableColumns}
+                                        data={this.state.collaborators}
+                                        title={'Listado de colaboradores'}
+                                        options={CollaboratorsTableOptions}
+                                    />
                 }
             </Box>
 

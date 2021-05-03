@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent } from 'react';
 import {
     Button, Modal, ModalContent, ModalOverlay, ModalHeader, ModalFooter, useToast,
-    ModalBody, FormControl, FormLabel, Input, Box,
+    ModalBody, FormControl, FormLabel, Input, Box, FormErrorMessage,
 } from '@chakra-ui/core';
 import { showToast } from '@/components/toast/custom.toast';
 import { AddSmallIcon } from '@/components/icons';
@@ -10,17 +10,17 @@ import { User } from '@/data/user/model/user.model';
 import { UserRepository } from '@/data/user/repository/users.repository';
 import BoxtingButton from '@/components/buttons/boxting_button';
 import { ButtonType } from '@/components/buttons/utils';
-import { CreateCollaboratorRequestDto } from '@/data/user/api/dto/request/create.collaborator.request.dto';
 
 interface AddExistingCollaboratorProps {
     eventId: string,
     onAddCollaborator: (newCollaborator: User) => void
+    disabled: boolean
 }
 
 const AddExistingCollaboratorModal = (props: AddExistingCollaboratorProps) => {
 
     // Props
-    const { eventId, onAddCollaborator } = props
+    const { eventId, onAddCollaborator, disabled } = props
 
     // Utils
     const toast = useToast();
@@ -29,6 +29,12 @@ const AddExistingCollaboratorModal = (props: AddExistingCollaboratorProps) => {
     const [isOpen, setIsOpen] = useState<boolean>();
     const [username, setUsername] = useState('');
 
+    // Error state vars
+    const [usernameError, setUsernameError] = useState<string | undefined>(undefined)
+
+    // Constants
+    const MIN_LENGTH_USERNAME = 5;
+
     // Repository
     const userRepository = UserRepository.getInstance()
 
@@ -36,14 +42,19 @@ const AddExistingCollaboratorModal = (props: AddExistingCollaboratorProps) => {
     const onClose = () => {
         setIsOpen(false)
         setUsername('')
+        setUsernameError(undefined)
     }
     const handleUsernameChange = (event: ChangeEvent<HTMLInputElement>) => setUsername(event.target.value)
 
-    const validateOpening = () => {
-        if (eventId != undefined && eventId.trim() != '') {
-            setIsOpen(true)
+    // Validators
+    function validateUsername() {
+        let value = username.trim()
+        if (value.length == 0) {
+            setUsernameError('Debes ingresar un nombre de usuario.')
+        } else if (value.length < MIN_LENGTH_USERNAME) {
+            setUsernameError(`La longitud del campo nombre de usuario debe ser mayor a ${MIN_LENGTH_USERNAME}.`)
         } else {
-            showToast('Ocurrió un error', 'Debes seleccionar un evento para agregar colaboradores.', false, toast);
+            setUsernameError(undefined)
         }
     }
 
@@ -51,7 +62,7 @@ const AddExistingCollaboratorModal = (props: AddExistingCollaboratorProps) => {
 
         // Validate if any field is empty
         if (username.trim() == '') {
-            showToast('Ocurrió un error', 'Debes ingresar un nombre de usuario para agregar al colaborador.', false, toast);
+            setUsernameError('Debes ingresar un nombre de usuario.')
             return
         }
 
@@ -87,7 +98,8 @@ const AddExistingCollaboratorModal = (props: AddExistingCollaboratorProps) => {
                 text="Agregar existente"
                 typeBtn={ButtonType.primary}
                 leftIcon={<AddSmallIcon boxSize={4} />}
-                onEnter={validateOpening}
+                onEnter={() => setIsOpen(true)}
+                isDisabled={disabled}
             />
 
             <Modal isOpen={isOpen} onClose={onClose}
@@ -101,15 +113,15 @@ const AddExistingCollaboratorModal = (props: AddExistingCollaboratorProps) => {
                     </ModalHeader>
                     <ModalBody>
                         <Box>
-                            <FormControl>
-                                <FormControl>
-                                    <FormLabel>Nombre de usuario</FormLabel>
-                                    <Input
-                                        value={username}
-                                        onChange={handleUsernameChange}
-                                        placeholder="Nombre de usuario"
-                                    />
-                                </FormControl>
+                            <FormControl isInvalid={usernameError != undefined} isRequired>
+                                <FormLabel>Nombre de usuario</FormLabel>
+                                <Input
+                                    value={username}
+                                    onChange={handleUsernameChange}
+                                    placeholder="Nombre de usuario"
+                                    onBlur={validateUsername}
+                                />
+                                <FormErrorMessage>{usernameError}</FormErrorMessage>
                             </FormControl>
                         </Box>
                     </ModalBody>
@@ -118,7 +130,7 @@ const AddExistingCollaboratorModal = (props: AddExistingCollaboratorProps) => {
                         <Button onClick={onClose}>
                             Cancelar
                         </Button>
-                        <Button colorScheme="red" onClick={onConfirm} ml={3}>
+                        <Button colorScheme="red" onClick={onConfirm} ml={3} disabled={usernameError != undefined}>
                             Agregar
                         </Button>
                     </ModalFooter>

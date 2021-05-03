@@ -233,6 +233,7 @@ const ListCreateForm = (props: ListCreateFormProps) => {
 				/>
 				<FormErrorMessage>{nameError}</FormErrorMessage>
 			</FormControl>
+
 			<FormControl mt={4} isInvalid={informationError != undefined} isRequired>
 				<FormLabel>Información</FormLabel>
 				<Textarea
@@ -243,6 +244,7 @@ const ListCreateForm = (props: ListCreateFormProps) => {
 				/>
 				<FormErrorMessage>{informationError}</FormErrorMessage>
 			</FormControl>
+
 			<FormControl mt={4}>
 				<BoxtingButton
 					typeBtn={ButtonType.outline}
@@ -257,12 +259,14 @@ const ListCreateForm = (props: ListCreateFormProps) => {
 					accept="image/png, image/jpeg"
 				/>
 			</FormControl>
+
 			<FormControl mt={4}>
 				<Image
 					src={imagePath}
 					maxWidth='300px'
 				/>
 			</FormControl>
+
 			<FormControl mt={4}>
 				<BoxtingButton
 					isDisabled={nameError != undefined || informationError != undefined}

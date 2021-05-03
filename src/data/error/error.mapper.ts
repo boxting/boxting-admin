@@ -3,6 +3,7 @@ export const ErrorMapper = {
     '1001': 'Usuario o contraseña incorrectos.',
     '1002': 'Usuario o contraseña incorrectos.',
     '1003': 'Usuario o contraseña incorrectos.',
+    '2005': 'El correo ingresado ya está registrado',
     '3003': 'El nombre de usuario ingresado no existe.',
     '4002': 'No se puede modificar un evento que ya ha iniciado.',
     '4003': 'No puedes modificar un evento que no es tuyo.',

@@ -128,7 +128,6 @@ class ElectionList extends Component<ElectionListProps, ElectionListState> {
                 loading: false
             })
         } catch (error) {
-            console.log(error)
             this.setState({
                 error: true,
                 loading: false
