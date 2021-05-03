@@ -6,7 +6,8 @@ import {
     Input,
     useToast,
     Textarea,
-    Image
+    Image,
+    FormErrorMessage
 } from '@chakra-ui/core';
 import { ButtonType } from '@/components/buttons/utils';
 import React, { ChangeEvent, createRef, useState } from 'react';
@@ -47,6 +48,16 @@ const ListUpdateForm = (props: ListUpdateFormProps) => {
     const [imageExtension, setImageExtension] = useState('')
     const [image, setImage] = useState<Blob>(undefined)
 
+    // Error state vars
+    const [nameError, setNameError] = useState<string | undefined>(undefined)
+    const [informationError, setInformationError] = useState<string | undefined>(undefined)
+
+    // Constants
+    const MIN_LENGTH_NAME = 5;
+    const MAX_LENGTH_NAME = 100;
+    const MIN_LENGTH_INFORMATION = 10;
+    const MAX_LENGTH_INFORMATION = 500;
+
     // Utils
     const router = useRouter();
     const toast = useToast();
@@ -57,16 +68,30 @@ const ListUpdateForm = (props: ListUpdateFormProps) => {
     const firebaseManager = FirebaseManager.getInstance()
 
     // Validators
-    function validateLength(value: string, minLen: number, maxLen: number, fieldName: string) {
-        let errors = false
-        if (value.length > maxLen) {
-            showError(`La longitud del campo ${fieldName} debe ser menor a la máxima establecida: ${maxLen}.`)
-            errors = true;
-        } if (value.length < minLen) {
-            showError(`La longitud del campo ${fieldName} debe ser mayor a la mínima establecida: ${minLen}.`)
-            errors = true;
+    function validateName() {
+        let value = name.trim()
+        if (value.length == 0) {
+            setNameError('Debes completar el campo nombre.')
+        } else if (value.length < MIN_LENGTH_NAME) {
+            setNameError(`La longitud del campo nombre debe ser mayor a ${MIN_LENGTH_NAME}.`)
+        } else if (value.length > MAX_LENGTH_NAME) {
+            setNameError(`La longitud del campo nombre debe ser menor a ${MAX_LENGTH_NAME}.`)
+        } else {
+            setNameError(undefined)
         }
-        return errors
+    }
+
+    function validateInformation() {
+        let value = information.trim()
+        if (value.length == 0) {
+            setInformationError('Debes completar el campo información.')
+        } else if (value.length < MIN_LENGTH_INFORMATION) {
+            setInformationError(`La longitud del campo información debe ser mayor a ${MIN_LENGTH_INFORMATION}.`)
+        } else if (value.length > MAX_LENGTH_INFORMATION) {
+            setInformationError(`La longitud del campo información debe ser menor a ${MAX_LENGTH_INFORMATION}.`)
+        } else {
+            setInformationError(undefined)
+        }
     }
 
     // Functions
@@ -110,23 +135,13 @@ const ListUpdateForm = (props: ListUpdateFormProps) => {
         }
     }
 
-    function showError(msg: string) {
-        showToast('Error!', msg, false, toast);
-    }
-
     const updateList = async () => {
 
         // Validate null data
         if (name.length == 0 || information.length == 0) {
-            showError(
-                'Debes completar todos los campos para actualizar la lista.'
-            )
+            validateInformation()
+            validateName()
             return
-        }
-
-        // Validate if fields are correct
-        if (validateLength(name, 5, 100, "nombre") || validateLength(information, 10, 500, "información")) {
-            return;
         }
 
         setAppState({ loading: true, success: null });
@@ -224,21 +239,25 @@ const ListUpdateForm = (props: ListUpdateFormProps) => {
 
     return (
         <Box>
-            <FormControl>
+            <FormControl isInvalid={nameError != undefined} isRequired>
                 <FormLabel>Nombre</FormLabel>
                 <Input
                     value={name}
                     onChange={handleNameChange}
-                    placeholder="Nombre del evento"
+                    placeholder="Nombre de la lista"
+                    onBlur={validateName}
                 />
+                <FormErrorMessage>{nameError}</FormErrorMessage>
             </FormControl>
-            <FormControl mt={4}>
+            <FormControl mt={4} isInvalid={informationError != undefined} isRequired>
                 <FormLabel>Información</FormLabel>
                 <Textarea
                     value={information}
                     onChange={handleInformationChange}
-                    placeholder="Información del evento"
+                    placeholder="Información de la lista"
+                    onBlur={validateInformation}
                 />
+                <FormErrorMessage>{informationError}</FormErrorMessage>
             </FormControl>
             <FormControl mt={4}>
                 <BoxtingButton
@@ -262,6 +281,7 @@ const ListUpdateForm = (props: ListUpdateFormProps) => {
             </FormControl>
             <FormControl mt={4}>
                 <BoxtingButton
+                    isDisabled={nameError != undefined || informationError != undefined}
                     isLoading={appState.loading}
                     typeBtn={ButtonType.primary}
                     text="Guardar"
