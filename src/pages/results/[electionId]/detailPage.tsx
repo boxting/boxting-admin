@@ -3,6 +3,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import PageTitle from '@/components/pageTitle';
 import { Election } from '@/data/election/model/election.model';
+import Chart from '@/components/barChart'
 
 interface ElectionResultProps {
     election: Election
@@ -34,7 +35,12 @@ const ElectionResult = (props: ElectionResultProps) => {
                 disableInfoIcon
             />
 
-            <Center>No hay resultados de la actividad disponibles.</Center>;
+            <Center
+                width = "85%"
+                position = "relative"
+                top = "50px">
+                <Chart/>
+            </Center>
 
         </Box>
     );
