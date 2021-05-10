@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import ElectionResult from './detailPage';
 import { ElectionRepository } from '@/data/election/repository/elections.repository';
 import { Election } from '@/data/election/model/election.model';
+import data from '../../../components/barChart/mock'
 
 const ElectionResultPage: NextPage = () => {
 
@@ -15,6 +16,9 @@ const ElectionResultPage: NextPage = () => {
 
     // Query variables
     const { electionId } = router.query;
+
+    // Test JSON
+    const mockObject = JSON.parse(data)
 
     // State variables
     const ElectionResultLoading = WithLoadingComponent(ElectionResult);
@@ -33,10 +37,10 @@ const ElectionResultPage: NextPage = () => {
 
             try {
                 const election: Election = {
-                    id: Number(electionId),
+                    id: Number(mockObject.data.election.id),
                     eventId: 3,
                     information: 'Information mock',
-                    name: 'Name mock',
+                    name: mockObject.data.election.name,
                     typeId: 1,
                     winners: 1
                 }
