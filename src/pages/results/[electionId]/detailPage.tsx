@@ -1,5 +1,5 @@
 import { Box, Center } from '@chakra-ui/core';
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import PageTitle from '@/components/pageTitle';
 import { Election } from '@/data/election/model/election.model';
@@ -15,7 +15,11 @@ const ElectionResult = (props: ElectionResultProps) => {
 
     const router = useRouter();
 
-    if (election == null) {
+    const [appState, setAppState] = useState({
+        events: []
+    });
+
+    if (election == null) { 
         return <Center>Ocurrió un error al intentar obtener la información requerida.</Center>;
     }
 
@@ -39,7 +43,7 @@ const ElectionResult = (props: ElectionResultProps) => {
                 width = "85%"
                 position = "relative"
                 top = "50px">
-                <Chart/>
+                <Chart  election = {election as Election}/>
             </Center>
 
         </Box>
