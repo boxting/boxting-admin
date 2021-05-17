@@ -13,6 +13,7 @@ export class Candidate {
     updatedAt?: Date
     listId?: number
     electionId?: number
+    voteCount?: number
     list?: List
     eventStatus?: EventStatusEnum
 }
