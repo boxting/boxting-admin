@@ -6,7 +6,6 @@ import WithLoadingComponent from '@/components/loading/withComponentLoading';
 import { useEffect, useState } from 'react';
 import ElectionResult from './detailPage';
 import { ElectionRepository } from '@/data/election/repository/elections.repository';
-import * as ElectionMapper from '@/data/election/api/mapper/election.mapper'
 
 const ElectionResultPage: NextPage = () => {
 
@@ -18,25 +17,25 @@ const ElectionResultPage: NextPage = () => {
 
     // State variables
     const ElectionResultLoading = WithLoadingComponent(ElectionResult);
+
     const [appState, setAppState] = useState({
         loading: false,
-        election: null,
+        results: undefined
     });
 
     // Get service instance
     const electionRepository = ElectionRepository.getInstance()
 
     useEffect(() => {
-        setAppState({ loading: true, election: null });
+        setAppState({ loading: true, results: undefined });
 
         const fetchData = async () => {
             try {
-                const res = await electionRepository.getOne(Number(11), Number(electionId))
-                const election = await ElectionMapper.getOneToElection(res)
+                const res = await electionRepository.getResults(Number(electionId))
 
-                setAppState({ loading: false, election: election })
+                setAppState({ loading: false, results: res.data })
             } catch (error) {
-                setAppState({ loading: false, election: null });
+                setAppState({ loading: false, results: undefined });
             }
         }
 
@@ -44,7 +43,7 @@ const ElectionResultPage: NextPage = () => {
     }, [setAppState]);
 
     return (
-        <ElectionResultLoading isLoading={appState.loading} election={appState.election} />
+        <ElectionResultLoading isLoading={appState.loading} results={appState.results} />
     );
 };
 

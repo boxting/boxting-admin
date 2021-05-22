@@ -5,14 +5,18 @@ import PageTitle from '@/components/pageTitle';
 import { Election } from '@/data/election/model/election.model';
 import Chart from '@/components/barChart/barchart'
 import html2canvas from 'html2canvas';
+import { ElectionResultDto } from '@/data/election/api/dto/election.result.dto';
+import BoxtingButton from '@/components/buttons/boxting_button';
+import { ButtonType } from '@/components/buttons/utils';
+import { DownloadIcon } from '@chakra-ui/icons';
 
 interface ElectionResultProps {
-    election: Election
+    results: ElectionResultDto
 }
 
 const ElectionResult = (props: ElectionResultProps) => {
 
-    const { election } = props;
+    let { results } = props;
 
     let jsPDF = null;
 
@@ -24,8 +28,33 @@ const ElectionResult = (props: ElectionResultProps) => {
 
     const router = useRouter();
 
-    if (election == null) {
-        return <Center>Ocurrió un error al intentar obtener la información requerida.</Center>;
+    if (results == undefined) {
+        //return <Center>Ocurrió un error al intentar obtener los resultados de la actividad seleccionada.</Center>;
+        results = {
+            election: {
+                id: "1",
+                name: "Test election"
+            },
+            candidates: [
+                {
+                    electionId: "1",
+                    firstName: "Rodrigo",
+                    id: "1",
+                    imageUrl: "none",
+                    lastName: "Guadalupe",
+                    voteCount: 3
+                },
+                {
+                    electionId: "1",
+                    firstName: "Enzo",
+                    id: "2",
+                    imageUrl: "none",
+                    lastName: "Lizama",
+                    voteCount: 2
+                }
+            ],
+            totalVotes: 5
+        }
     }
 
     function exportPdf() {
@@ -35,49 +64,44 @@ const ElectionResult = (props: ElectionResultProps) => {
             const imgData = canvas.toDataURL('image/png');
             var pdf = new jsPDF('landscape', 'px', 'a4', 'false');
             pdf.setFont('Helvertica', 'bold')
-            pdf.text(60, 40, election.name)
+            pdf.text(60, 40, results.election.name)
             pdf.setFont('Helvertica', 'normal')
-            pdf.text(60, 60, election.information)
+            pdf.text(60, 60, "Resultados finales obtenidos para la actividad de elección.")
             pdf.addImage(imgData, 'PNG', 65, 110, 500, 250);
-            pdf.save("download.pdf");
+            pdf.save(`Election-${results.election.id}-results.pdf`);
         });
     }
 
     return (
         <Box id="CandidateChart">
             <PageTitle
-                title={election.name}
-                description={election.information}
+                title={results.election.name}
+                description={"Resultados finales obtenidos para la actividad de elección."}
                 onBackClick={() => router.push(
                     {
                         pathname: `/results/`,
-                        query: { eventId: election.eventId.toString() },
                     },
                     `/results/`,
                 )}
                 enableBackIcon
                 disableInfoIcon
             />
-            <Text
-                position="relative"
-                width="60px"
-                cursor="pointer"
-                _hover={{ color: "blue.400", transition: ".3s ease all" }}
-                _focus={{ boxShadow: "outline" }}
-                onClick={exportPdf}
-                left="100px"
-                top="55px"
-                fontSize="12px"
-                userSelect="none">
-                Descargar
-            </Text>
+            <BoxtingButton
+                style={{ marginRight: '12px', marginBottom: '12px' }}
+                text="Exportar a pdf"
+                typeBtn={ButtonType.primary}
+                leftIcon={<DownloadIcon />}
+                onEnter={exportPdf}
+            />
+
             <Center
                 width="85%"
                 position="relative"
                 top="50px"
+                style={{ marginRight: '12px', marginBottom: '48px' }}
                 display="block"
                 id="ResponsiveChart">
-                <Chart election={election as Election} />
+                <Chart results={results} />
             </Center>
 
         </Box>
