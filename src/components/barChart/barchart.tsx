@@ -1,70 +1,28 @@
 import React, { PureComponent } from 'react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LabelList, Legend } from 'recharts';
 import { Text, Box, Center } from '@chakra-ui/core';
-import { Election } from '@/data/election/model/election.model';
 import { CandidateRepository } from '@/data/candidate/repository/candidate.repository';
 import * as CandidateMapper from '@/data/candidate/api/mapper/candidate.mapper'
-import { Candidate } from '@/data/candidate/model/candidate.model';
+import { ElectionResultDto } from '@/data/election/api/dto/election.result.dto';
 
-interface ElectionObject {
-    election: Election
+interface ChartProps {
+    results: ElectionResultDto
 }
 
-interface ListCandidates {
-    candidates: Candidate[]
-}
+const Chart = (props: ChartProps) => {
 
-class Chart extends PureComponent<ElectionObject, ListCandidates> {
-    candidateRepository: CandidateRepository
-    electionId: number
+    const { results } = props;
 
-    constructor(props: ElectionObject) {
-        super(props)
-        this.candidateRepository = CandidateRepository.getInstance()
-        this.electionId = props.election.id
 
-        this.state = {
-            candidates: []
-        }
-    }
-
-    async getCandidates() {
-        try {
-            const res = await this.candidateRepository.getAllByElection(this.electionId)
-            const candidates = CandidateMapper.getAllToCandidateList(res)
-            return candidates
-        } catch (error) {
-            console.log(error)
-            return []
-        }
-    }
-
-    async componentDidMount() {
-        let currentCandidates = []
-        currentCandidates = await this.getCandidates()
-        this.setState({
-            candidates: currentCandidates
-        })
-    }
-
-    getTotalVotes(data) {
-        let totalVotes = 0
-        for (const item of data) {
-            totalVotes += item.voteCount
-        }
-        return totalVotes
-    }
-
-    getAditionalData() {
-        let data = this.state.candidates
-        let totalVotes = this.getTotalVotes(data)
+    function getAditionalData() {
+        let data = results.candidates
 
         data.forEach(candidate => {
             var fullNameType = "fullName"
             var fullNameContent = candidate.firstName + " " + candidate.lastName
             candidate[fullNameType] = fullNameContent
             var percentageType = "percentage"
-            var percentageContent = (Math.round((candidate.voteCount * 100 / totalVotes + Number.EPSILON) * 1000) / 1000) + "%";
+            var percentageContent = (Math.round((candidate.voteCount * 100 / results.totalVotes + Number.EPSILON) * 1000) / 1000) + "%";
             candidate[percentageType] = percentageContent
         });
 
@@ -73,7 +31,7 @@ class Chart extends PureComponent<ElectionObject, ListCandidates> {
         });
     }
 
-    CustomTooltip = ({ active, payload, label }: any) => {
+    const CustomTooltip = ({ active, payload, label }: any) => {
         if (active && payload && payload.length) {
             return (
                 <Box
@@ -98,53 +56,52 @@ class Chart extends PureComponent<ElectionObject, ListCandidates> {
         return null;
     };
 
-    renderColorfulLegendText = (value: string, entry: any) => {
+    const renderColorfulLegendText = (value: string, entry: any) => {
         return <Text color="black" display="inline-flex">{value}</Text>;
     };
 
-    render() {
-        const data = this.getAditionalData()
-        return (
-            <ResponsiveContainer width="99%" height={500}>
-                <BarChart
-                    width={300}
-                    height={450}
-                    data={data}
-                    margin={{
-                        top: 20,
-                        right: 30,
-                        left: 20,
-                        bottom: 5,
-                    }}
-                >
-                    <defs>
-                        <linearGradient id="rainGradient" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#3066BE" />
-                            <stop offset="100%" stopColor="#3066BE88" />
-                        </linearGradient>
-                    </defs>
-                    <CartesianGrid
-                        vertical={true}
-                        strokeDasharray="3 3"
-                        stroke="#d6d9da"
-                    />
-                    <XAxis dataKey="percentage" tickLine={false} fontSize="14px" fontWeight="bold" axisLine={false} />
-                    <Tooltip
-                        active={true}
-                        cursor={false}
-                        allowEscapeViewBox={{ x: false, y: false }}
-                        content={<this.CustomTooltip />}
-                    />
-                    <YAxis fontSize="14px" fontWeight="bold" axisLine={false} />
-                    <Legend formatter={this.renderColorfulLegendText} />
-                    <Bar dataKey="voteCount" name="Votos" fill='url(#rainGradient)' barSize={160}>
-                        <LabelList dataKey="fullName" position="top" fontSize="14px" fontFamily="monospace" />
-                        <LabelList dataKey="voteCount" position="center" fill="white" fontSize="14px" fontWeight="bold" />
-                    </Bar>
 
-                </BarChart>
-            </ResponsiveContainer>
-        )
-    }
+    return (
+        <ResponsiveContainer width="99%" height={500}>
+            <BarChart
+                width={300}
+                height={450}
+                data={getAditionalData()}
+                margin={{
+                    top: 20,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                }}
+            >
+                <defs>
+                    <linearGradient id="rainGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#6200EE" />
+                        <stop offset="60%" stopColor="#6200EE" />
+                        <stop offset="100%" stopColor="#fff" />
+                    </linearGradient>
+                </defs>
+                <CartesianGrid
+                    vertical={true}
+                    strokeDasharray="3 3"
+                    stroke="#d6d9da"
+                />
+                <XAxis dataKey="percentage" tickLine={false} fontSize="14px" fontWeight="bold" axisLine={false} />
+                <Tooltip
+                    active={true}
+                    cursor={false}
+                    allowEscapeViewBox={{ x: false, y: false }}
+                    content={<CustomTooltip />}
+                />
+                <YAxis fontSize="14px" fontWeight="bold" axisLine={false} />
+                <Legend formatter={renderColorfulLegendText} />
+                <Bar dataKey="voteCount" name="Votos" fill='url(#rainGradient)' barSize={160}>
+                    <LabelList dataKey="fullName" position="top" fontSize="14px" fontFamily="monospace" />
+                    <LabelList dataKey="voteCount" position="center" fill="white" fontSize="14px" fontWeight="bold" />
+                </Bar>
+
+            </BarChart>
+        </ResponsiveContainer>
+    )
 }
 export default Chart;
