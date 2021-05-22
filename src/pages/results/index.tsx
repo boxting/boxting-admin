@@ -17,7 +17,8 @@ const ElectionPage: NextPage = () => {
             <PageTitle
                 disableInfoIcon
                 title="Resultados"
-                description="En esta sección podrás ver los resultados de los eventos de votación finalizados."
+                description="En esta sección podrás ver los resultados de los eventos de votación finalizados. 
+                Las actividades de elección de los eventos que aún no hayan finalizado se mostrarán bloqueadas."
             />
 
             <ListElectionsComponent eventId={eventId as string} />

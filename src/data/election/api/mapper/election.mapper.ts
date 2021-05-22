@@ -11,7 +11,8 @@ export async function getAllToElectionList(response: GetAllElectionsResponseDto)
             information: value.information,
             name: value.name,
             eventId: value.eventId,
-            winners: value.winners
+            winners: value.winners,
+            eventStatus: response.data.eventStatus
         }
         return election
     })

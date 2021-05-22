@@ -6,6 +6,8 @@ import { Event } from '@/data/event/model/event.model';
 import { ElectionRepository } from '@/data/election/repository/elections.repository';
 import * as ElectionMapper from '@/data/election/api/mapper/election.mapper'
 import { NextRouter } from 'next/router';
+import { EventStatusEnum } from '@/data/utils/event.status.enum';
+import { CircularProgress } from '@material-ui/core';
 
 
 interface ElectionListProps {
@@ -17,7 +19,9 @@ interface ElectionListProps {
 interface ElectionListState {
     elections: Election[],
     events: Event[],
-    currentEvent: string | undefined
+    currentEvent: string | undefined,
+    error: boolean
+    loading: boolean
 }
 
 // Needs to be a React Component because screen updates on create/delete/update
@@ -37,7 +41,9 @@ class ElectionList extends Component<ElectionListProps, ElectionListState> {
         this.state = {
             elections: [],
             events: [],
-            currentEvent: undefined
+            currentEvent: undefined,
+            error: false,
+            loading: false
         }
     }
 
@@ -53,34 +59,59 @@ class ElectionList extends Component<ElectionListProps, ElectionListState> {
     }
 
     async componentDidMount() {
+        this.setState({ loading: true })
 
-        let propEvents = this.props.events
-        let propCurrentEvent = this.props.default
-        let currentElections = []
+        try {
+            let propEvents = this.props.events
+            let propCurrentEvent = this.props.default
+            let currentElections = []
 
-        if (propCurrentEvent != undefined && propEvents.length != 0) {
-            currentElections = await this.getElections(propCurrentEvent)
-        } else if (propEvents.length != 0) {
-            currentElections = await this.getElections(propEvents[0].id.toString())
-            propCurrentEvent = propEvents[0].id.toString()
+            if (propCurrentEvent != undefined && propEvents.length != 0) {
+                currentElections = await this.getElections(propCurrentEvent)
+            } else if (propEvents.length != 0) {
+                currentElections = await this.getElections(propEvents[0].id.toString())
+                propCurrentEvent = propEvents[0].id.toString()
+            }
+
+            this.setState({
+                elections: currentElections,
+                events: propEvents,
+                currentEvent: propCurrentEvent,
+                error: false,
+                loading: false
+            })
+        } catch (error) {
+            this.setState({
+                error: true,
+                loading: false
+            })
         }
-
-        this.setState({
-            elections: currentElections,
-            events: propEvents,
-            currentEvent: propCurrentEvent
-        })
     }
 
     onSelectEvent = async (event: React.ChangeEvent<HTMLSelectElement>) => {
+        this.setState({ loading: true })
+        try {
+            let selectedEvent = event.target.value
+            let currentElections = []
 
-        let selectedEvent = event.target.value
-        let currentElections = await this.getElections(selectedEvent)
+            if (selectedEvent == undefined || selectedEvent == '') {
+                selectedEvent = undefined
+            } else {
+                currentElections = await this.getElections(selectedEvent)
+            }
 
-        this.setState({
-            currentEvent: selectedEvent,
-            elections: currentElections
-        })
+            this.setState({
+                currentEvent: selectedEvent,
+                elections: currentElections,
+                error: false,
+                loading: false
+            })
+        } catch (error) {
+            this.setState({
+                error: true,
+                loading: false
+            })
+        }
     }
 
     render() {
@@ -95,25 +126,30 @@ class ElectionList extends Component<ElectionListProps, ElectionListState> {
                 </Flex>
 
                 {
-                    (this.state.elections.length == 0) ? <p>No se han creado actividades de elección para el evento.</p> :
-                        <Grid
-                            py={2}
-                            templateColumns="repeat(auto-fill, minmax(250px, 1fr))"
-                            gap={4}
-                        >
-                            {this.state.elections.map((item) => (
-                                <Card
-                                    key={item.id}
-                                    textHead={item.name}
-                                    textBody={item.information}
-                                    onEnter={() =>
-                                        this.router.push(
-                                            `/results/[electionId]`,
-                                            `/results/${item.id}`,
-                                        )}
-                                />
-                            ))}
-                        </Grid>
+                    (this.state.loading) ? <CircularProgress /> :
+                        (this.state.error) ? <p>Ocurrió un error al cargar las elecciones del evento.</p> :
+                            (this.state.currentEvent == undefined) ? <p>Debes seleccionar un evento del listado.</p> :
+                                (this.state.elections.length == 0) ? <p>No se han creado actividades de elección para el evento.</p> :
+                                    <Grid
+                                        py={2}
+                                        templateColumns="repeat(auto-fill, minmax(250px, 1fr))"
+                                        gap={4}
+                                    >
+                                        {this.state.elections.map((item) => (
+                                            <Card
+                                                key={item.id}
+                                                textHead={item.name}
+                                                textBody={item.information}
+                                                status={item.eventStatus}
+                                                disabled={item.eventStatus != EventStatusEnum.ENDED}
+                                                onEnter={() =>
+                                                    this.router.push(
+                                                        `/results/[electionId]`,
+                                                        `/results/${item.id}`,
+                                                    )}
+                                            />
+                                        ))}
+                                    </Grid>
                 }
 
             </Box>
