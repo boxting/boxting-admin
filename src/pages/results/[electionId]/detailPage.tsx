@@ -69,6 +69,7 @@ const ElectionResult = (props: ElectionResultProps) => {
             pdf.text(60, 60, "Resultados finales obtenidos para la actividad de elección.")
             pdf.addImage(imgData, 'PNG', 65, 110, 500, 250);
             pdf.save(`Election-${results.election.id}-results.pdf`);
+            document.body.removeChild(canvas);
         });
     }
 
