@@ -13,6 +13,7 @@ export interface CandidateDto {
     electionId: number,
     createdAt?: Date,
     updatedAt?: Date,
+    voteCount?: number
     list?: List,
     eventStatus?: EventStatusEnum
 }

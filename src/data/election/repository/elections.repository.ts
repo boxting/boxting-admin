@@ -6,6 +6,7 @@ import { CreateElectionResponseDto } from '../api/dto/response/create.response.d
 import { DeleteElectionResponseDto } from '../api/dto/response/delete.response.dto';
 import { GetAllElectionsResponseDto } from '../api/dto/response/get.all.response.dto';
 import { GetOneElectionResponseDto } from '../api/dto/response/get.one.response.dto';
+import { GetResultsResponseDto } from '../api/dto/response/results.response.dto';
 import { UpdateElectionResponseDto } from '../api/dto/response/update.response.dto';
 
 export class ElectionRepository {
@@ -101,6 +102,24 @@ export class ElectionRepository {
             const data: UpdateElectionResponseDto = res.data
             // Return data
             return Promise.resolve(data.success);
+        } catch (error) {
+            // Log error for internal use
+            console.log(error)
+            // Set the message using the error mapper
+            let msg = ErrorMapper[error.error.errorCode] || ErrorMapper[500];
+            // Return the obtained message
+            return Promise.reject(msg);
+        }
+    }
+
+    async getResults(id: string | number): Promise<GetResultsResponseDto> {
+        try {
+            // Make request
+            const res = await this._service.connection.get(`/election/${id}/results`);
+            // Assign data to response dto
+            const data: GetResultsResponseDto = res.data
+            // Return data
+            return Promise.resolve(data);
         } catch (error) {
             // Log error for internal use
             console.log(error)
