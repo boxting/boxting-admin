@@ -6,7 +6,7 @@ import WithLoadingComponent from '@/components/loading/withComponentLoading';
 import { useEffect, useState } from 'react';
 import ElectionResult from './detailPage';
 import { ElectionRepository } from '@/data/election/repository/elections.repository';
-import { Election } from '@/data/election/model/election.model';
+import * as ElectionMapper from '@/data/election/api/mapper/election.mapper'
 
 const ElectionResultPage: NextPage = () => {
 
@@ -30,16 +30,10 @@ const ElectionResultPage: NextPage = () => {
         setAppState({ loading: true, election: null });
 
         const fetchData = async () => {
-
             try {
-                const election: Election = {
-                    id: Number(electionId),
-                    eventId: 3,
-                    information: 'Information mock',
-                    name: 'Name mock',
-                    typeId: 1,
-                    winners: 1
-                }
+                const res = await electionRepository.getOne(Number(11),Number(electionId))
+                const election = await ElectionMapper.getOneToElection(res)
+
                 setAppState({ loading: false, election: election })
             } catch (error) {
                 setAppState({ loading: false, election: null });
