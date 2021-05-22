@@ -31,7 +31,7 @@ const ElectionResultPage: NextPage = () => {
 
         const fetchData = async () => {
             try {
-                const res = await electionRepository.getOne(Number(11),Number(electionId))
+                const res = await electionRepository.getOne(Number(11), Number(electionId))
                 const election = await ElectionMapper.getOneToElection(res)
 
                 setAppState({ loading: false, election: election })
