@@ -191,22 +191,6 @@ const ElectionResult = (props: ElectionResultProps) => {
         }
     }
 
-    /*function exportPdf() {
-        window["html2canvas"] = html2canvas
-        html2canvas(document.querySelector("#ResponsiveChart")).then((canvas) => {
-            document.body.appendChild(canvas);
-            const imgData = canvas.toDataURL('image/png');
-            var pdf = new jsPDF('landscape', 'px', 'a4', 'false');
-            pdf.setFont('Helvertica', 'bold')
-            pdf.text(60, 40, results.election.name)
-            pdf.setFont('Helvertica', 'normal')
-            pdf.text(60, 60, "Resultados finales obtenidos para la actividad de elección.")
-            pdf.addImage(imgData, 'PNG', 65, 110, 500, 250);
-            pdf.save(`Election-${results.election.id}-results.pdf`);
-            document.body.removeChild(canvas);
-        });
-    }*/
-
     return (
         <Box id="CandidateChart">
             <PageTitle
