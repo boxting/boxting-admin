@@ -18,6 +18,7 @@ import { LoginRepository } from '@/data/login/repository/login.repository';
 import ErrorMessage from '@/components/alerts/error';
 import { showToast } from '@/components/toast/custom.toast';
 import { LoginRequestDto } from '@/data/login/api/dto/request/login.request.dto';
+import RecoverPasswordModal from '@/components/password/recover.password';
 
 interface LoginFormProps {
     onSignIn: (token: string, refreshToken: string, role: string) => void;
@@ -178,9 +179,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }: LoginFormProps) => {
                 </Box>
                 <Box mt={8}>
                     <Flex justifyContent="space-between" align="center">
-                        <Text fontSize="xs" color="text" as="u" mr="60px">
-                            ¿Olvidaste tu contraseña?
+                        <Text fontSize="xs" color="text" as="u" mr="60px" style={{cursor: 'pointer'}}>
+                            <RecoverPasswordModal />
                         </Text>
+
                         <BoxtingButton
                             isLoading={loading}
                             text="Iniciar sesión"
