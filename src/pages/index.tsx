@@ -32,50 +32,50 @@ const Home: React.FC = () => (
         userSelect="none"
         fontFamily="sans-serif">
         <Box
-          backgroundImage="url(/images/fondo6.jpg)"
+          backgroundImage="url(https://firebasestorage.googleapis.com/v0/b/boxting-8ec66.appspot.com/o/landing%2Fbackground.jpg?alt=media&token=19725dda-488e-4235-b9a5-75da84695515)"
           height="850px"
           width="full"
-          position = "relative"
+          position="relative"
           backgroundPosition="center"
           backgroundRepeat="repeat-x"
-          backgroundSize={["1000%", "1000%", "1000%","1000%","100%"]}
-          display = "block">
+          backgroundSize={["1000%", "1000%", "1000%", "1000%", "100%"]}
+          display="block">
           <Box
             height="80px"
-            top  = "15px"
+            top="15px"
             width="full"
             position="relative"
-            display = "inline-flex"
-            alignItems = "center"
-            justifyContent = "center">
-            <Image position = "absolute" boxSize="110px" src="/images/logo5.png" alt="" />
+            display="inline-flex"
+            alignItems="center"
+            justifyContent="center">
+            <Image position="absolute" boxSize="110px" src="https://firebasestorage.googleapis.com/v0/b/boxting-8ec66.appspot.com/o/landing%2Flogo5.png?alt=media&token=30b3f1d7-139b-4875-b3d4-ede732442398" alt="" />
             <Button
-              left = "620px"
-              justifyContent = "center"
-              alignContent = "center"
-              justifyItems = "center"
+              left="620px"
+              justifyContent="center"
+              alignContent="center"
+              justifyItems="center"
               bg="none"
               type="submit"
-              width = "150px"
+              width="250px"
               color="white"
-              border = "2px"
-              borderColor = "white"
+              border="2px"
+              borderColor="white"
               onClick={() => window.location.href = "login"}>
-              Login
+              Ir al panel de organización
             </Button>
           </Box>
-          <HStack 
+          <HStack
             spacing="144px">
             <Box
               height="800px"
-              width="900px"
+              width="45%"
               position="relative"
               display="block"
-              left = "180px"
-              backgroundImage="url(/images/imagen2.png)"
-              backgroundSize = "100%"
+              left="8%"
+              backgroundImage="url(https://firebasestorage.googleapis.com/v0/b/boxting-8ec66.appspot.com/o/landing%2Fimagen2.png?alt=media&token=dc02507d-8e81-45e5-ab00-9f565348899e)"
+              backgroundSize="100%"
               backgroundPosition="bottom"
-              backgroundRepeat = "no-repeat">
+              backgroundRepeat="no-repeat">
               <Box
                 position="relative"
                 marginTop="30px"
@@ -83,8 +83,8 @@ const Home: React.FC = () => (
                 <Text
                   fontWeight="700"
                   fontSize={{ base: "18px", md: "28px", lg: "38px" }}
-                  color = "white">
-                  Vota online con boxting
+                  color="white">
+                  Vota online y seguro con Boxting
                 </Text>
               </Box>
               <Box
@@ -97,41 +97,67 @@ const Home: React.FC = () => (
                   <Text
                     fontWeight="400"
                     fontSize={{ base: "12px", md: "18px", lg: "24px" }}
-                    color = "white">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum adipisci deleniti rem ad enim, optio delectus ut! Delectus sit eos quia fugiat veritatis adipisci corrupti.
+                    color="white">
+                    Boxting es una solución de votación 100% virtual potenciada con tecnología Blockchain para asegurar la integridad e inmutabilidad de los votos.
                   </Text>
                 </Box>
-              </Box>           
+              </Box>
             </Box>
             <Box
-              height="450px"
+              height="500px"
               width="550px"
               position="relative"
               display="block"
-              paddingLeft = "50px"
-              left = "65px"
-              top = "-50px"
+              paddingLeft="50px"
+              left="65px"
+              top="-50px"
               boxShadow="0px 1px 5px 2px rgba(0,0,0, 0.4)"
-              rounded = "lg"
-              paddingTop = "15px"
-              paddingRight = "50px">
+              rounded="lg"
+              paddingTop="15px"
+              paddingRight="50px">
               <Box
                 position="relative"
                 marginTop="30px"
                 display="block">
-                  <Text
-                    fontWeight="700"
-                    fontSize={{ base: "18px", md: "24px", lg: "32px" }}
-                    color = "white">
-                    Contáctanos
+                <Text
+                  fontWeight="700"
+                  fontSize={{ base: "15px", md: "21px", lg: "29px" }}
+                  color="white">
+                  ¿Quieres organizar un evento de votación? Contáctanos!
                   </Text>
                 <Box
-                  position = "relative"
-                  paddingTop = "30px">
+                  position="relative"
+                  paddingTop="30px">
                   <FormControl>
                     <Box
-                      display = "flex"
-                      width = "100%">
+                      display="flex"
+                      width="100%">
+                      <Input
+                        type="text"
+                        variant="outline"
+                        color='black'
+                        _placeholder={{ color: 'gray.400', fontSize: '16px' }}
+                        placeholder="Nombre"
+                        bg="white"
+                        size="lg"
+                        borderRadius="0" />
+                      <Box
+                        width="40px">
+                      </Box>
+                      <Input
+                        type="text"
+                        variant="outline"
+                        color='black'
+                        _placeholder={{ color: 'gray.400', fontSize: '16px' }}
+                        placeholder="Apellidos"
+                        bg="white"
+                        size="lg"
+                        borderRadius="0" />
+                    </Box>
+                    <Box
+                      marginTop="20px"
+                      display="flex"
+                      width="100%">
                       <Input
                         type="text"
                         variant="outline"
@@ -139,10 +165,10 @@ const Home: React.FC = () => (
                         _placeholder={{ color: 'gray.400', fontSize: '16px' }}
                         placeholder="Nombre de empresa"
                         bg="white"
-                        size="lg" 
-                        borderRadius = "0"/>
+                        size="lg"
+                        borderRadius="0" />
                       <Box
-                        width = "40px">
+                        width="40px">
                       </Box>
                       <Input
                         type="text"
@@ -151,32 +177,32 @@ const Home: React.FC = () => (
                         _placeholder={{ color: 'gray.400', fontSize: '16px' }}
                         placeholder="Correo"
                         bg="white"
-                        size="lg" 
-                        borderRadius = "0"/>
+                        size="lg"
+                        borderRadius="0" />
                     </Box>
                     <Textarea
-                      marginTop = "20px"
-                      borderRadius = "0"
-                      bgColor = "white"
-                      _placeholder={{ color: 'gray.400', fontSize: '16px'}}
-					            placeholder="Información"
-                      size="lg" 
-				            />
-                    <Box display = "block">
-                      <Checkbox 
-                        position = "absolute"
-                        color = "white"
-                        fontSize = "12px">
-                          ¿Te gustaría recibir mensajes de Boxting?
+                      marginTop="20px"
+                      borderRadius="0"
+                      bgColor="white"
+                      _placeholder={{ color: 'gray.400', fontSize: '16px' }}
+                      placeholder="Información"
+                      size="lg"
+                    />
+                    <Box display="block">
+                      <Checkbox
+                        position="absolute"
+                        color="white"
+                        fontSize="12px">
+                        ¿Te gustaría recibir mensajes de Boxting?
                       </Checkbox>
                       <Button
-                        marginTop = "40px"
-                        justifyContent = "center"
+                        marginTop="40px"
+                        justifyContent="center"
                         bg="black"
                         type="submit"
-                        width = "150px"
+                        width="150px"
                         color="white"
-                        borderRadius = "0">
+                        borderRadius="0">
                         Solicitar
                       </Button>
                     </Box>
@@ -194,11 +220,11 @@ const Home: React.FC = () => (
           display="inline-flex"
           justifyContent="center"
           paddingTop="40px">
-            <Text
-              fontWeight="black"
-              fontSize={{ base: "14px", md: "24px", lg: "40px" }}
-              color="black">
-              ¿Cómo funciona?
+          <Text
+            fontWeight="black"
+            fontSize={{ base: "14px", md: "24px", lg: "40px" }}
+            color="black">
+            ¿Cómo funciona?
             </Text>
         </Box>
         <Box
@@ -213,7 +239,7 @@ const Home: React.FC = () => (
             height="480px"
             position="relative"
             marginRight="150px">
-            <Image src="/images/voto4.png"></Image>
+            <Image src="https://firebasestorage.googleapis.com/v0/b/boxting-8ec66.appspot.com/o/landing%2Fvoto4.png?alt=media&token=d63d5f59-7f3c-41c6-ba06-e910927cbaea"></Image>
           </Box>
           <Box
             width="400px"
@@ -233,7 +259,7 @@ const Home: React.FC = () => (
               fontSize={{ base: "10px", md: "16px", lg: "20px" }}
               fontWeight="light"
               color="black">
-              Tan solo necesitas un dispositivo con internet, entrar a nuestro aplicativo web o móvil y empezar a votar por tu candidato.
+              Tan solo necesitas un dispositivo móvil con internet, descargar nuesra app <a href={"https://play.google.com/store/apps/details?id=com.boxtinglabs.boxting&hl=es_419&gl=US"} style={{ color: '#6200EE' }}>Boxting</a> y comenzar a votar por tu candidato preferido en tus eventos.
           </Text>
           </Box>
         </Box>
@@ -263,14 +289,14 @@ const Home: React.FC = () => (
               fontSize={{ base: "10px", md: "16px", lg: "20px" }}
               fontWeight="light"
               color="black">
-              Diseñado de forma que cualquier persona, sin importar su condición, pueda usar el aplicativo sin dificultad alguna
+              Diseñado de forma que cualquier persona, sin importar su condición, pueda usar el aplicativo sin dificultad alguna.
           </Text>
           </Box>
           <Box
             width="480px"
             height="480px"
             position="relative" >
-            <Image src="/images/prueba4.png"></Image>
+            <Image src="https://firebasestorage.googleapis.com/v0/b/boxting-8ec66.appspot.com/o/landing%2Fprueba4.png?alt=media&token=cdf5f420-0de9-4573-895a-6653717ab87e"></Image>
           </Box>
         </Box>
         <Box
@@ -285,7 +311,7 @@ const Home: React.FC = () => (
             height="480px"
             position="relative"
             marginRight="150px">
-            <Image src="/images/security2.png"></Image>
+            <Image src="https://firebasestorage.googleapis.com/v0/b/boxting-8ec66.appspot.com/o/landing%2Fsecurity2.png?alt=media&token=a982e2d9-0800-45bc-8efc-5380197885bd"></Image>
           </Box>
           <Box
             width="400px"
@@ -305,7 +331,7 @@ const Home: React.FC = () => (
               fontSize={{ base: "10px", md: "16px", lg: "20px" }}
               fontWeight="light"
               color="black">
-              Gracias a la revolucionaria tecnología Blockchain, las votaciones realizadas por nuestros usuarios son 100% seguras e inmodificables
+              Gracias a la revolucionaria tecnología Blockchain, las votaciones realizadas por nuestros usuarios son 100% seguras e inmutables en todo momento.
           </Text>
           </Box>
         </Box>
@@ -317,96 +343,83 @@ const Home: React.FC = () => (
         height="280px"
         width="full"
         backgroundColor="white"
-        paddingTop = "40px"
+        paddingTop="40px"
         display="table"
         justifyContent="center"
-        justifyItems = "center"
-        alignContent = "center"
-        alignItems = "center">
+        justifyItems="center"
+        alignContent="center"
+        alignItems="center">
         <Center>
-        <Box
-          width="900px"
-          height="240px"
-          display="flex"
-          alignItems="center"
-          flexDirection="column"
-
-          bgColor = "white">
-          <Text
-            color="black"
-            fontSize="28px"
-            fontWeight="light"
-            marginTop="60px">
-            Votar nunca fue tan fácil, hasta ahora
-            </Text>
-          <FormControl
+          <Box
+            width="900px"
+            height="240px"
             display="flex"
-            justifyContent="center"
-            marginTop="30px">
-            <Button
-              bg="#5865f2"
-              _hover={{ bg: "#7984fc" }}
-              _focus={{ boxShadow: "outline" }}
-              type="submit"
-              size="lg"
-              justifySelf="center"
-              alignSelf="center"
-              color = "white"
-              onClick={() => window.scrollTo(0, 0)}>
-              Contáctanos
-            </Button>
-          </FormControl>
-        </Box>          
+            alignItems="center"
+            flexDirection="column"
+
+            bgColor="white">
+            <Text
+              color="black"
+              fontSize="28px"
+              fontWeight="light"
+              marginTop="30px"
+              style={{ fontStyle: 'italic' }}>
+              Votar nunca fue tan fácil, hasta ahora
+            </Text>
+            <a href='https://play.google.com/store/apps/details?id=com.boxtinglabs.boxting&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1' target='blank'>
+              <Image marginTop="30px" height="100px" alt='Disponible en Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/es-419_badge_web_generic.png' />
+            </a>
+
+          </Box>
         </Center>
         <Box
           width="full"
           height="200px"
           display="flex"
-          alignItems = "center"
-          justifyContent = "center"
+          alignItems="center"
+          justifyContent="center"
           flexDirection="column"
-          bgColor = "#23272a">
+          bgColor="#23272a">
+          <Box
+            width="60%"
+            height="80px"
+            position="relative"
+            top="10px"
+            borderTop="1px"
+            borderColor="#5865f2">
             <Box
-             width="60%"
-             height="80px"
-             position= "relative"
-             top = "20px"
-             borderTop="1px"
-             borderColor="#5865f2">
-               <Box
-                position = "relative"
-                top = "20px"
-                display = "flex">
-                  <Text 
-                    marginRight = "20px"
-                    top = "5px"
-                    width = "120px"
-                    position = "relative"
-                    fontSize = "14px">
-                   Disponible en
-                  </Text>
-                  <svg 
-                   xmlns="http://www.w3.org/2000/svg" 
-                   width="40" 
-                   height="40" 
-                   viewBox="32.163 68.509 203.691 228.155">
-                     <path d="M101.885 207.092c7.865 0 14.241 6.376 14.241 14.241v61.09c0 7.865-6.376 14.24-14.241 14.24-7.864 0-14.24-6.375-14.24-14.24v-61.09c0-7.864 6.376-14.24 14.24-14.24z" fill="#a4c639"/>
-                     <path d="M69.374 133.645c-.047.54-.088 1.086-.088 1.638v92.557c0 9.954 7.879 17.973 17.66 17.973h94.124c9.782 0 17.661-8.02 17.661-17.973v-92.557c0-.552-.02-1.1-.066-1.638H69.374z" fill="#a4c639"/>
-                     <path d="M166.133 207.092c7.865 0 14.241 6.376 14.241 14.241v61.09c0 7.865-6.376 14.24-14.241 14.24-7.864 0-14.24-6.375-14.24-14.24v-61.09c0-7.864 6.376-14.24 14.24-14.24zM46.405 141.882c7.864 0 14.24 6.376 14.24 14.241v61.09c0 7.865-6.376 14.241-14.24 14.241-7.865 0-14.241-6.376-14.241-14.24v-61.09c-.001-7.865 6.375-14.242 14.241-14.242zM221.614 141.882c7.864 0 14.24 6.376 14.24 14.241v61.09c0 7.865-6.376 14.241-14.24 14.241-7.865 0-14.241-6.376-14.241-14.24v-61.09c0-7.865 6.376-14.242 14.241-14.242zM69.79 127.565c.396-28.43 25.21-51.74 57.062-54.812h14.312c31.854 3.073 56.666 26.384 57.062 54.812H69.79z" fill="#a4c639"/>
-                     <path d="M74.743 70.009l15.022 26.02M193.276 70.009l-15.023 26.02" fill="none" stroke="#a4c639" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M114.878 102.087c.012 3.974-3.277 7.205-7.347 7.216-4.068.01-7.376-3.202-7.388-7.176v-.04c-.011-3.975 3.278-7.205 7.347-7.216 4.068-.011 7.376 3.2 7.388 7.176v.04zM169.874 102.087c.012 3.974-3.277 7.205-7.347 7.216-4.068.01-7.376-3.202-7.388-7.176v-.04c-.011-3.975 3.278-7.205 7.347-7.216 4.068-.011 7.376 3.2 7.388 7.176v.04z" fill="#fff"/>
-                  </svg>
-                  <Box
-                    position = "relative"
-                    display = "flex"
-                    width = "100%"
-                    alignItems = "center"
-                    justifyContent = "flex-end">
-                    <Image cursor = "pointer" boxSize = "30px" src="/images/tw.png"/>
-                    <Image marginLeft = "15px" cursor = "pointer" boxSize = "30px" src="/images/insta.png"/>
-                    <Image marginLeft = "15px" cursor = "pointer" boxSize = "30px" src="/images/fb3.png"/>
-                  </Box>
-               </Box>
+              position="relative"
+              top="20px"
+              display="flex">
+
+              <FormControl
+                display="flex">
+                <Button
+                  bg="none"
+                  type="submit"
+                  size="lg"
+                  justifySelf="center"
+                  alignSelf="center"
+                  color="white"
+                  border="2px"
+                  borderColor="white"
+                  onClick={() => window.scrollTo(0, 0)}>
+                  Contáctanos
+                </Button>
+              </FormControl>
+
+              <Box
+                position="relative"
+                display="flex"
+                width="100%"
+                alignItems="center"
+                justifyContent="flex-end">
+                <Image cursor="pointer" boxSize="30px" src="https://firebasestorage.googleapis.com/v0/b/boxting-8ec66.appspot.com/o/landing%2Ftw.png?alt=media&token=29d46efb-4734-4ffa-bd2e-ffd2d109236f" />
+                <Image marginLeft="15px" cursor="pointer" boxSize="30px" src="https://firebasestorage.googleapis.com/v0/b/boxting-8ec66.appspot.com/o/landing%2Finsta.png?alt=media&token=b22f7e76-92de-4ecf-a23a-1b1e4881a29c" />
+                <Image marginLeft="15px" cursor="pointer" boxSize="30px" src="https://firebasestorage.googleapis.com/v0/b/boxting-8ec66.appspot.com/o/landing%2Ffb.png?alt=media&token=cc8a0330-a243-4554-a183-95896636f78e" />
+              </Box>
             </Box>
+          </Box>
         </Box>
       </Box>
     </footer>
