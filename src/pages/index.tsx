@@ -29,28 +29,25 @@ const Home: React.FC = () => (
         fontFamily="sans-serif">
         <Box
           backgroundImage="url(https://firebasestorage.googleapis.com/v0/b/boxting-8ec66.appspot.com/o/landing%2Fbackground.jpg?alt=media&token=19725dda-488e-4235-b9a5-75da84695515)"
-          height="850px"
+          height="auto"
           width="100%"
           position="relative"
           backgroundPosition="center"
-          backgroundRepeat="repeat-x"
-          //backgroundSize={["1000%", "1000%", "1000%", "1000%", "100%"]}
-          backgroundSize="100%"
+          backgroundRepeat="no-repeat"
+          backgroundSize="cover"
           display="block">
+
           <Box
             height="80px"
             top="15px"
-            width="full"
             position="relative"
-            display="inline-flex"
+            display="flex"
             alignItems="center"
             justifyContent="center">
-            <Image position="absolute" boxSize="110px" src="https://firebasestorage.googleapis.com/v0/b/boxting-8ec66.appspot.com/o/landing%2Flogo5.png?alt=media&token=30b3f1d7-139b-4875-b3d4-ede732442398" alt="" />
+            <Image boxSize="110px" src="https://firebasestorage.googleapis.com/v0/b/boxting-8ec66.appspot.com/o/landing%2Flogo5.png?alt=media&token=30b3f1d7-139b-4875-b3d4-ede732442398" alt="" />
             <Button
-              left="620px"
-              justifyContent="center"
-              alignContent="center"
-              justifyItems="center"
+              position="absolute"
+              right="4%"
               bg="none"
               type="submit"
               width="250px"
@@ -61,14 +58,15 @@ const Home: React.FC = () => (
               Ir al panel de organización
             </Button>
           </Box>
+
           <HStack
+            justifyContent="center"
             spacing="144px">
             <Box
               height="800px"
               width="45%"
               position="relative"
               display="block"
-              left="8%"
               backgroundImage="url(https://firebasestorage.googleapis.com/v0/b/boxting-8ec66.appspot.com/o/landing%2Fimagen2.png?alt=media&token=dc02507d-8e81-45e5-ab00-9f565348899e)"
               backgroundSize="100%"
               backgroundPosition="bottom"
@@ -87,33 +85,28 @@ const Home: React.FC = () => (
               </Box>
               <Box
                 width="full"
+                position="relative"
+                maxWidth="750px"
                 display="flex">
-                <Box
-                  position="relative"
-                  width="750px"
-                  display="flex">
-                  <Text
+                <Text
                     fontWeight="400"
                     //fontSize={{ base: "12px", md: "18px", lg: "24px" }}
                     fontSize="24px"
                     color="white">
                     Boxting es una solución de votación 100% virtual potenciada con tecnología Blockchain para asegurar la integridad e inmutabilidad de los votos.
                   </Text>
-                </Box>
               </Box>
             </Box>
+
             <Box
-              height="500px"
-              width="550px"
+              maxWidth="550px"
+              width="35%"
               position="relative"
+              padding="25px 50px 25px 50px"
               display="block"
-              paddingLeft="50px"
-              left="65px"
               top="-50px"
               boxShadow="0px 1px 5px 2px rgba(0,0,0, 0.4)"
-              rounded="lg"
-              paddingTop="15px"
-              paddingRight="50px">
+              rounded="lg">
               <Box
                 position="relative"
                 marginTop="30px"
@@ -358,12 +351,10 @@ const Home: React.FC = () => (
         alignItems="center">
         <Center>
           <Box
-            width="900px"
             height="240px"
             display="flex"
             alignItems="center"
             flexDirection="column"
-
             bgColor="white">
             <Text
               color="black"
