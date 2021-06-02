@@ -141,7 +141,8 @@ class ElectionList extends Component<ElectionListProps, ElectionListState> {
                                                 textHead={item.name}
                                                 textBody={item.information}
                                                 status={item.eventStatus}
-                                                disabled={item.eventStatus != EventStatusEnum.ENDED}
+                                                disabled={item.eventStatus == EventStatusEnum.NOT_STARTED || 
+                                                    item.eventStatus == EventStatusEnum.EDITION_CLOSED}
                                                 onEnter={() =>
                                                     this.router.push(
                                                         `/results/[electionId]`,
