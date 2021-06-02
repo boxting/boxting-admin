@@ -25,20 +25,17 @@ const Home: React.FC = () => (
 
     <main>
       <Flex
-        height="100%"
-        width="100%"
-        position="relative"
         display="block"
-        userSelect="none"
         fontFamily="sans-serif">
         <Box
           backgroundImage="url(https://firebasestorage.googleapis.com/v0/b/boxting-8ec66.appspot.com/o/landing%2Fbackground.jpg?alt=media&token=19725dda-488e-4235-b9a5-75da84695515)"
           height="850px"
-          width="full"
+          width="100%"
           position="relative"
           backgroundPosition="center"
           backgroundRepeat="repeat-x"
-          backgroundSize={["1000%", "1000%", "1000%", "1000%", "100%"]}
+          //backgroundSize={["1000%", "1000%", "1000%", "1000%", "100%"]}
+          backgroundSize="100%"
           display="block">
           <Box
             height="80px"
@@ -82,7 +79,8 @@ const Home: React.FC = () => (
                 display="flex">
                 <Text
                   fontWeight="700"
-                  fontSize={{ base: "18px", md: "28px", lg: "38px" }}
+                  //fontSize={{ base: "18px", md: "28px", lg: "38px" }}
+                  fontSize="38px"
                   color="white">
                   Vota online y seguro con Boxting
                 </Text>
@@ -96,7 +94,8 @@ const Home: React.FC = () => (
                   display="flex">
                   <Text
                     fontWeight="400"
-                    fontSize={{ base: "12px", md: "18px", lg: "24px" }}
+                    //fontSize={{ base: "12px", md: "18px", lg: "24px" }}
+                    fontSize="24px"
                     color="white">
                     Boxting es una solución de votación 100% virtual potenciada con tecnología Blockchain para asegurar la integridad e inmutabilidad de los votos.
                   </Text>
@@ -121,7 +120,8 @@ const Home: React.FC = () => (
                 display="block">
                 <Text
                   fontWeight="700"
-                  fontSize={{ base: "15px", md: "21px", lg: "29px" }}
+                  fontSize="29px"
+                  //fontSize={{ base: "15px", md: "21px", lg: "29px" }}
                   color="white">
                   ¿Quieres organizar un evento de votación? Contáctanos!
                   </Text>
@@ -222,7 +222,8 @@ const Home: React.FC = () => (
           paddingTop="40px">
           <Text
             fontWeight="black"
-            fontSize={{ base: "14px", md: "24px", lg: "40px" }}
+            //fontSize={{ base: "14px", md: "24px", lg: "40px" }}
+            fontSize="40px"
             color="black">
             ¿Cómo funciona?
             </Text>
@@ -250,13 +251,15 @@ const Home: React.FC = () => (
             justifyContent="center">
             <Text
               fontWeight="black"
-              fontSize={{ base: "14px", md: "24px", lg: "40px" }}
+              //fontSize={{ base: "14px", md: "24px", lg: "40px" }}
+              fontSize="40px"
               color="black">
               Empieza a votar desde cualquier lugar
           </Text>
             <Text
               marginTop="15px"
-              fontSize={{ base: "10px", md: "16px", lg: "20px" }}
+              //fontSize={{ base: "10px", md: "16px", lg: "20px" }}
+              fontSize="20px"
               fontWeight="light"
               color="black">
               Tan solo necesitas un dispositivo móvil con internet, descargar nuesra app <a href={"https://play.google.com/store/apps/details?id=com.boxtinglabs.boxting&hl=es_419&gl=US"} style={{ color: '#6200EE' }}>Boxting</a> y comenzar a votar por tu candidato preferido en tus eventos.
@@ -280,13 +283,15 @@ const Home: React.FC = () => (
             marginRight="150px">
             <Text
               fontWeight="800"
-              fontSize={{ base: "14px", md: "24px", lg: "40px" }}
+              //fontSize={{ base: "14px", md: "24px", lg: "40px" }}
+              fontSize="40px"
               color="black">
               Aplicativo fácil de usar
           </Text>
             <Text
               marginTop="15px"
-              fontSize={{ base: "10px", md: "16px", lg: "20px" }}
+              //fontSize={{ base: "10px", md: "16px", lg: "20px" }}
+              fontSize="20px"
               fontWeight="light"
               color="black">
               Diseñado de forma que cualquier persona, sin importar su condición, pueda usar el aplicativo sin dificultad alguna.
@@ -322,13 +327,15 @@ const Home: React.FC = () => (
             justifyContent="center">
             <Text
               fontWeight="black"
-              fontSize={{ base: "14px", md: "24px", lg: "40px" }}
+              //fontSize={{ base: "14px", md: "24px", lg: "40px" }}
+              fontSize="40px"
               color="black">
               Total seguridad e integridad
           </Text>
             <Text
               marginTop="15px"
-              fontSize={{ base: "10px", md: "16px", lg: "20px" }}
+              //fontSize={{ base: "10px", md: "16px", lg: "20px" }}
+              fontSize="20px"
               fontWeight="light"
               color="black">
               Gracias a la revolucionaria tecnología Blockchain, las votaciones realizadas por nuestros usuarios son 100% seguras e inmutables en todo momento.
